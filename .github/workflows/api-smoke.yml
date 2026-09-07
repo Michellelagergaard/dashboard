@@ -1,0 +1,48 @@
+name: Test Ungapped API
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/api-smoke.yml
+
+permissions:
+  contents: read
+
+jobs:
+  test-api:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify read-only API access
+        env:
+          UG_API: ${{ secrets.UG_API }}
+        run: |
+          node <<'NODE'
+          const apiKey = process.env.UG_API;
+          if (!apiKey) throw new Error("UG_API is not configured");
+
+          const targets = [
+            ["sent", "https://api.ungapped.com/Issues/Sent?tagIds=&categoryIds=&page=1&pageSize=3"],
+            ["statistics", "https://api.ungapped.com/Issues/Statistics"],
+          ];
+
+          for (const [name, url] of targets) {
+            const response = await fetch(url, {
+              method: "GET",
+              headers: { "x-api-key": apiKey, accept: "application/json" },
+            });
+            const body = await response.text();
+            let data;
+            try { data = JSON.parse(body); } catch { data = null; }
+            const shape = Array.isArray(data) ? "array" : typeof data;
+            const count = Array.isArray(data) ? data.length : null;
+            const keys = data && !Array.isArray(data) && typeof data === "object"
+              ? Object.keys(data).sort()
+              : Array.isArray(data) && data[0] && typeof data[0] === "object"
+                ? Object.keys(data[0]).sort()
+                : [];
+            console.log(JSON.stringify({ name, status: response.status, shape, count, keys }));
+            if (!response.ok) process.exitCode = 1;
+          }
+          NODE
