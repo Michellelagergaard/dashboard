@@ -23,7 +23,9 @@ jobs:
           if (!apiKey) throw new Error("UG_API is not configured");
 
           const targets = [
-            ["sent", "https://api.ungapped.com/Issues/Sent?tagIds=&categoryIds=&page=1&pageSize=3"],
+            ["issues", "https://api.ungapped.com/Issues?$top=3"],
+            ["listing", "https://api.ungapped.com/Issues/Listing"],
+            ["sent", "https://api.ungapped.com/Issues/SentList?page=1&pageSize=3"],
             ["statistics", "https://api.ungapped.com/Issues/Statistics"],
           ];
 
