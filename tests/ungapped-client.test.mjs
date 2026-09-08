@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { classifyIssue, sanitizeIssue, validateIssues } from "../scripts/ungapped-client.mjs";
+import { classifyIssue, sanitizeIssue, suggestCategory, validateIssues } from "../scripts/ungapped-client.mjs";
 
 test("sanitizes an Ungapped issue and calculates weighted rates", () => {
   const issue = sanitizeIssue(
@@ -11,6 +11,13 @@ test("sanitizes an Ungapped issue and calculates weighted rates", () => {
   assert.equal(issue.openRate, 50);
   assert.equal(issue.clickRate, 10);
   assert.equal("CreatedBy" in issue, false);
+});
+
+test("keeps volume-based categories as medium-confidence suggestions", () => {
+  assert.equal(suggestCategory({ delivered: 13000, apiCategory: ["Nyhedsbrev"] }), "Psykologernes Nyhedsbrev");
+  assert.equal(suggestCategory({ delivered: 11500, apiCategory: ["Nyhedsbrev"] }), "Magasinet P");
+  assert.equal(suggestCategory({ delivered: 9000, apiCategory: ["Nyhedsbrev"] }), "Kompetencenyt");
+  assert.equal(suggestCategory({ delivered: 13000, apiCategory: ["Medlemsoplysninger"] }), null);
 });
 
 test("detects duplicate ids", () => {
