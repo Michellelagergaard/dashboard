@@ -11,6 +11,10 @@ const review = issues
     sentAt: issue.sentAt,
     tags: issue.tags,
     automated: issue.automated,
+    apiCategory: issue.classificationMetadata.apiCategory,
+    lists: issue.classificationMetadata.lists,
+    segments: issue.classificationMetadata.segments,
+    delivered: issue.delivered,
   }));
 
 await writeFile("classification-review.json", JSON.stringify({
