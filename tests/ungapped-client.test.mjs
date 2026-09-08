@@ -13,11 +13,12 @@ test("sanitizes an Ungapped issue and calculates weighted rates", () => {
   assert.equal("CreatedBy" in issue, false);
 });
 
-test("keeps volume-based categories as medium-confidence suggestions", () => {
-  assert.equal(suggestCategory({ delivered: 13000, apiCategory: ["Nyhedsbrev"] }), "Psykologernes Nyhedsbrev");
-  assert.equal(suggestCategory({ delivered: 11500, apiCategory: ["Nyhedsbrev"] }), "Magasinet P");
-  assert.equal(suggestCategory({ delivered: 9000, apiCategory: ["Nyhedsbrev"] }), "Kompetencenyt");
-  assert.equal(suggestCategory({ delivered: 13000, apiCategory: ["Medlemsoplysninger"] }), null);
+test("keeps cadence and volume categories as medium-confidence suggestions", () => {
+  assert.equal(suggestCategory({ delivered: 13000, sentAt: "2026-08-27T08:00:00Z", apiCategory: ["Nyhedsbrev"] }), "Psykologernes Nyhedsbrev");
+  assert.equal(suggestCategory({ delivered: 13000, sentAt: "2026-08-21T08:00:00Z", apiCategory: ["Nyhedsbrev"] }), "Magasinet P");
+  assert.equal(suggestCategory({ delivered: 9000, sentAt: "2026-08-18T08:00:00Z", apiCategory: ["Nyhedsbrev"] }), "Kompetencenyt");
+  assert.equal(suggestCategory({ delivered: 13000, sentAt: "2026-08-27T08:00:00Z", apiCategory: ["Medlemsoplysninger"] }), null);
+  assert.equal(suggestCategory({ delivered: 13000, sentAt: "2026-08-26T08:00:00Z", apiCategory: ["Nyhedsbrev"] }), null);
 });
 
 test("detects duplicate ids", () => {
