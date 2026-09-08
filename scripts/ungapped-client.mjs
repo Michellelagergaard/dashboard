@@ -106,6 +106,33 @@ export function validateIssues(issues) {
   return [...new Set(errors)];
 }
 
+export function extractLinkCatalog(html) {
+  if (typeof html !== "string" || html.length === 0) return { links: [], excludedCount: 0 };
+  const links = new Map();
+  let excludedCount = 0;
+  let position = 0;
+  const hrefPattern = /<a\b[^>]*?\bhref\s*=\s*(["'])(.*?)\1/gis;
+  for (const match of html.matchAll(hrefPattern)) {
+    position += 1;
+    const destination = safeDestination(match[2]);
+    if (!destination) {
+      excludedCount += 1;
+      continue;
+    }
+    const existing = links.get(destination);
+    if (existing) existing.occurrences += 1;
+    else links.set(destination, { destination, firstPosition: position, occurrences: 1 });
+  }
+  return { links: [...links.values()], excludedCount };
+}
+
+export async function fetchIssueLinkCatalog(apiKey, issueId, fetchImpl = fetch) {
+  if (!apiKey) throw new Error("UG_API er ikke konfigureret");
+  if (!text(issueId)) throw new Error("Udsendelses-id mangler");
+  const issue = await getJson(new URL(`/Issues/${encodeURIComponent(issueId)}`, API_BASE), apiKey, fetchImpl);
+  return extractLinkCatalog(issue.BodyHtml || issue.AutosavedHtml || "");
+}
+
 export async function fetchSentIssues(apiKey, fetchImpl = fetch) {
   if (!apiKey) throw new Error("UG_API er ikke konfigureret");
   const rawIssues = [];
@@ -193,4 +220,24 @@ function date(value) {
 
 function rate(numerator, denominator) {
   return denominator > 0 ? Math.round((numerator / denominator) * 10000) / 100 : null;
+}
+
+function safeDestination(rawHref) {
+  const decoded = String(rawHref)
+    .replaceAll("&amp;", "&")
+    .replaceAll("&#38;", "&")
+    .trim();
+  if (!/^https?:\/\//i.test(decoded) || /\{[{%]|[%}]\}/.test(decoded)) return null;
+  let url;
+  try { url = new URL(decoded); } catch { return null; }
+  if (!/^https?:$/.test(url.protocol)) return null;
+  const sensitive = /(unsubscribe|afmeld|recipient|contact|email|token|signature|personal)/i;
+  if (sensitive.test(`${url.hostname}${url.pathname}`)) return null;
+  const segments = url.pathname.split("/").filter(Boolean);
+  if (segments.some(segment => /^[a-f0-9-]{24,}$/i.test(segment) || /^[A-Za-z0-9_-]{32,}$/.test(segment))) return null;
+  url.username = "";
+  url.password = "";
+  url.search = "";
+  url.hash = "";
+  return url.toString();
 }
