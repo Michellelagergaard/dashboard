@@ -75,4 +75,38 @@ jobs:
               : typeof value,
           ]));
           console.log(JSON.stringify({ name: "latest-overview", status: overviewResponse.status, schema }));
+
+          // This endpoint is undocumented. Inspect structure only: never log values,
+          // identifiers, destinations, recipient records, or free text.
+          const detailResponse = await fetch(
+            `https://api.ungapped.com/Issues/Sent/${latest.IssueId}/Statistics`,
+            { headers: { "x-api-key": apiKey, accept: "application/json" } },
+          );
+          const detail = await detailResponse.json();
+
+          function describe(value, depth = 0) {
+            if (depth >= 4) return Array.isArray(value) ? "array" : value === null ? "null" : typeof value;
+            if (Array.isArray(value)) {
+              return {
+                type: "array",
+                item: value.length > 0 ? describe(value[0], depth + 1) : "unknown",
+              };
+            }
+            if (value && typeof value === "object") {
+              return {
+                type: "object",
+                fields: Object.fromEntries(
+                  Object.keys(value).sort().map(key => [key, describe(value[key], depth + 1)]),
+                ),
+              };
+            }
+            return value === null ? "null" : typeof value;
+          }
+
+          console.log(JSON.stringify({
+            name: "sent-statistics-structure",
+            status: detailResponse.status,
+            schema: describe(detail),
+          }));
+          if (!detailResponse.ok) process.exitCode = 1;
           NODE
