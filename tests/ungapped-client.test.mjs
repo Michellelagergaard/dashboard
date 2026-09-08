@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { classifyIssue, sanitizeIssue, suggestCategory, validateIssues } from "../scripts/ungapped-client.mjs";
+import { classifyIssue, extractLinkCatalog, fetchIssueLinkCatalog, sanitizeIssue, suggestCategory, validateIssues } from "../scripts/ungapped-client.mjs";
 
 test("sanitizes an Ungapped issue and calculates weighted rates", () => {
   const issue = sanitizeIssue(
@@ -36,4 +36,35 @@ test("classifies the agreed newsletter types and prioritizes flows", () => {
   assert.equal(classifyIssue({ subject: "Tomme ramme skabelon BLÅ - BRUG DENNE", tags: [] }), "Test og systemmails");
   assert.equal(classifyIssue({ name: "Ukendt udsendelse", tags: [] }), "Ikke kategoriseret");
   assert.equal(classifyIssue({ name: "September", context: ["Psykologernes Nyhedsbrev"] }), "Psykologernes Nyhedsbrev");
+});
+
+test("builds a privacy-reduced link catalog without inventing click counts", () => {
+  const result = extractLinkCatalog(`
+    <a href="https://www.dp.dk/nyheder/artikel?utm_source=mail#top">Første</a>
+    <a href="https://www.dp.dk/nyheder/artikel?contactId=secret">Gentaget</a>
+    <a href="https://mail.example.com/unsubscribe?id=secret">Afmeld</a>
+    <a href="mailto:person@example.com">Mail</a>
+    <a href="https://example.com/member/0123456789abcdef0123456789abcdef">Personligt</a>
+  `);
+  assert.deepEqual(result.links, [{
+    destination: "https://www.dp.dk/nyheder/artikel",
+    firstPosition: 1,
+    occurrences: 2,
+  }]);
+  assert.equal(result.excludedCount, 3);
+  assert.equal("clicks" in result.links[0], false);
+});
+
+test("fetches only issue HTML and returns the reduced catalog", async () => {
+  const calls = [];
+  const result = await fetchIssueLinkCatalog("secret", "issue-id", async (url, options) => {
+    calls.push({ url: String(url), options });
+    return { ok: true, status: 200, json: async () => ({
+      BodyHtml: '<a href="https://www.dp.dk/kurser?utm_campaign=test">Kursus</a>',
+      LastModifiedBy: { Email: "must-not-leak@example.com" },
+    }) };
+  });
+  assert.deepEqual(result.links, [{ destination: "https://www.dp.dk/kurser", firstPosition: 1, occurrences: 1 }]);
+  assert.equal(JSON.stringify(result).includes("must-not-leak"), false);
+  assert.equal(calls[0].options.method, "GET");
 });
