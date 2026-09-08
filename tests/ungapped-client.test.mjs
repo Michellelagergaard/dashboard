@@ -23,5 +23,9 @@ test("classifies the agreed newsletter types and prioritizes flows", () => {
   assert.equal(classifyIssue({ name: "September", tags: ["TR/AMR Nyt"] }), "TR/AMR Nyt");
   assert.equal(classifyIssue({ subject: "Nyt Magasinet P", tags: [] }), "Magasinet P");
   assert.equal(classifyIssue({ name: "Velkomst", tags: ["Kompetencenyt"], automated: true }), "Automatiske flows");
+  assert.equal(classifyIssue({ subject: "Nyhedsbrevet fra P: Bliv klogere på traumeområdet", tags: [] }), "Magasinet P");
+  assert.equal(classifyIssue({ subject: "Nye kurser – fra supervision til AI", tags: [] }), "Kompetencenyt");
+  assert.equal(classifyIssue({ name: "Mail 1: Strakskampagnen", tags: [] }), "Automatiske flows");
+  assert.equal(classifyIssue({ subject: "Tomme ramme skabelon BLÅ - BRUG DENNE", tags: [] }), "Test og systemmails");
   assert.equal(classifyIssue({ name: "Ukendt udsendelse", tags: [] }), "Ikke kategoriseret");
 });
