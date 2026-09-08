@@ -4,7 +4,7 @@ import { sanitizeIssue, validateIssues } from "../scripts/ungapped-client.mjs";
 
 test("sanitizes an Ungapped issue and calculates weighted rates", () => {
   const issue = sanitizeIssue({
-    IssueId: "abc", IssueName: "Test", Subject: "Emne", SentCount: 1000,
+    IssueId: "abc", IssueName: "Test", Subject: "Emne", RecipientCount: 1000,
     FailedCount: 10, BounceCount: 20, OpenCount: 485, ClickCount: 97,
     UnsubscribeCount: 2, Ended: "2026-09-07T10:00:00Z", CreatedBy: "must not leak",
   });
