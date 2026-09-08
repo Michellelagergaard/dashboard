@@ -30,11 +30,12 @@ export function sanitizeIssue(issue, statistics = issue) {
     tags,
     automated: Boolean(issue.Journey || issue.JourneyId),
   };
-  return { ...sanitized, category: classifyIssue(sanitized) };
+  const context = extractLabels([issue.Category, issue.Lists, issue.Segments, issue.Journey]);
+  return { ...sanitized, category: classifyIssue({ ...sanitized, context }) };
 }
 
 export function classifyIssue(issue) {
-  const haystack = normalize([issue.name, issue.subject, ...(issue.tags || [])].join(" "));
+  const haystack = normalize([issue.name, issue.subject, ...(issue.tags || []), ...(issue.context || [])].join(" "));
   if (/tomme ramme skabelon|walkthrough|tommelfinger op|tak for dit svar|\btest\b/.test(haystack))
     return "Test og systemmails";
   if (issue.automated || /strakskampagn|straksmail|automatisk sendes|bekræft venligst.*robot/.test(haystack))
@@ -135,6 +136,18 @@ function text(value) {
 
 function normalize(value) {
   return text(value).normalize("NFKC").toLocaleLowerCase("da-DK");
+}
+
+function extractLabels(values) {
+  const labels = [];
+  const fields = ["Name", "Title", "Description", "CategoryName", "ListName", "SegmentName"];
+  for (const value of values) {
+    if (Array.isArray(value)) labels.push(...extractLabels(value));
+    else if (value && typeof value === "object")
+      for (const field of fields) if (typeof value[field] === "string") labels.push(value[field]);
+    else if (typeof value === "string") labels.push(value);
+  }
+  return labels;
 }
 
 function date(value) {
