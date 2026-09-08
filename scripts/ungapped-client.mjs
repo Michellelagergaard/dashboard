@@ -4,9 +4,11 @@ const MAX_PAGES = 50;
 
 export function sanitizeIssue(issue) {
   const sent = number(issue.SentCount);
+  const recipients = number(issue.RecipientCount);
   const failed = number(issue.FailedCount);
   const bounced = number(issue.BounceCount);
-  const delivered = Math.max(0, sent - failed - bounced);
+  const deliveryBase = recipients > 0 ? recipients : sent;
+  const delivered = Math.max(0, deliveryBase - failed - bounced);
   const opens = number(issue.OpenCount);
   const clicks = number(issue.ClickCount);
 
@@ -45,7 +47,7 @@ export async function fetchSentIssues(apiKey, fetchImpl = fetch) {
   if (!apiKey) throw new Error("UG_API er ikke konfigureret");
   const results = [];
 
-  for (let page = 1; page <= MAX_PAGES; page += 1) {
+  for (let page = 0; page < MAX_PAGES; page += 1) {
     const url = new URL("/Issues/SentList", API_BASE);
     url.searchParams.set("page", String(page));
     url.searchParams.set("pageSize", String(PAGE_SIZE));
