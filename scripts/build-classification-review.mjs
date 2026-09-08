@@ -10,6 +10,8 @@ const analysis = await mapConcurrent(issues, 4, async issue => {
     subject: issue.subject,
     sentAt: issue.sentAt,
     category: issue.category,
+    suggestedCategory: issue.suggestedCategory,
+    suggestionConfidence: issue.suggestionConfidence,
     apiCategory: issue.classificationMetadata.apiCategory,
     lists: issue.classificationMetadata.lists,
     segments: issue.classificationMetadata.segments,
