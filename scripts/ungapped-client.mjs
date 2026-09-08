@@ -141,12 +141,17 @@ function normalize(value) {
 function extractLabels(values) {
   const labels = [];
   const fields = ["Name", "Title", "Description", "CategoryName", "ListName", "SegmentName"];
-  for (const value of values) {
-    if (Array.isArray(value)) labels.push(...extractLabels(value));
-    else if (value && typeof value === "object")
-      for (const field of fields) if (typeof value[field] === "string") labels.push(value[field]);
-    else if (typeof value === "string") labels.push(value);
+  const seen = new Set();
+  function visit(value, depth) {
+    if (depth > 4 || value == null) return;
+    if (typeof value === "string") { labels.push(value); return; }
+    if (typeof value !== "object" || seen.has(value)) return;
+    seen.add(value);
+    if (Array.isArray(value)) { for (const item of value) visit(item, depth + 1); return; }
+    for (const field of fields) if (typeof value[field] === "string") labels.push(value[field]);
+    for (const child of Object.values(value)) if (child && typeof child === "object") visit(child, depth + 1);
   }
+  for (const value of values) visit(value, 0);
   return labels;
 }
 
