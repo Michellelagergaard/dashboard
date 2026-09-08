@@ -2,15 +2,15 @@ const API_BASE = "https://api.ungapped.com";
 const PAGE_SIZE = 100;
 const MAX_PAGES = 50;
 
-export function sanitizeIssue(issue) {
-  const sent = number(issue.SentCount);
-  const recipients = number(issue.RecipientCount);
-  const failed = number(issue.FailedCount);
-  const bounced = number(issue.BounceCount);
+export function sanitizeIssue(issue, statistics = issue) {
+  const sent = number(statistics.SentCount);
+  const recipients = number(statistics.RecipientCount);
+  const failed = number(statistics.FailedCount);
+  const bounced = number(statistics.BounceCount);
   const deliveryBase = recipients > 0 ? recipients : sent;
-  const delivered = Math.max(0, deliveryBase - failed - bounced);
-  const opens = number(issue.OpenCount);
-  const clicks = number(issue.ClickCount);
+  const delivered = number(statistics.ReceivedCount) || Math.max(0, deliveryBase - failed - bounced);
+  const opens = number(statistics.OpenCount);
+  const clicks = number(statistics.ClickCount);
 
   return {
     id: text(issue.IssueId),
@@ -21,7 +21,7 @@ export function sanitizeIssue(issue) {
     uniqueOpens: opens,
     uniqueClicks: clicks,
     bounces: bounced,
-    unsubscribes: number(issue.UnsubscribeCount),
+    unsubscribes: number(statistics.UnsubscribeCount),
     openRate: rate(opens, delivered),
     clickRate: rate(clicks, delivered),
     tags: Array.isArray(issue.Tags)
@@ -40,29 +40,58 @@ export function validateIssues(issues) {
     for (const field of ["delivered", "uniqueOpens", "uniqueClicks", "bounces", "unsubscribes"])
       if (!Number.isFinite(issue[field]) || issue[field] < 0) errors.push(`Ugyldig værdi i ${field}`);
   }
+  if (issues.length > 0 && issues.every(issue => issue.delivered === 0))
+    errors.push("Alle udsendelser mangler leveringstal");
   return [...new Set(errors)];
 }
 
 export async function fetchSentIssues(apiKey, fetchImpl = fetch) {
   if (!apiKey) throw new Error("UG_API er ikke konfigureret");
-  const results = [];
+  const rawIssues = [];
 
   for (let page = 0; page < MAX_PAGES; page += 1) {
     const url = new URL("/Issues/SentList", API_BASE);
     url.searchParams.set("page", String(page));
     url.searchParams.set("pageSize", String(PAGE_SIZE));
-    const response = await fetchImpl(url, {
-      method: "GET",
-      headers: { "x-api-key": apiKey, accept: "application/json" },
-    });
-    if (!response.ok) throw new Error(`Ungapped svarede med HTTP ${response.status}`);
-    const pageItems = await response.json();
+    const pageItems = await getJson(url, apiKey, fetchImpl);
     if (!Array.isArray(pageItems)) throw new Error("Uventet svarformat fra Ungapped");
-    results.push(...pageItems.map(sanitizeIssue));
+    rawIssues.push(...pageItems);
     if (pageItems.length < PAGE_SIZE) break;
   }
 
-  return results;
+  return mapConcurrent(rawIssues, 4, async issue => {
+    const id = text(issue.IssueId);
+    if (!id) return sanitizeIssue(issue);
+    const url = new URL(`/Issues/${id}/Statistics/Overview`, API_BASE);
+    const statistics = await getJson(url, apiKey, fetchImpl);
+    return sanitizeIssue(issue, statistics);
+  });
+}
+
+async function getJson(url, apiKey, fetchImpl, attempt = 0) {
+  const response = await fetchImpl(url, {
+    method: "GET",
+    headers: { "x-api-key": apiKey, accept: "application/json" },
+  });
+  if ((response.status === 409 || response.status === 429) && attempt < 3) {
+    await new Promise(resolve => setTimeout(resolve, 1000 * (attempt + 1)));
+    return getJson(url, apiKey, fetchImpl, attempt + 1);
+  }
+  if (!response.ok) throw new Error(`Ungapped svarede med HTTP ${response.status}`);
+  return response.json();
+}
+
+async function mapConcurrent(items, concurrency, mapper) {
+  const output = new Array(items.length);
+  let next = 0;
+  async function worker() {
+    while (next < items.length) {
+      const index = next++;
+      output[index] = await mapper(items[index]);
+    }
+  }
+  await Promise.all(Array.from({ length: Math.min(concurrency, items.length) }, worker));
+  return output;
 }
 
 function number(value) {
