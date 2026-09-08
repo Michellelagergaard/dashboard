@@ -30,8 +30,18 @@ export function sanitizeIssue(issue, statistics = issue) {
     tags,
     automated: Boolean(issue.Journey || issue.JourneyId),
   };
-  const context = extractLabels([issue.Category, issue.Lists, issue.Segments, issue.Journey]);
-  return { ...sanitized, category: classifyIssue({ ...sanitized, context }) };
+  const classificationMetadata = {
+    apiCategory: extractLabels([issue.Category]),
+    lists: extractLabels([issue.Lists]),
+    segments: extractLabels([issue.Segments]),
+  };
+  const context = [
+    ...classificationMetadata.apiCategory,
+    ...classificationMetadata.lists,
+    ...classificationMetadata.segments,
+    ...extractLabels([issue.Journey]),
+  ];
+  return { ...sanitized, classificationMetadata, category: classifyIssue({ ...sanitized, context }) };
 }
 
 export function classifyIssue(issue) {
