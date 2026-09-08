@@ -109,4 +109,16 @@ jobs:
             schema: describe(detail),
           }));
           if (!detailResponse.ok) process.exitCode = 1;
+
+          const issueResponse = await fetch(
+            `https://api.ungapped.com/Issues/${latest.IssueId}`,
+            { headers: { "x-api-key": apiKey, accept: "application/json" } },
+          );
+          const issue = await issueResponse.json();
+          console.log(JSON.stringify({
+            name: "issue-content-structure",
+            status: issueResponse.status,
+            schema: describe(issue),
+          }));
+          if (!issueResponse.ok) process.exitCode = 1;
           NODE
