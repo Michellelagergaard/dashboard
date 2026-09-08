@@ -17,6 +17,7 @@ test("keeps cadence and volume categories as medium-confidence suggestions", () 
   assert.equal(suggestCategory({ delivered: 13000, sentAt: "2026-08-27T08:00:00Z", apiCategory: ["Nyhedsbrev"] }), "Psykologernes Nyhedsbrev");
   assert.equal(suggestCategory({ delivered: 13000, sentAt: "2026-08-21T08:00:00Z", apiCategory: ["Nyhedsbrev"] }), "Magasinet P");
   assert.equal(suggestCategory({ delivered: 9000, sentAt: "2026-08-18T08:00:00Z", apiCategory: ["Nyhedsbrev"] }), "Kompetencenyt");
+  assert.equal(suggestCategory({ delivered: 800, sentAt: "2026-08-18T08:00:00Z", apiCategory: ["Nyhedsbrev"] }), "Generel medlemskommunikation");
   assert.equal(suggestCategory({ delivered: 13000, sentAt: "2026-08-27T08:00:00Z", apiCategory: ["Medlemsoplysninger"] }), null);
   assert.equal(suggestCategory({ delivered: 13000, sentAt: "2026-08-26T08:00:00Z", apiCategory: ["Nyhedsbrev"] }), null);
 });
@@ -37,6 +38,9 @@ test("classifies the agreed newsletter types and prioritizes flows", () => {
   assert.equal(classifyIssue({ subject: "Tomme ramme skabelon BLÅ - BRUG DENNE", tags: [] }), "Test og systemmails");
   assert.equal(classifyIssue({ name: "Ukendt udsendelse", tags: [] }), "Ikke kategoriseret");
   assert.equal(classifyIssue({ name: "September", context: ["Psykologernes Nyhedsbrev"] }), "Psykologernes Nyhedsbrev");
+  assert.equal(classifyIssue({ subject: "Vi har brug for din hjælp – så vi kan blive endnu flere i fællesskabet", tags: [] }), "Automatiske flows");
+  assert.equal(classifyIssue({ subject: "Walkthorugh January", tags: [] }), "Test og systemmails");
+  assert.equal(classifyIssue({ subject: "Information", context: ["Medlemsoplysninger"] }), "Generel medlemskommunikation");
 });
 
 test("builds a privacy-reduced link catalog without inventing click counts", () => {
