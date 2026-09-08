@@ -53,6 +53,15 @@ jobs:
             { headers: { "x-api-key": apiKey, accept: "application/json" } },
           );
           const [latest] = await latestResponse.json();
+          const contextSchema = Object.fromEntries(["Category", "Lists", "Segments", "Journey"].map(key => {
+            const value = latest[key];
+            return [key, Array.isArray(value)
+              ? { type: "array", itemKeys: Object.keys(value[0] ?? {}).sort() }
+              : value && typeof value === "object"
+                ? { type: "object", keys: Object.keys(value).sort() }
+                : typeof value];
+          }));
+          console.log(JSON.stringify({ name: "classification-context", schema: contextSchema }));
           const overviewResponse = await fetch(
             `https://api.ungapped.com/Issues/${latest.IssueId}/Statistics/Overview`,
             { headers: { "x-api-key": apiKey, accept: "application/json" } },
