@@ -1,0 +1,46 @@
+name: Build encrypted classification review
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - scripts/build-classification-review.mjs
+      - config/review-public-key.pem
+      - .github/workflows/classification-review.yml
+
+permissions:
+  contents: read
+
+jobs:
+  build-review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Build sanitized review file
+        env:
+          UG_API: ${{ secrets.UG_API }}
+        run: node scripts/build-classification-review.mjs
+      - name: Encrypt review file
+        run: |
+          openssl rand -out review-key.bin 32
+          openssl enc -aes-256-cbc -pbkdf2 -salt \
+            -in classification-review.json -out classification-review.enc \
+            -pass file:review-key.bin
+          openssl pkeyutl -encrypt -pubin -inkey config/review-public-key.pem \
+            -in review-key.bin -out review-key.enc \
+            -pkeyopt rsa_padding_mode:oaep -pkeyopt rsa_oaep_md:sha256
+          rm -f classification-review.json review-key.bin
+      - uses: actions/upload-artifact@v4
+        with:
+          name: encrypted-classification-review
+          path: |
+            classification-review.enc
+            review-key.enc
+          retention-days: 1
