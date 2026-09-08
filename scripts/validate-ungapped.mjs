@@ -10,12 +10,14 @@ if (errors.length) {
 
 const newest = issues.map(issue => issue.sentAt).filter(Boolean).sort().at(-1) ?? null;
 const unclassifiedCount = issues.filter(issue => issue.category === "Ikke kategoriseret").length;
+const suggestedCount = issues.filter(issue => issue.suggestedCategory).length;
 
 console.log(JSON.stringify({
   status: "ok",
   issueCount: issues.length,
   classifiedCount: issues.length - unclassifiedCount,
   unclassifiedCount,
+  suggestedCount,
   newest,
   checkedAt: new Date().toISOString(),
 }));
