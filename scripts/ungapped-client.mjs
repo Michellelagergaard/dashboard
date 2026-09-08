@@ -12,7 +12,10 @@ export function sanitizeIssue(issue, statistics = issue) {
   const opens = number(statistics.OpenCount);
   const clicks = number(statistics.ClickCount);
 
-  return {
+  const tags = Array.isArray(issue.Tags)
+    ? issue.Tags.map(tag => text(tag?.Name || tag?.TagName || tag)).filter(Boolean)
+    : [];
+  const sanitized = {
     id: text(issue.IssueId),
     name: text(issue.IssueName),
     subject: text(issue.Subject),
@@ -24,10 +27,26 @@ export function sanitizeIssue(issue, statistics = issue) {
     unsubscribes: number(statistics.UnsubscribeCount),
     openRate: rate(opens, delivered),
     clickRate: rate(clicks, delivered),
-    tags: Array.isArray(issue.Tags)
-      ? issue.Tags.map(tag => text(tag?.Name || tag?.TagName || tag)).filter(Boolean)
-      : [],
+    tags,
+    automated: Boolean(issue.Journey || issue.JourneyId),
   };
+  return { ...sanitized, category: classifyIssue(sanitized) };
+}
+
+export function classifyIssue(issue) {
+  if (issue.automated) return "Automatiske flows";
+  const haystack = normalize([issue.name, issue.subject, ...(issue.tags || [])].join(" "));
+  const rules = [
+    ["Psykologernes Nyhedsbrev", [/psykologernes nyhedsbrev/, /psykolog nyt/]],
+    ["TR/AMR Nyt", [/tr.?amr/, /tillidsrepræsentant/, /arbejdsmiljørepræsentant/]],
+    ["Magasinet P", [/magasinet p/, /magasin p/]],
+    ["Kompetencenyt", [/kompetencenyt/, /kompetence nyt/]],
+    ["Netværksnyt", [/netværksnyt/, /netværks nyt/]],
+    ["Generel medlemskommunikation", [/medlemskommunikation/, /medlemsmail/, /medlemsinfo/]],
+  ];
+  for (const [category, patterns] of rules)
+    if (patterns.some(pattern => pattern.test(haystack))) return category;
+  return "Ikke kategoriseret";
 }
 
 export function validateIssues(issues) {
@@ -101,6 +120,10 @@ function number(value) {
 
 function text(value) {
   return typeof value === "string" ? value.trim() : "";
+}
+
+function normalize(value) {
+  return text(value).normalize("NFKC").toLocaleLowerCase("da-DK");
 }
 
 function date(value) {
