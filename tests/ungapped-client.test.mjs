@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { sanitizeIssue, validateIssues } from "../scripts/ungapped-client.mjs";
+import { classifyIssue, sanitizeIssue, validateIssues } from "../scripts/ungapped-client.mjs";
 
 test("sanitizes an Ungapped issue and calculates weighted rates", () => {
   const issue = sanitizeIssue(
@@ -16,4 +16,12 @@ test("sanitizes an Ungapped issue and calculates weighted rates", () => {
 test("detects duplicate ids", () => {
   const valid = { id: "same", delivered: 1, uniqueOpens: 0, uniqueClicks: 0, bounces: 0, unsubscribes: 0 };
   assert.deepEqual(validateIssues([valid, valid]), ["Dubleret udsendelses-id"]);
+});
+
+test("classifies the agreed newsletter types and prioritizes flows", () => {
+  assert.equal(classifyIssue({ name: "Psykologernes Nyhedsbrev 8. september", tags: [] }), "Psykologernes Nyhedsbrev");
+  assert.equal(classifyIssue({ name: "September", tags: ["TR/AMR Nyt"] }), "TR/AMR Nyt");
+  assert.equal(classifyIssue({ subject: "Nyt Magasinet P", tags: [] }), "Magasinet P");
+  assert.equal(classifyIssue({ name: "Velkomst", tags: ["Kompetencenyt"], automated: true }), "Automatiske flows");
+  assert.equal(classifyIssue({ name: "Ukendt udsendelse", tags: [] }), "Ikke kategoriseret");
 });
