@@ -63,15 +63,17 @@ export function suggestCategory(issue) {
   if (issue.delivered >= 12000 && weekday === 4) return "Psykologernes Nyhedsbrev";
   if (issue.delivered >= 12000 && weekday === 5) return "Magasinet P";
   if (issue.delivered >= 7000 && issue.delivered < 12000) return "Kompetencenyt";
+  if (issue.delivered < 5000) return "Generel medlemskommunikation";
   return null;
 }
 
 export function classifyIssue(issue) {
   const haystack = normalize([issue.name, issue.subject, ...(issue.tags || []), ...(issue.context || [])].join(" "));
-  if (/tomme ramme skabelon|walkthrough|tommelfinger op|tak for dit svar|\btest\b/.test(haystack))
+  if (/tomme ramme skabelon|walkth?orugh|walkthrough|tommelfinger op|tak for dit svar|\btest\b/.test(haystack))
     return "Test og systemmails";
-  if (issue.automated || /strakskampagn|straksmail|automatisk sendes|bekræft venligst.*robot/.test(haystack))
+  if (issue.automated || /strakskampagn|straksmail|automatisk sendes|bekræft venligst.*robot|blive endnu flere i fællesskabet|prøv 3 måneders gratis medlemskab|et nyt kapitel begynder.*velkommen/.test(haystack))
     return "Automatiske flows";
+  if (/medlemsoplysninger/.test(haystack)) return "Generel medlemskommunikation";
   const rules = [
     ["Psykologernes Nyhedsbrev", [/psykologernes nyhedsbrev/, /psykolog nyt/]],
     ["TR/AMR Nyt", [/tr.?amr/, /tillidsrepræsentant/, /arbejdsmiljørepræsentant/]],
