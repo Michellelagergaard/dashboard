@@ -28,4 +28,5 @@ test("classifies the agreed newsletter types and prioritizes flows", () => {
   assert.equal(classifyIssue({ name: "Mail 1: Strakskampagnen", tags: [] }), "Automatiske flows");
   assert.equal(classifyIssue({ subject: "Tomme ramme skabelon BLÅ - BRUG DENNE", tags: [] }), "Test og systemmails");
   assert.equal(classifyIssue({ name: "Ukendt udsendelse", tags: [] }), "Ikke kategoriseret");
+  assert.equal(classifyIssue({ name: "September", context: ["Psykologernes Nyhedsbrev"] }), "Psykologernes Nyhedsbrev");
 });
