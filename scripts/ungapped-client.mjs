@@ -43,7 +43,7 @@ export function sanitizeIssue(issue, statistics = issue) {
   ];
   const category = classifyIssue({ ...sanitized, context });
   const suggestedCategory = category === "Ikke kategoriseret"
-    ? suggestCategory({ delivered, apiCategory: classificationMetadata.apiCategory })
+    ? suggestCategory({ delivered, sentAt: sanitized.sentAt, apiCategory: classificationMetadata.apiCategory })
     : null;
   return {
     ...sanitized,
@@ -58,9 +58,11 @@ export function sanitizeIssue(issue, statistics = issue) {
 export function suggestCategory(issue) {
   const isNewsletter = (issue.apiCategory || []).some(value => normalize(value) === "nyhedsbrev");
   if (!isNewsletter) return null;
-  if (issue.delivered >= 12500) return "Psykologernes Nyhedsbrev";
-  if (issue.delivered >= 10500) return "Magasinet P";
-  if (issue.delivered >= 7500) return "Kompetencenyt";
+  const sentAt = date(issue.sentAt);
+  const weekday = sentAt ? new Date(sentAt).getUTCDay() : null;
+  if (issue.delivered >= 12000 && weekday === 4) return "Psykologernes Nyhedsbrev";
+  if (issue.delivered >= 12000 && weekday === 5) return "Magasinet P";
+  if (issue.delivered >= 7000 && issue.delivered < 12000) return "Kompetencenyt";
   return null;
 }
 
