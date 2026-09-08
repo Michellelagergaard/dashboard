@@ -41,7 +41,27 @@ export function sanitizeIssue(issue, statistics = issue) {
     ...classificationMetadata.segments,
     ...extractLabels([issue.Journey]),
   ];
-  return { ...sanitized, classificationMetadata, category: classifyIssue({ ...sanitized, context }) };
+  const category = classifyIssue({ ...sanitized, context });
+  const suggestedCategory = category === "Ikke kategoriseret"
+    ? suggestCategory({ delivered, apiCategory: classificationMetadata.apiCategory })
+    : null;
+  return {
+    ...sanitized,
+    classificationMetadata,
+    category,
+    categoryConfidence: category === "Ikke kategoriseret" ? null : "high",
+    suggestedCategory,
+    suggestionConfidence: suggestedCategory ? "medium" : null,
+  };
+}
+
+export function suggestCategory(issue) {
+  const isNewsletter = (issue.apiCategory || []).some(value => normalize(value) === "nyhedsbrev");
+  if (!isNewsletter) return null;
+  if (issue.delivered >= 12500) return "Psykologernes Nyhedsbrev";
+  if (issue.delivered >= 10500) return "Magasinet P";
+  if (issue.delivered >= 7500) return "Kompetencenyt";
+  return null;
 }
 
 export function classifyIssue(issue) {
