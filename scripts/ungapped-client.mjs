@@ -34,15 +34,26 @@ export function sanitizeIssue(issue, statistics = issue) {
 }
 
 export function classifyIssue(issue) {
-  if (issue.automated) return "Automatiske flows";
   const haystack = normalize([issue.name, issue.subject, ...(issue.tags || [])].join(" "));
+  if (/tomme ramme skabelon|walkthrough|tommelfinger op|tak for dit svar|\btest\b/.test(haystack))
+    return "Test og systemmails";
+  if (issue.automated || /strakskampagn|straksmail|automatisk sendes|bekræft venligst.*robot/.test(haystack))
+    return "Automatiske flows";
   const rules = [
     ["Psykologernes Nyhedsbrev", [/psykologernes nyhedsbrev/, /psykolog nyt/]],
     ["TR/AMR Nyt", [/tr.?amr/, /tillidsrepræsentant/, /arbejdsmiljørepræsentant/]],
-    ["Magasinet P", [/magasinet p/, /magasin p/]],
-    ["Kompetencenyt", [/kompetencenyt/, /kompetence nyt/]],
+    ["Magasinet P", [
+      /magasinet p/, /magasin p/, /nyhedsbrev(?:et)? fra p/, /nyheder fra p/,
+      /p i denne uge/, /årets første nyhedsbrev fra p/,
+    ]],
+    ["Kompetencenyt", [
+      /kompetencenyt/, /kompetence nyt/, /nye kurser/, /nye faglige tilbud/,
+      /nye muligheder for din faglige udvikling/, /styrk din psykologfaglighed/,
+      /nyt fra nationalt videnscenter.*kurser/, /gratis fyraftensmød/,
+      /bliv fortrolig med supervisionsopgaven/, /styrk dine supervisor-kompetencer/,
+    ]],
     ["Netværksnyt", [/netværksnyt/, /netværks nyt/]],
-    ["Generel medlemskommunikation", [/medlemskommunikation/, /medlemsmail/, /medlemsinfo/]],
+    ["Generel medlemskommunikation", [/medlemskommunikation/, /medlemsmail/, /medlemsinfo/, /gf27 invitation/]],
   ];
   for (const [category, patterns] of rules)
     if (patterns.some(pattern => pattern.test(haystack))) return category;
