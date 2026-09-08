@@ -1,0 +1,30 @@
+name: Validate Ungapped data
+
+on:
+  schedule:
+    - cron: "17 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ungapped-readonly-sync
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - name: Read and validate aggregate mailing data
+        env:
+          UG_API: ${{ secrets.UG_API }}
+        run: node scripts/validate-ungapped.mjs
