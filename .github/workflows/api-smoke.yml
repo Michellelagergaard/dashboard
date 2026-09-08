@@ -47,4 +47,23 @@ jobs:
             console.log(JSON.stringify({ name, status: response.status, shape, count, keys }));
             if (!response.ok) process.exitCode = 1;
           }
+
+          const latestResponse = await fetch(
+            "https://api.ungapped.com/Issues/SentList?page=0&pageSize=1&sortOrder=Ended&orderByDirection=Descending",
+            { headers: { "x-api-key": apiKey, accept: "application/json" } },
+          );
+          const [latest] = await latestResponse.json();
+          const overviewResponse = await fetch(
+            `https://api.ungapped.com/Issues/${latest.IssueId}/Statistics/Overview`,
+            { headers: { "x-api-key": apiKey, accept: "application/json" } },
+          );
+          const overview = await overviewResponse.json();
+          const schema = Object.fromEntries(Object.entries(overview).map(([key, value]) => [
+            key,
+            typeof value === "number" ? "number"
+              : Array.isArray(value) ? { type: "array", itemKeys: Object.keys(value[0] ?? {}).sort() }
+              : value && typeof value === "object" ? { type: "object", keys: Object.keys(value).sort() }
+              : typeof value,
+          ]));
+          console.log(JSON.stringify({ name: "latest-overview", status: overviewResponse.status, schema }));
           NODE
