@@ -7,9 +7,10 @@ if (!apiKey) throw new Error("UG_API mangler.");
 const issues = await fetchSentIssues(apiKey);
 const sorted = [...issues].sort((a, b) => String(b.sentAt).localeCompare(String(a.sentAt)));
 
-// Alle ti medlemssegmenter hentes for hver udsendelse med et forsvarligt
-// minimumsgrundlag. Små grupper undertrykkes efter hentning.
-const segmentIssueIds = new Set(sorted.filter(issue => issue.delivered >= 500).map(issue => issue.id));
+// Alle medlemssegmenter hentes for de fem seneste udsendelser med et
+// forsvarligt minimumsgrundlag. Det gør timekørslen stabil; små grupper
+// undertrykkes efter hentning.
+const segmentIssueIds = new Set(sorted.filter(issue => issue.delivered >= 500).slice(0, 5).map(issue => issue.id));
 
 const mailings = await mapConcurrent(sorted, 4, async (issue) => {
   let links = [];
