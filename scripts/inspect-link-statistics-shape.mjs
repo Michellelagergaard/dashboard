@@ -27,6 +27,7 @@ console.log(JSON.stringify({
   rowsWithPublicTotalClicks: rows.filter(row => Number(row.ClickCount) >= 5).length,
   rowsWithHttpUrl: rows.filter(row => typeof row.Url === "string" && /^https?:\/\//i.test(row.Url)).length,
   rowsPassingPublicationSafety: rows.filter(row => safeDestination(row.Url)).length,
+  rowsPassingClientSanitisation: rows.filter(row => clientSafeDestination(row.Url)).length,
   clientMarksAvailable: normalized.available,
   clientPublicRows: normalized.results.filter(row => row.clicks >= 5).length,
 }, null, 2));
@@ -53,5 +54,17 @@ function safeDestination(value) {
   try {
     const url = new URL(value);
     return !/(unsubscribe|afmeld|recipient|contact|email|token|signature|personal)/i.test(`${url.hostname}${url.pathname}`);
+  } catch { return false; }
+}
+
+function clientSafeDestination(rawHref) {
+  const decoded = String(rawHref).replaceAll("&amp;", "&").replaceAll("&#38;", "&").trim();
+  if (!/^https?:\/\//i.test(decoded) || /\\{[{%]|[%}]\\}/.test(decoded)) return false;
+  try {
+    const url = new URL(decoded);
+    const sensitive = /(unsubscribe|afmeld|recipient|contact|email|token|signature|personal)/i;
+    if (sensitive.test(`${url.hostname}${url.pathname}`)) return false;
+    const segments = url.pathname.split("/").filter(Boolean);
+    return !segments.some(segment => /^[a-f0-9-]{24,}$/i.test(segment) || /^[A-Za-z0-9_-]{32,}$/.test(segment));
   } catch { return false; }
 }
