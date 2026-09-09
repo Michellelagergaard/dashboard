@@ -11,6 +11,7 @@ export type LiveMailing = {
   delivered: number;
   openRate: number;
   clickRate: number;
+  unsubscribes: number;
   content: Array<{
     title: string;
     destination: string;
@@ -56,6 +57,7 @@ type UngappedIssue = {
   delivered: number;
   openRate?: number | null;
   clickRate?: number | null;
+  unsubscribes?: number | null;
   classificationMetadata?: { segments?: string[] };
 };
 
@@ -79,6 +81,7 @@ export async function getLiveDashboardData(): Promise<LiveDashboardData> {
         delivered: issue.delivered,
         openRate: issue.openRate ?? 0,
         clickRate: issue.clickRate ?? 0,
+        unsubscribes: 0,
         content: [],
         links: [],
         segments: issue.classificationMetadata?.segments || [],
