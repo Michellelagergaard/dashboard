@@ -7,6 +7,7 @@ on:
     paths:
       - scripts/ungapped-client.mjs
       - scripts/build-classification-review.mjs
+      - config/member-segments.mjs
       - config/review-public-key.pem
       - .github/workflows/classification-review.yml
 
