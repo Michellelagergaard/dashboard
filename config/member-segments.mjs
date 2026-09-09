@@ -9,6 +9,7 @@ export const memberSegments = [
   { value: "Selvstændige psykologers sektion", label: "Selvstændige" },
   { value: "Hospitalssektionen", label: "Regionalt ansatte" },
   { value: "Kommunalt ansatte psykologers sektion", label: "Kommunalt ansatte" },
+  { value: "Privat ansatte psykologers sektion", label: "Privatansatte" },
   { value: "Universitetssektionen", label: "Statsansatte" },
   { value: "Studentersektionen", label: "Studerende" },
   { value: "1 og 2 års kandidater", label: "Dimittender" },
