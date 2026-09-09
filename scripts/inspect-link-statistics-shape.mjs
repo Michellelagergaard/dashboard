@@ -24,6 +24,7 @@ console.log(JSON.stringify({
   rowsWithPublicClicks: rows.filter(row => Number(row.ContactCount) >= 5).length,
   rowsWithPublicTotalClicks: rows.filter(row => Number(row.ClickCount) >= 5).length,
   rowsWithHttpUrl: rows.filter(row => typeof row.Url === "string" && /^https?:\/\//i.test(row.Url)).length,
+  rowsPassingPublicationSafety: rows.filter(row => safeDestination(row.Url)).length,
 }, null, 2));
 
 async function getJson(url) {
@@ -49,4 +50,9 @@ function safeDestination(value) {
     const url = new URL(value);
     return !/(unsubscribe|afmeld|recipient|contact|email|token|signature|personal)/i.test(`${url.hostname}${url.pathname}`);
   } catch { return false; }
+}
+
+function safeDestination(value) {
+  if (typeof value !== "string" || !/^https?:\/\//i.test(value)) return false;
+  try { const url = new URL(value); return !/(unsubscribe|afmeld|recipient|contact|email|token|signature|personal)/i.test(`${url.hostname}${url.pathname}`); } catch { return false; }
 }
