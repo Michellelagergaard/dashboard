@@ -37,6 +37,7 @@ const mailings = await mapConcurrent(sorted, 4, async (issue) => {
     delivered: issue.delivered,
     openRate: issue.openRate ?? 0,
     clickRate: issue.clickRate ?? 0,
+    unsubscribes: issue.unsubscribes ?? 0,
     content: [],
     links,
     segments: issue.classificationMetadata?.segments || [],
