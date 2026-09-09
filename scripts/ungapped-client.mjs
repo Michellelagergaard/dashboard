@@ -236,7 +236,7 @@ async function fetchIssueLinkStatistics(apiKey, issueId, filter, fetchImpl) {
     const url = new URL(`/Issues/${encodeURIComponent(issueId)}/Statistics/${name}`, API_BASE);
     if (filter) url.searchParams.set("contactFilter", filter);
     try {
-      const raw = await getJson(url, apiKey, fetchImpl);
+      // Links-endpointet har en lavere forespørgselsgrænse end oversigten.\n      // Et kort interval gør timekørslen stabil og undgår tomme klikrækker.\n      await pause(1250);\n      const raw = await getJson(url, apiKey, fetchImpl);
       const results = reduceLinkStatistics(raw);
       if (results.length) {
         resolvedLinkStatisticsPath = name;
@@ -282,12 +282,16 @@ async function getJson(url, apiKey, fetchImpl, attempt = 0) {
     method: "GET",
     headers: { "x-api-key": apiKey, accept: "application/json" },
   });
-  if ((response.status === 409 || response.status === 429) && attempt < 3) {
-    await new Promise(resolve => setTimeout(resolve, 1000 * (attempt + 1)));
+  if ((response.status === 409 || response.status === 429) && attempt < 5) {
+    await new Promise(resolve => setTimeout(resolve, 3000 * (attempt + 1)));
     return getJson(url, apiKey, fetchImpl, attempt + 1);
   }
   if (!response.ok) throw new Error(`Ungapped svarede med HTTP ${response.status}`);
   return response.json();
+}
+
+function pause(milliseconds) {
+  return new Promise(resolve => setTimeout(resolve, milliseconds));
 }
 
 async function mapConcurrent(items, concurrency, mapper) {
