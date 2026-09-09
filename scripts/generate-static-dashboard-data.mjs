@@ -1,5 +1,5 @@
 import { writeFile } from "node:fs/promises";
-import { fetchIssueLinkCatalog, fetchIssueSegmentLinkPerformance, fetchIssueSegmentPerformance, fetchSentIssues } from "./ungapped-client.mjs";
+import { fetchIssueLinkCatalog, fetchIssueLinkPerformance, fetchIssueSegmentLinkPerformance, fetchIssueSegmentPerformance, fetchSentIssues } from "./ungapped-client.mjs";
 
 const apiKey = process.env.UG_API;
 if (!apiKey) throw new Error("UG_API mangler.");
@@ -22,6 +22,9 @@ const mailings = await mapConcurrent(sorted, 4, async (issue) => {
       // En enkelt utilgængelig udsendelse må ikke blokere hele den seneste gyldige udgave.
     }
   }
+  const linkPerformance = linkIssueIds.has(issue.id)
+    ? await fetchIssueLinkPerformance(apiKey, issue.id)
+    : { available: false, results: [] };
   const segmentData = segmentIssueIds.has(issue.id)
     ? await fetchIssueSegmentPerformance(apiKey, issue.id)
     : { available: false, results: [] };
@@ -42,7 +45,15 @@ const mailings = await mapConcurrent(sorted, 4, async (issue) => {
     openRate: issue.openRate ?? 0,
     clickRate: issue.clickRate ?? 0,
     unsubscribes: issue.unsubscribes ?? 0,
-    content: [],
+    content: linkPerformance.results
+      .filter(item => item.clicks >= 5)
+      .map(item => ({
+        title: item.title,
+        destination: item.destination,
+        recipients: issue.delivered,
+        clicks: item.clicks,
+        rate: item.clicks / Math.max(1, issue.delivered) * 100,
+      })),
     links,
     segments: issue.classificationMetadata?.segments || [],
     segmentPerformance: segmentData.results.map(item => ({
