@@ -4,7 +4,6 @@ const API_BASE = "https://api.ungapped.com";
 const PAGE_SIZE = 100;
 const MAX_PAGES = 50;
 let resolvedLinkStatisticsPath;
-let linkStatisticsUnavailable = false;
 
 export function sanitizeIssue(issue, statistics = issue) {
   const sent = number(statistics.SentCount);
@@ -231,7 +230,6 @@ export async function fetchIssueLinkPerformance(apiKey, issueId, fetchImpl = fet
 }
 
 async function fetchIssueLinkStatistics(apiKey, issueId, filter, fetchImpl) {
-  if (linkStatisticsUnavailable) return { available: false, results: [] };
   const candidates = ["Links"];
   const paths = resolvedLinkStatisticsPath ? [resolvedLinkStatisticsPath] : candidates;
   for (const name of paths) {
@@ -248,7 +246,6 @@ async function fetchIssueLinkStatistics(apiKey, issueId, filter, fetchImpl) {
       // Ikke alle Ungapped-konti udstiller alle statistikvisninger i API'et.
     }
   }
-  if (!resolvedLinkStatisticsPath) linkStatisticsUnavailable = true;
   return { available: false, results: [] };
 }
 
@@ -268,7 +265,7 @@ function reduceLinkStatistics(raw) {
   for (const item of items) {
     if (!item || typeof item !== "object") continue;
     const destination = safeDestination(item.Url || item.URL || item.Link || item.Destination || item.Href || item.TargetUrl);
-    const clicks = number(item.UniqueClicks ?? item.UniqueClickCount ?? item.UniqueClick ?? item.ClickCount ?? item.Clicks);
+    // Ungappeds Links-statistik dokumenterer ContactCount som antallet af\n    // unikke kontakter, der har klikket. ClickCount er samlede klik og må ikke\n    // vises som unikke klik.\n    const clicks = number(item.UniqueClicks ?? item.UniqueClickCount ?? item.UniqueClick ?? item.ContactCount ?? item.ClickCount ?? item.Clicks);
     if (!destination || clicks < 1) continue;
     rows.push({ title: destination, destination, clicks, rate: 0 });
   }
