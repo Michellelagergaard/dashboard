@@ -7,14 +7,22 @@ const issueId = sent?.[0]?.IssueId;
 if (!issueId) throw new Error("Ingen udsendelse fundet.");
 
 const response = await getJson(new URL(`/Issues/${encodeURIComponent(issueId)}/Statistics/Links`, base));
-const first = firstObject(response);
+const rows = Array.isArray(response) ? response.filter(value => value && typeof value === "object") : [];
+const first = rows[0] || firstObject(response);
 
-// Log kun datastruktur: ingen titler, URL'er, kontaktdata eller talværdier.
+// Log kun struktur og optællinger: ingen titler, URL'er, kontaktdata eller talværdier.
 console.log(JSON.stringify({
   responseKind: Array.isArray(response) ? "array" : typeof response,
   topLevelKeys: objectKeys(response),
   rowKeys: objectKeys(first),
   nestedArrayKeys: nestedArrayKeys(response),
+  rowCount: rows.length,
+  urlValueType: typeof first?.Url,
+  clickCountValueType: typeof first?.ClickCount,
+  contactCountValueType: typeof first?.ContactCount,
+  rowsWithPublicClicks: rows.filter(row => Number(row.ContactCount) >= 5).length,
+  rowsWithPublicTotalClicks: rows.filter(row => Number(row.ClickCount) >= 5).length,
+  rowsWithHttpUrl: rows.filter(row => typeof row.Url === "string" && /^https?:\/\//i.test(row.Url)).length,
 }, null, 2));
 
 async function getJson(url) {
