@@ -165,6 +165,14 @@ export async function fetchSentIssues(apiKey, fetchImpl = fetch) {
 // Henter kun den samme aggregerede statistik, som vises i Ungappeds filtervisning.
 // Ingen kontakter eller hændelser på personniveau hentes eller gemmes.
 export async function fetchIssueSegmentPerformance(apiKey, issueId, fetchImpl = fetch) {
+  const baselineUrl = new URL(`/Issues/${encodeURIComponent(issueId)}/Statistics/Overview`, API_BASE);
+  let baseline;
+  try {
+    baseline = await getJson(baselineUrl, apiKey, fetchImpl);
+  } catch (error) {
+    return { available: false, results: [], reason: error instanceof Error ? error.message : "Ukendt API-fejl" };
+  }
+  const baselineRecipients = number(baseline.RecipientCount);
   const results = [];
   for (const segment of memberSegments) {
     const url = new URL(`/Issues/${encodeURIComponent(issueId)}/Statistics/Overview`, API_BASE);
@@ -177,6 +185,9 @@ export async function fetchIssueSegmentPerformance(apiKey, issueId, fetchImpl = 
     }
     const recipients = number(statistics.RecipientCount);
     const delivered = number(statistics.ReceivedCount) || Math.max(0, recipients - number(statistics.FailedCount) - number(statistics.BounceCount));
+    // Hvis API'et ignorerer kontaktfilteret, returnerer det udsendelsens
+    // samlede tal. De må aldrig præsenteres som et segmentresultat.
+    if (baselineRecipients > minimumPublicSegmentSize && recipients >= baselineRecipients) continue;
     if (recipients < minimumPublicSegmentSize || delivered < minimumPublicSegmentSize) continue;
     const opens = number(statistics.OpenCount);
     const clicks = number(statistics.ClickCount);
