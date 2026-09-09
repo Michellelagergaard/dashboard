@@ -1,11 +1,15 @@
 import { writeFile } from "node:fs/promises";
-import { fetchIssueLinkCatalog, fetchSentIssues } from "./ungapped-client.mjs";
+import { fetchIssueLinkCatalog, fetchIssueSegmentPerformance, fetchSentIssues } from "./ungapped-client.mjs";
 
 const apiKey = process.env.UG_API;
 if (!apiKey) throw new Error("UG_API mangler.");
 
 const issues = await fetchSentIssues(apiKey);
 const sorted = [...issues].sort((a, b) => String(b.sentAt).localeCompare(String(a.sentAt)));
+
+// Alle ti medlemssegmenter hentes for hver udsendelse med et forsvarligt
+// minimumsgrundlag. Små grupper undertrykkes efter hentning.
+const segmentIssueIds = new Set(sorted.filter(issue => issue.delivered >= 500).map(issue => issue.id));
 
 const mailings = await mapConcurrent(sorted, 4, async (issue) => {
   let links = [];
@@ -14,6 +18,9 @@ const mailings = await mapConcurrent(sorted, 4, async (issue) => {
   } catch {
     // En enkelt utilgængelig udsendelse må ikke blokere hele den seneste gyldige udgave.
   }
+  const segmentData = segmentIssueIds.has(issue.id)
+    ? await fetchIssueSegmentPerformance(apiKey, issue.id)
+    : { available: false, results: [] };
   return {
     id: issue.id,
     title: issue.name || issue.subject || "Uden titel",
@@ -29,6 +36,14 @@ const mailings = await mapConcurrent(sorted, 4, async (issue) => {
     content: [],
     links,
     segments: issue.classificationMetadata?.segments || [],
+    segmentPerformance: segmentData.results.map(item => ({
+      name: item.name,
+      recipientsLabel: item.recipients.toLocaleString("da-DK"),
+      openRate: item.openRate ?? 0,
+      clickRate: item.clickRate ?? 0,
+      ctor: item.ctor ?? 0,
+      unsubscribes: item.unsubscribes,
+    })),
   };
 });
 
