@@ -827,7 +827,13 @@ export const realSnapshot = {
       "delivered": 12946,
       "openRate": 54.62,
       "clickRate": 15.79,
-      "content": [],
+      "content": [
+        {"title":"Søg ledigt ydernummer","destination":"https://www.dp.dk/raadgivning/selvstaendig/psykolog-med-ydernummer/saadan-ydernummer/saadan-soeger-d","clicks":1036,"recipients":12946,"rate":8.0},
+        {"title":"De unge fortjener psykologbehandling af høj kvalitet – ikke en Wolt-model","destination":"https://www.linkedin.com/feed/update/urn:li:activity:7498354514220195840/","clicks":304,"recipients":12946,"rate":2.3},
+        {"title":"Eksempler på ydernumre","destination":"https://www.dp.dk/raadgivning/selvstaendig/psykolog-med-ydernummer/pok/#eksempler","clicks":236,"recipients":12946,"rate":1.8},
+        {"title":"Opdatér din profil i Mit DP","destination":"https://mitdp.dk/Home/MyProfile/","clicks":190,"recipients":12946,"rate":1.5},
+        {"title":"Praksisuddannelse for psykologer","destination":"https://www.sst.dk/vidensbase/uddannelser/andre-uddannelser/praksisuddannelse-for-psykologer","clicks":131,"recipients":12946,"rate":1.0}
+      ],
       "links": [
         {
           "destination": "https://www.dp.dk/",
