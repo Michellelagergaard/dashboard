@@ -210,11 +210,11 @@ export async function fetchIssueSegmentPerformance(apiKey, issueId, fetchImpl = 
 // dokumenterede /Statistics/Links-visning. Svar valideres, før de må blive
 // en del af den offentlige datasamling.
 export async function fetchIssueSegmentLinkPerformance(apiKey, issueId, fetchImpl = fetch) {
-  const baseline = await fetchIssueLinkPerformance(apiKey, issueId, null, fetchImpl);
+  const baseline = await fetchIssueLinkStatistics(apiKey, issueId, null, fetchImpl);
   if (!baseline.available) return [];
   const output = [];
   for (const segment of memberSegments) {
-    const result = await fetchIssueLinkPerformance(apiKey, issueId, contactFilter(segment.value), fetchImpl);
+    const result = await fetchIssueLinkStatistics(apiKey, issueId, contactFilter(segment.value), fetchImpl);
     // Et uændret resultat betyder, at kontaktfilteret sandsynligvis blev
     // ignoreret. Det må aldrig udgives som et segmentresultat.
     if (!result.available || sameLinkResults(baseline.results, result.results)) continue;
@@ -226,7 +226,11 @@ export async function fetchIssueSegmentLinkPerformance(apiKey, issueId, fetchImp
   return output;
 }
 
-async function fetchIssueLinkPerformance(apiKey, issueId, filter, fetchImpl) {
+export async function fetchIssueLinkPerformance(apiKey, issueId, fetchImpl = fetch) {
+  return fetchIssueLinkStatistics(apiKey, issueId, null, fetchImpl);
+}
+
+async function fetchIssueLinkStatistics(apiKey, issueId, filter, fetchImpl) {
   if (linkStatisticsUnavailable) return { available: false, results: [] };
   const candidates = ["Links"];
   const paths = resolvedLinkStatisticsPath ? [resolvedLinkStatisticsPath] : candidates;
