@@ -1,0 +1,24 @@
+name: Inspect approved link statistics schema
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - scripts/inspect-link-statistics-shape.mjs
+      - .github/workflows/inspect-link-statistics-shape.yml
+
+permissions:
+  contents: read
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Inspect link-statistics schema without data values
+        env:
+          UG_API: ${{ secrets.UG_API }}
+        run: node scripts/inspect-link-statistics-shape.mjs
