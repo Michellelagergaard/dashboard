@@ -236,7 +236,10 @@ async function fetchIssueLinkStatistics(apiKey, issueId, filter, fetchImpl) {
     const url = new URL(`/Issues/${encodeURIComponent(issueId)}/Statistics/${name}`, API_BASE);
     if (filter) url.searchParams.set("contactFilter", filter);
     try {
-      // Links-endpointet har en lavere forespørgselsgrænse end oversigten.\n      // Et kort interval gør timekørslen stabil og undgår tomme klikrækker.\n      await pause(1250);\n      const raw = await getJson(url, apiKey, fetchImpl);
+      // Links-endpointet har en lavere forespørgselsgrænse end oversigten.
+      // Et kort interval gør timekørslen stabil og undgår tomme klikrækker.
+      await pause(1250);
+      const raw = await getJson(url, apiKey, fetchImpl);
       const results = reduceLinkStatistics(raw);
       if (results.length) {
         resolvedLinkStatisticsPath = name;
