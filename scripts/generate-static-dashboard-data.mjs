@@ -1,5 +1,5 @@
 import { writeFile } from "node:fs/promises";
-import { fetchIssueLinkCatalog, fetchIssueSegmentPerformance, fetchSentIssues } from "./ungapped-client.mjs";
+import { fetchIssueLinkCatalog, fetchIssueSegmentLinkPerformance, fetchIssueSegmentPerformance, fetchSentIssues } from "./ungapped-client.mjs";
 
 const apiKey = process.env.UG_API;
 if (!apiKey) throw new Error("UG_API mangler.");
@@ -25,6 +25,10 @@ const mailings = await mapConcurrent(sorted, 4, async (issue) => {
   const segmentData = segmentIssueIds.has(issue.id)
     ? await fetchIssueSegmentPerformance(apiKey, issue.id)
     : { available: false, results: [] };
+  const segmentLinkPerformance = segmentIssueIds.has(issue.id)
+    ? await fetchIssueSegmentLinkPerformance(apiKey, issue.id)
+    : [];
+  const segmentRecipientCounts = new Map(segmentData.results.map(item => [item.name, item.recipients]));
   return {
     id: issue.id,
     title: issue.name || issue.subject || "Uden titel",
@@ -48,6 +52,12 @@ const mailings = await mapConcurrent(sorted, 4, async (issue) => {
       clickRate: item.clickRate ?? 0,
       ctor: item.ctor ?? 0,
       unsubscribes: item.unsubscribes,
+    })),
+    segmentLinkPerformance: segmentLinkPerformance.map(item => ({
+      title: item.title,
+      audience: item.audience,
+      clicks: item.clicks,
+      rate: item.clicks / Math.max(1, segmentRecipientCounts.get(item.audience) || 1) * 100,
     })),
   };
 });
