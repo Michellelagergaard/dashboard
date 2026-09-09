@@ -13,7 +13,7 @@ const sorted = [...issues].sort((a, b) => String(b.sentAt).localeCompare(String(
 const segmentIssueIds = new Set(sorted.filter(issue => issue.delivered >= 500).slice(0, 5).map(issue => issue.id));
 const linkIssueIds = new Set(sorted.slice(0, 20).map(issue => issue.id));
 
-const mailings = await mapConcurrent(sorted, 4, async (issue) => {
+// Link- og segmentmålinger hentes bevidst enkeltvis. Ungapped kan afvise\n// parallelle statistikforespørgsler; en stabil dataopdatering er vigtigere end\n// marginalt kortere køretid.\nconst mailings = await mapConcurrent(sorted, 1, async (issue) => {
   let links = [];
   if (linkIssueIds.has(issue.id)) {
     try {
