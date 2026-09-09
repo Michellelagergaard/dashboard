@@ -13,7 +13,7 @@ const normalized = await fetchIssueLinkPerformance(apiKey, issueId);
 const rows = Array.isArray(response) ? response.filter(value => value && typeof value === "object") : [];
 const first = rows[0] || firstObject(response);
 
-// Log kun struktur og optællinger: ingen titler, URL'er, kontaktdata eller talværdier.
+// Diagnosen logger kun struktur og optællinger: ingen titler, URL'er, kontaktdata eller talværdier.
 console.log(JSON.stringify({
   responseKind: Array.isArray(response) ? "array" : typeof response,
   topLevelKeys: objectKeys(response),
