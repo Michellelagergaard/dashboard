@@ -11,13 +11,16 @@ const sorted = [...issues].sort((a, b) => String(b.sentAt).localeCompare(String(
 // forsvarligt minimumsgrundlag. Det gør timekørslen stabil; små grupper
 // undertrykkes efter hentning.
 const segmentIssueIds = new Set(sorted.filter(issue => issue.delivered >= 500).slice(0, 5).map(issue => issue.id));
+const linkIssueIds = new Set(sorted.slice(0, 20).map(issue => issue.id));
 
 const mailings = await mapConcurrent(sorted, 4, async (issue) => {
   let links = [];
-  try {
-    links = (await fetchIssueLinkCatalog(apiKey, issue.id)).links;
-  } catch {
-    // En enkelt utilgængelig udsendelse må ikke blokere hele den seneste gyldige udgave.
+  if (linkIssueIds.has(issue.id)) {
+    try {
+      links = (await fetchIssueLinkCatalog(apiKey, issue.id)).links;
+    } catch {
+      // En enkelt utilgængelig udsendelse må ikke blokere hele den seneste gyldige udgave.
+    }
   }
   const segmentData = segmentIssueIds.has(issue.id)
     ? await fetchIssueSegmentPerformance(apiKey, issue.id)
