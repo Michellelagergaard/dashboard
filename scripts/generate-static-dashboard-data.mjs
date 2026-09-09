@@ -1,0 +1,68 @@
+import { writeFile } from "node:fs/promises";
+import { fetchIssueLinkCatalog, fetchSentIssues } from "./ungapped-client.mjs";
+
+const apiKey = process.env.UG_API;
+if (!apiKey) throw new Error("UG_API mangler.");
+
+const issues = await fetchSentIssues(apiKey);
+const sorted = [...issues].sort((a, b) => String(b.sentAt).localeCompare(String(a.sentAt)));
+
+const mailings = await mapConcurrent(sorted, 4, async (issue) => {
+  let links = [];
+  try {
+    links = (await fetchIssueLinkCatalog(apiKey, issue.id)).links;
+  } catch {
+    // En enkelt utilgængelig udsendelse må ikke blokere hele den seneste gyldige udgave.
+  }
+  return {
+    id: issue.id,
+    title: issue.name || issue.subject || "Uden titel",
+    subject: issue.subject || "Emnefelt mangler",
+    type: issue.category !== "Ikke kategoriseret"
+      ? issue.category
+      : issue.suggestedCategory || "Ikke kategoriseret",
+    date: formatDate(issue.sentAt),
+    sentAt: issue.sentAt,
+    delivered: issue.delivered,
+    openRate: issue.openRate ?? 0,
+    clickRate: issue.clickRate ?? 0,
+    content: [],
+    links,
+    segments: issue.classificationMetadata?.segments || [],
+  };
+});
+
+const data = {
+  mailings,
+  updatedAt: new Date().toISOString(),
+  status: "live",
+};
+
+await writeFile(
+  new URL("../app/generated-dashboard-data.ts", import.meta.url),
+  `import type { LiveDashboardData } from "./live-data";\n\nexport const generatedDashboardData = ${JSON.stringify(data)} as const satisfies LiveDashboardData;\n`,
+  "utf8",
+);
+
+function formatDate(value) {
+  if (!value) return "Dato mangler";
+  return new Intl.DateTimeFormat("da-DK", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+    timeZone: "Europe/Copenhagen",
+  }).format(new Date(value));
+}
+
+async function mapConcurrent(items, concurrency, mapper) {
+  const output = new Array(items.length);
+  let next = 0;
+  async function worker() {
+    while (next < items.length) {
+      const index = next++;
+      output[index] = await mapper(items[index], index);
+    }
+  }
+  await Promise.all(Array.from({ length: Math.min(concurrency, items.length) }, worker));
+  return output;
+}

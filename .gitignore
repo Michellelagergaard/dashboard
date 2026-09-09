@@ -36,7 +36,9 @@ yarn-error.log*
 # typescript
 next-env.d.ts
 /dist/
+/public/staticwebapp.config.json
 /.wrangler/
 /.sites-runtime/
 /outputs/
 /work/
+/.secure-review/
