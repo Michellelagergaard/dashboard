@@ -13,6 +13,28 @@ export const realSnapshot = {
       "openRate": 82.81,
       "clickRate": 23.3,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 9,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 10,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 11,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -26,6 +48,63 @@ export const realSnapshot = {
       "openRate": 72.29,
       "clickRate": 4.85,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.dp.dk/om-dp/oekonomisk-indblik/",
+          "firstPosition": 3,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/om-dp/tr/",
+          "firstPosition": 7,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/om-dp/sekretariatet/",
+          "firstPosition": 8,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/lovgivning/ny-autorisationsmodel/",
+          "firstPosition": 9,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/category/nyheder/",
+          "firstPosition": 10,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://dk.linkedin.com/company/dansk-psykolog-forening",
+          "firstPosition": 12,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 13,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.facebook.com/groups/danskpsykologforening",
+          "firstPosition": 14,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 15,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 23,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -39,6 +118,33 @@ export const realSnapshot = {
       "openRate": 69.72,
       "clickRate": 1.41,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.dp.dk/kontakt-os/",
+          "firstPosition": 9,
+          "occurrences": 6
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 20,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 21,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 22,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -52,6 +158,38 @@ export const realSnapshot = {
       "openRate": 68.34,
       "clickRate": 3.42,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.dp.dk/uddannelse-og-karriere/kurser-og-arrangementer/",
+          "firstPosition": 3,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/netvaerk-og-job/",
+          "firstPosition": 4,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 11,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 12,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 13,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -65,6 +203,43 @@ export const realSnapshot = {
       "openRate": 74.56,
       "clickRate": 3.98,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.dp.dk/netvaerk-og-job/netvaerk/sektioner/studerende/",
+          "firstPosition": 4,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/netvaerk-og-job/karriere/",
+          "firstPosition": 6,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/medlemskab/medlemsfordele/kontante-fordele/",
+          "firstPosition": 7,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 13,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 14,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 15,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -78,6 +253,53 @@ export const realSnapshot = {
       "openRate": 76.69,
       "clickRate": 20.98,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.dp.dk/medlemskab/velkommen-i-foreningen/",
+          "firstPosition": 3,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/medlemskab/velkommen-i-foreningen/autorisation/",
+          "firstPosition": 4,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/uddannelse-og-karriere/praksisuddannelse/",
+          "firstPosition": 6,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/medlemskab/velkommen-i-foreningen/klagertilsyn/",
+          "firstPosition": 7,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/lovgivning/klager-og-tilsyn/klagesystemet/",
+          "firstPosition": 8,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 15,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 16,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 17,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -91,6 +313,48 @@ export const realSnapshot = {
       "openRate": 75,
       "clickRate": 15,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.dp.dk/netvaerk-og-job/cv/",
+          "firstPosition": 3,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/netvaerk-og-job/jobansoegning/",
+          "firstPosition": 4,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/netvaerk-og-job/guide/",
+          "firstPosition": 5,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/arbejdsliv/karrierevejledning/",
+          "firstPosition": 6,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 12,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 13,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 14,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -104,6 +368,28 @@ export const realSnapshot = {
       "openRate": 26.02,
       "clickRate": 1.2,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 10,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 11,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 12,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -117,6 +403,28 @@ export const realSnapshot = {
       "openRate": 86.27,
       "clickRate": 7.84,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 17,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 18,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 19,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -130,6 +438,58 @@ export const realSnapshot = {
       "openRate": 83.64,
       "clickRate": 21.82,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.dp.dk/uddannelse-og-karriere/kurser-og-arrangementer/",
+          "firstPosition": 3,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/tillidshverv/kurser-og-orienteringsmoder/",
+          "firstPosition": 4,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/course/tr-amr-aarsmoede-2026-402462/",
+          "firstPosition": 6,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/om-dp/dps-regelsaet/",
+          "firstPosition": 10,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://akademikerne.dk/wp-content/uploads/2011/04/tr_haandbog2011-1.pdf",
+          "firstPosition": 11,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://danskpsykologforening-login.membercare.dk/Account/Login",
+          "firstPosition": 12,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 19,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 20,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 21,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -143,6 +503,33 @@ export const realSnapshot = {
       "openRate": 88.24,
       "clickRate": 19.61,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.dp.dk/uddannelse-og-karriere/kurser-og-arrangementer/",
+          "firstPosition": 3,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 11,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 12,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 13,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -156,6 +543,38 @@ export const realSnapshot = {
       "openRate": 81.13,
       "clickRate": 37.74,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.dp.dk/uddannelse-og-karriere/kurser-og-arrangementer/",
+          "firstPosition": 3,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.survey-xact.dk/LinkCollector",
+          "firstPosition": 4,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 11,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 12,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 13,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -169,6 +588,43 @@ export const realSnapshot = {
       "openRate": 80.39,
       "clickRate": 7.84,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.dp.dk/netvaerk-og-job/tillidshverv/",
+          "firstPosition": 3,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/nyt-mitdp/",
+          "firstPosition": 5,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://akademikerne.dk/wp-content/uploads/2011/04/tr_haandbog2011-1.pdf",
+          "firstPosition": 7,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 16,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 17,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 18,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -182,6 +638,28 @@ export const realSnapshot = {
       "openRate": 82.98,
       "clickRate": 12.77,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 11,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 12,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 13,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -195,6 +673,33 @@ export const realSnapshot = {
       "openRate": 79.66,
       "clickRate": 5.08,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.dp.dk/kontakt-os/",
+          "firstPosition": 3,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 9,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 10,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 11,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -208,6 +713,28 @@ export const realSnapshot = {
       "openRate": 27.84,
       "clickRate": 1.03,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 8,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 9,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 10,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -221,6 +748,28 @@ export const realSnapshot = {
       "openRate": 31.62,
       "clickRate": 0.57,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 8,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 9,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 10,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -234,6 +783,38 @@ export const realSnapshot = {
       "openRate": 64.08,
       "clickRate": 4.08,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.dp.dk/fag-og-politik/gf27-generalforsamling/",
+          "firstPosition": 3,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.survey-xact.dk/LinkCollector",
+          "firstPosition": 6,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 12,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 13,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 14,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -247,6 +828,83 @@ export const realSnapshot = {
       "openRate": 54.62,
       "clickRate": 15.79,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://mitdp.dk/Home/MyProfile/",
+          "firstPosition": 3,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/netvaerk-og-job/karriere/",
+          "firstPosition": 4,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://hansreitzel.dk/",
+          "firstPosition": 6,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.linkedin.com/feed/update/urn:li:activity:7498354514220195840/",
+          "firstPosition": 12,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://psykologeridanmark.dk/",
+          "firstPosition": 14,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/selvstaendig/psykolog-med-ydernummer/pok/",
+          "firstPosition": 16,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/selvstaendig/psykolog-med-ydernummer/saadan-ydernummer/saadan-soeger-du-om-ydernummer/",
+          "firstPosition": 19,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.linkedin.com/feed/update/urn:li:activity:7495380021767868416/",
+          "firstPosition": 21,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://autismeogadhdkurser.dk/",
+          "firstPosition": 22,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.psykologjob.dk/job/",
+          "firstPosition": 28,
+          "occurrences": 1
+        },
+        {
+          "destination": "http://www.psykologjob.dk/",
+          "firstPosition": 35,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 42,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 43,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 44,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -260,6 +918,43 @@ export const realSnapshot = {
       "openRate": 68.19,
       "clickRate": 25.54,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://find-dp.panditest.dk/",
+          "firstPosition": 5,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/course/trtirsdag-moralsk-stress-404500/",
+          "firstPosition": 9,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/uddannelse-og-karriere/",
+          "firstPosition": 13,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 21,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 22,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 23,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -273,6 +968,33 @@ export const realSnapshot = {
       "openRate": 62.95,
       "clickRate": 8.29,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.psykologjob.dk/job/",
+          "firstPosition": 5,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 19,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 20,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 21,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -286,6 +1008,33 @@ export const realSnapshot = {
       "openRate": 61.63,
       "clickRate": 22.3,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://find-dp.panditest.dk/",
+          "firstPosition": 3,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 10,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 11,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 12,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -299,6 +1048,43 @@ export const realSnapshot = {
       "openRate": 47.73,
       "clickRate": 8.29,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/videnscenter-for-psykologi/",
+          "firstPosition": 2,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://autismeogadhdkurser.dk/",
+          "firstPosition": 8,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/uddannelse-og-karriere/kurser-og-arrangementer/",
+          "firstPosition": 9,
+          "occurrences": 4
+        },
+        {
+          "destination": "https://www.psykologjob.dk/job/",
+          "firstPosition": 18,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/course/psykofarmakologi-voksne-403930/",
+          "firstPosition": 26,
+          "occurrences": 1
+        },
+        {
+          "destination": "http://www.psykologjob.dk/",
+          "firstPosition": 29,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.videnscenterpsykologi.dk/",
+          "firstPosition": 32,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -312,6 +1098,88 @@ export const realSnapshot = {
       "openRate": 48.21,
       "clickRate": 10.35,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://mitdp.dk/Home/MyProfile/",
+          "firstPosition": 3,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/netvaerk-og-job/guide/",
+          "firstPosition": 4,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/ansaettelsesvilkaar/arbejdstid/",
+          "firstPosition": 5,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/netvaerk-og-job/netvaerk/netvaerksgrupper/seniortraef-aarhus/",
+          "firstPosition": 6,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/selvstaendig/selvstaendig-praksis/oekonomi-moms-og-administration/honorarer/",
+          "firstPosition": 7,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/selvstaendig/selvstaendig-praksis/oekonomi-moms-og-administration/budgetlaegning/",
+          "firstPosition": 8,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/netvaerk-og-job/netvaerk/sektioner/studerende/god-semester-og-studiestart/",
+          "firstPosition": 11,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/lovgivning/klager-og-tilsyn/klagesystemet/",
+          "firstPosition": 12,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://lsb.nemtilmeld.dk/952/",
+          "firstPosition": 19,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/medlemskab/medlemsfordele/kontante-fordele/25-rabat-paa-psyke-logos/",
+          "firstPosition": 22,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/uddannelse-og-karriere/kurser-og-arrangementer/",
+          "firstPosition": 27,
+          "occurrences": 1
+        },
+        {
+          "destination": "http://www.psykologjob.dk/",
+          "firstPosition": 29,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 37,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 38,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 39,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -325,6 +1193,68 @@ export const realSnapshot = {
       "openRate": 47.7,
       "clickRate": 8.96,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://mitdp.dk/Home/MyProfile/",
+          "firstPosition": 3,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/medlemskab/medlemsfordele/kontante-fordele/kursusgruppen/",
+          "firstPosition": 4,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/fag-og-politik/hoeringer-og-udpegninger/",
+          "firstPosition": 11,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://autismeogadhdkurser.dk/",
+          "firstPosition": 14,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.survey-xact.dk/LinkCollector",
+          "firstPosition": 18,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/medlemskab/medlemsfordele/kontante-fordele/saerpris-i-tivoli/",
+          "firstPosition": 20,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/medlemskab/medlemsfordele/kontante-fordele/bonus-med-forbrugsforeningen/",
+          "firstPosition": 22,
+          "occurrences": 2
+        },
+        {
+          "destination": "http://www.psykologjob.dk/",
+          "firstPosition": 24,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 31,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 32,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 33,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -338,6 +1268,38 @@ export const realSnapshot = {
       "openRate": 62.68,
       "clickRate": 5.58,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/selvstaendig/psykolog-med-ydernummer/saadan-ydernummer/tildeling-af-ydernumre/",
+          "firstPosition": 13,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/medlemskab/medlemsfordele/kontante-fordele/saerpris-i-tivoli/",
+          "firstPosition": 15,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 22,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 23,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 24,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -351,6 +1313,33 @@ export const realSnapshot = {
       "openRate": 47.74,
       "clickRate": 7.14,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/videnscenter-for-psykologi/",
+          "firstPosition": 2,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.pearsonclinical.dk/nyewais5",
+          "firstPosition": 10,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/uddannelse-og-karriere/kurser-og-arrangementer/",
+          "firstPosition": 17,
+          "occurrences": 3
+        },
+        {
+          "destination": "http://www.psykologjob.dk/",
+          "firstPosition": 26,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.videnscenterpsykologi.dk/",
+          "firstPosition": 29,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -364,6 +1353,103 @@ export const realSnapshot = {
       "openRate": 48.46,
       "clickRate": 13.24,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://mitdp.dk/Home/MyProfile/",
+          "firstPosition": 3,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/permalink.php",
+          "firstPosition": 4,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/ansaettelsesvilkaar/ferie-og-fridage/ferie-og-sygdom/",
+          "firstPosition": 8,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/feed/update/urn:li:activity:7475845062304858112/",
+          "firstPosition": 9,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/selvstaendig/regionernes-udbud/",
+          "firstPosition": 11,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/medlemskab/medlemsfordele/",
+          "firstPosition": 12,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/feed/update/urn:li:activity:7473706912484872192/",
+          "firstPosition": 13,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/selvstaendig/psykolog-med-ydernummer/saadan-ydernummer/tildeling-af-ydernumre/",
+          "firstPosition": 15,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.survey-xact.dk/answer",
+          "firstPosition": 19,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://autismeogadhdkurser.dk/",
+          "firstPosition": 23,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/medlemskab/medlemsfordele/kontante-fordele/rabat-til-tivoli-friheden/",
+          "firstPosition": 24,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/medlemskab/medlemsfordele/kontante-fordele/sundhedsordning-med-dp/",
+          "firstPosition": 26,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/kontakt-os/",
+          "firstPosition": 30,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/uddannelse-og-karriere/kurser-og-arrangementer/",
+          "firstPosition": 35,
+          "occurrences": 1
+        },
+        {
+          "destination": "http://www.psykologjob.dk/",
+          "firstPosition": 36,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 44,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 45,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 46,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -377,6 +1463,33 @@ export const realSnapshot = {
       "openRate": 64.2,
       "clickRate": 20.76,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/selvstaendig/regionernes-udbud/",
+          "firstPosition": 3,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 9,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 10,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 11,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -390,6 +1503,33 @@ export const realSnapshot = {
       "openRate": 67.93,
       "clickRate": 26.95,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/selvstaendig/regionernes-udbud/",
+          "firstPosition": 3,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 9,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 10,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 11,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -403,6 +1543,103 @@ export const realSnapshot = {
       "openRate": 50.01,
       "clickRate": 10.37,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://mitdp.dk/Home/MyProfile/",
+          "firstPosition": 3,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.godtarbejdsmiljo.dk/ledertrivsel",
+          "firstPosition": 5,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/netvaerk-og-job/karriere/karriereveje-som-psykolog/",
+          "firstPosition": 8,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/ok26/ok26-kommunernes-resultater/",
+          "firstPosition": 11,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/ok26/ok26-regionernes-resultater/",
+          "firstPosition": 13,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/ok26/ok26-statens-resultater/",
+          "firstPosition": 15,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dr.dk/lyd/p1/p1-orientering/p1-orientering-2026/onsdag-10-juni-2026-11802610243",
+          "firstPosition": 17,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/fag-og-politik/certificeringsordning/",
+          "firstPosition": 18,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://autismeogadhdkurser.dk/",
+          "firstPosition": 20,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/feed/update/urn:li:activity:7471943428264837120/",
+          "firstPosition": 22,
+          "occurrences": 4
+        },
+        {
+          "destination": "https://www.psykologjob.dk/job/",
+          "firstPosition": 27,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/medlemskab/medlemsfordele/kontante-fordele/saerpris-i-tivoli/",
+          "firstPosition": 28,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/medlemskab/medlemsfordele/kontante-fordele/faa-medlemsfordele-i-laan-spar/",
+          "firstPosition": 30,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/wp-content/uploads/2026/05/GF27_-Dansk-Psykolog-Forenings-generalforsamling-2027.ics",
+          "firstPosition": 32,
+          "occurrences": 1
+        },
+        {
+          "destination": "http://www.psykologjob.dk/",
+          "firstPosition": 40,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 48,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 49,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 50,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -416,6 +1653,43 @@ export const realSnapshot = {
       "openRate": 77.4,
       "clickRate": 21.46,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/ansaettelsesvilkaar/ferie-og-fridage/ferie-og-sygdom/",
+          "firstPosition": 3,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/uddannelse-og-karriere/",
+          "firstPosition": 8,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/course/trtirsdag-moralsk-stress-404500/",
+          "firstPosition": 11,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 17,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 18,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 19,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -429,6 +1703,48 @@ export const realSnapshot = {
       "openRate": 54.14,
       "clickRate": 7.8,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.dp.dk/p-psykologernes-fagmagasin/om-p/skriv-til-magasinet-p/",
+          "firstPosition": 5,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.pearsonclinical.dk/nyewais5",
+          "firstPosition": 8,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/lovgivning/ny-autorisationsmodel/journalfoeringspligt/",
+          "firstPosition": 16,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/lovgivning/",
+          "firstPosition": 18,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 25,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 26,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 27,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -442,6 +1758,33 @@ export const realSnapshot = {
       "openRate": 47.86,
       "clickRate": 7.66,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/videnscenter-for-psykologi/",
+          "firstPosition": 2,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.pearsonclinical.dk/nyewais5",
+          "firstPosition": 14,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/uddannelse-og-karriere/kurser-og-arrangementer/",
+          "firstPosition": 21,
+          "occurrences": 3
+        },
+        {
+          "destination": "http://www.psykologjob.dk/",
+          "firstPosition": 28,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.videnscenterpsykologi.dk/",
+          "firstPosition": 31,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -455,6 +1798,118 @@ export const realSnapshot = {
       "openRate": 52.23,
       "clickRate": 11.12,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://mitdp.dk/Home/MyProfile/",
+          "firstPosition": 3,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/medlemskab/medlemsfordele/",
+          "firstPosition": 4,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/ok26/ok26-kommunernes-resultater/",
+          "firstPosition": 5,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/ok26/ok26-regionernes-resultater/",
+          "firstPosition": 7,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/ok26/ok26-statens-resultater/",
+          "firstPosition": 9,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.linkedin.com/company/dansk-psykolog-forening/posts/",
+          "firstPosition": 11,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://vpt.dk/kerneomraader/organisation-udvikling/ac-akademikerne",
+          "firstPosition": 14,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://kompetenceudvikling.dk/inspiration/ansogningsrunder/",
+          "firstPosition": 15,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/medlemskab/velkommen-i-foreningen/klagertilsyn/",
+          "firstPosition": 17,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.linkedin.com/feed/update/urn:li:activity:7467620638220845057/",
+          "firstPosition": 19,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.hogrefe.com/dk/shop/five-digit-test.html",
+          "firstPosition": 24,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/lovgivning/autorisation/titelbeskyttelse/",
+          "firstPosition": 26,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/lovgivning/autorisation/75-aarsreglen/",
+          "firstPosition": 27,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.specialpsykologuddannelsen.dk/",
+          "firstPosition": 31,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/fag-og-politik/moed-dp-paa-folkemoede-2026/",
+          "firstPosition": 32,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.psykologjob.dk/job/",
+          "firstPosition": 39,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/medlemskab/medlemsfordele/kontante-fordele/medlemsrabat-paa-hotelvaerelser/",
+          "firstPosition": 40,
+          "occurrences": 2
+        },
+        {
+          "destination": "http://www.psykologjob.dk/",
+          "firstPosition": 46,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 54,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 55,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 56,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -468,6 +1923,38 @@ export const realSnapshot = {
       "openRate": 61.17,
       "clickRate": 7.33,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.dp.dk/fag-og-politik/moed-dp-paa-folkemoede-2026/",
+          "firstPosition": 11,
+          "occurrences": 4
+        },
+        {
+          "destination": "https://www.dp.dk/wp-content/uploads/2026/05/GF27_-Dansk-Psykolog-Forenings-generalforsamling-2027.ics",
+          "firstPosition": 12,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 24,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 25,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 26,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -481,6 +1968,98 @@ export const realSnapshot = {
       "openRate": 50.56,
       "clickRate": 9.82,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://mitdp.dk/Home/MyProfile/",
+          "firstPosition": 3,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/medlemskab/velkommen-i-foreningen/",
+          "firstPosition": 4,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/ok26/ok26-regionernes-resultater/",
+          "firstPosition": 5,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/ok26/ok26-kommunernes-resultater/",
+          "firstPosition": 7,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/ok26/ok26-statens-resultater/",
+          "firstPosition": 9,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/lovgivning/ny-autorisationsmodel/journalfoeringspligt/",
+          "firstPosition": 16,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/lovgivning/ny-autorisationsmodel/journalfoeringspligt/udarbejdelse/",
+          "firstPosition": 18,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.lsb.dk/lob/dp/",
+          "firstPosition": 20,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/fag-og-politik/certificeringsordning/",
+          "firstPosition": 21,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/fag-og-politik/moed-dp-paa-folkemoede-2026/",
+          "firstPosition": 23,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.dp.dk/wp-content/uploads/2026/05/GF27_-Dansk-Psykolog-Forenings-generalforsamling-2027.ics",
+          "firstPosition": 26,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/medlemskab/medlemsfordele/kontante-fordele/koeb-rudolph-care-med-25/",
+          "firstPosition": 32,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/medlemskab/medlemsfordele/kontante-fordele/bonus-med-forbrugsforeningen/",
+          "firstPosition": 34,
+          "occurrences": 2
+        },
+        {
+          "destination": "http://www.psykologjob.dk/",
+          "firstPosition": 38,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 45,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 46,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 47,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -494,6 +2073,48 @@ export const realSnapshot = {
       "openRate": 53.95,
       "clickRate": 8.33,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.dp.dk/p-psykologernes-fagmagasin/om-p/skriv-til-magasinet-p/",
+          "firstPosition": 5,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.pearsonclinical.dk/nyewais5",
+          "firstPosition": 7,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://autismeogadhdkurser.dk/",
+          "firstPosition": 14,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/p-psykologernes-fagmagasin/artikler/adhd-det-misforstaaede-barn/",
+          "firstPosition": 17,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 28,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 29,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 30,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -507,6 +2128,28 @@ export const realSnapshot = {
       "openRate": 59.43,
       "clickRate": 15.05,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 9,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 10,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 11,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -520,6 +2163,113 @@ export const realSnapshot = {
       "openRate": 49,
       "clickRate": 11.54,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://mitdp.dk/Home/MyProfile/",
+          "firstPosition": 3,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/netvaerk-og-job/karriere/",
+          "firstPosition": 4,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/netvaerk-og-job/",
+          "firstPosition": 6,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/lovgivning/",
+          "firstPosition": 12,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/fag-og-politik/moed-dp-paa-folkemoede-2026/",
+          "firstPosition": 13,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.hogrefe.com/dk/shop/five-digit-test.html",
+          "firstPosition": 15,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/feed/update/urn:li:activity:7453456961012166656/",
+          "firstPosition": 16,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/fag-og-politik/hoeringer-og-udpegninger/",
+          "firstPosition": 18,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.lberhverv.dk/lp/psykologer",
+          "firstPosition": 19,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://sundhedsstyrelsen.nemtilmeld.dk/174/",
+          "firstPosition": 20,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.psykologjob.dk/job/",
+          "firstPosition": 25,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.vive.dk/media/pure/5xp6074z/29323844",
+          "firstPosition": 28,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/videnscenter-for-psykologi/forskning/podcast-forskernes-stemme/",
+          "firstPosition": 30,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/medlemskab/medlemsfordele/kontante-fordele/sundhedsordning-med-dp/",
+          "firstPosition": 34,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/medlemskab/medlemsfordele/kontante-fordele/saerpris-i-tivoli/",
+          "firstPosition": 36,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://lsb.nemtilmeld.dk/922/",
+          "firstPosition": 38,
+          "occurrences": 1
+        },
+        {
+          "destination": "http://www.psykologjob.dk/",
+          "firstPosition": 39,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 46,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 47,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 48,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -533,6 +2283,33 @@ export const realSnapshot = {
       "openRate": 33.33,
       "clickRate": 0,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/lovgivning/",
+          "firstPosition": 3,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 9,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 10,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 11,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -546,6 +2323,33 @@ export const realSnapshot = {
       "openRate": 66.67,
       "clickRate": 0,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/lovgivning/",
+          "firstPosition": 3,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 9,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 10,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 11,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -559,6 +2363,48 @@ export const realSnapshot = {
       "openRate": 47.93,
       "clickRate": 7.49,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/videnscenter-for-psykologi/",
+          "firstPosition": 2,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://autismeogadhdkurser.dk/",
+          "firstPosition": 10,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/uddannelse-og-karriere/kurser-og-arrangementer/",
+          "firstPosition": 16,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.pearsonclinical.dk/nyewais5",
+          "firstPosition": 17,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/uddannelse-og-karriere/kurser-til-ledige-psykologer/",
+          "firstPosition": 18,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/videnscenter-for-psykologi/forskning/optagelse-paa-forskerlisten/",
+          "firstPosition": 19,
+          "occurrences": 1
+        },
+        {
+          "destination": "http://www.psykologjob.dk/",
+          "firstPosition": 28,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.videnscenterpsykologi.dk/",
+          "firstPosition": 31,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -572,6 +2418,28 @@ export const realSnapshot = {
       "openRate": 62.84,
       "clickRate": 1.56,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 10,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 11,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 12,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -585,6 +2453,58 @@ export const realSnapshot = {
       "openRate": 79.25,
       "clickRate": 30.02,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/ok26/",
+          "firstPosition": 3,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.justitsministeriet.dk/wp-content/uploads/2025/07/Vejledning-om-offentligt-ansattes-ytringsfrihed.pdf",
+          "firstPosition": 6,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.godtarbejdsmiljo.dk/apv",
+          "firstPosition": 8,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.medsamarbejdet.dk/",
+          "firstPosition": 11,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/uddannelse-og-karriere/",
+          "firstPosition": 15,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/course/tr-amr-aarsmoede-2026-402462/",
+          "firstPosition": 16,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 25,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 26,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 27,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -598,6 +2518,88 @@ export const realSnapshot = {
       "openRate": 50.29,
       "clickRate": 18.86,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://mitdp.dk/Home/MyProfile/",
+          "firstPosition": 3,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/lovgivning/ny-autorisationsmodel/journalfoeringspligt/",
+          "firstPosition": 4,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/medlemskab/medlemsfordele/",
+          "firstPosition": 9,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/course/snart-kandidat-404295/",
+          "firstPosition": 10,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://lsb.nemtilmeld.dk/939/",
+          "firstPosition": 16,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://lsb.nemtilmeld.dk/941/",
+          "firstPosition": 17,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.lberhverv.dk/lp/psykologer",
+          "firstPosition": 19,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/lovgivning/behandling-af-mindreaarige/",
+          "firstPosition": 20,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.psykologjob.dk/job/",
+          "firstPosition": 22,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/course/den-medicinerede-klient-403292/",
+          "firstPosition": 28,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/medlemskab/medlemsfordele/kontante-fordele/medlemsrabat-paa-hotelvaerelser/",
+          "firstPosition": 32,
+          "occurrences": 2
+        },
+        {
+          "destination": "http://www.psykologjob.dk/",
+          "firstPosition": 36,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 44,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 45,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 46,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -611,6 +2613,33 @@ export const realSnapshot = {
       "openRate": 54.64,
       "clickRate": 9.79,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.psykologjob.dk/job/",
+          "firstPosition": 9,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 29,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 30,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 31,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -624,6 +2653,38 @@ export const realSnapshot = {
       "openRate": 63.67,
       "clickRate": 11.51,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.dp.dk/wp-content/uploads/2026/01/Fagligt-norm-for-psykologfaglig-behandling-tilrettet-efter-hoeringssvar.pdf",
+          "firstPosition": 3,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.survey-xact.dk/LinkCollector",
+          "firstPosition": 5,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 12,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 13,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 14,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -637,6 +2698,48 @@ export const realSnapshot = {
       "openRate": 48.48,
       "clickRate": 5.36,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/videnscenter-for-psykologi/",
+          "firstPosition": 2,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/uddannelse-og-karriere/aarsmoede-2026/",
+          "firstPosition": 5,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.psykologjob.dk/job/",
+          "firstPosition": 11,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/course/den-medicinerede-klient-403292/",
+          "firstPosition": 16,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/uddannelse-og-karriere/kurser-og-arrangementer/",
+          "firstPosition": 21,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.dp.dk/uddannelse-og-karriere/kurser-til-ledige-psykologer/",
+          "firstPosition": 22,
+          "occurrences": 1
+        },
+        {
+          "destination": "http://www.psykologjob.dk/",
+          "firstPosition": 32,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.videnscenterpsykologi.dk/",
+          "firstPosition": 35,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -650,6 +2753,98 @@ export const realSnapshot = {
       "openRate": 49.32,
       "clickRate": 18.23,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://mitdp.dk/Home/MyProfile/",
+          "firstPosition": 3,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/ansaettelsesvilkaar/loen/loenberegner/",
+          "firstPosition": 6,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/course/snart-kandidat-404295/",
+          "firstPosition": 8,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.psykologjob.dk/",
+          "firstPosition": 11,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/feed/update/urn:li:activity:7447970744547971073/",
+          "firstPosition": 14,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.hogrefe.com/dk/shop/icd-11-personlighedsforstyrrelser-102942.html",
+          "firstPosition": 17,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/uddannelse-og-karriere/aarsmoede-2026/",
+          "firstPosition": 18,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/lovgivning/ny-autorisationsmodel/journalfoeringspligt/udarbejdelse/",
+          "firstPosition": 20,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://stps.dk/sundhedsfaglig/autorisation/autorisationsregistret",
+          "firstPosition": 21,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.lberhverv.dk/lp/psykologer",
+          "firstPosition": 22,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/medlemskab/medlemsfordele/kontante-fordele/saerpris-i-tivoli/",
+          "firstPosition": 27,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/medlemskab/medlemsfordele/kontante-fordele/bonus-med-forbrugsforeningen/",
+          "firstPosition": 29,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://lsb.nemtilmeld.dk/916/",
+          "firstPosition": 31,
+          "occurrences": 1
+        },
+        {
+          "destination": "http://www.psykologjob.dk/",
+          "firstPosition": 33,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 41,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 42,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 43,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -663,6 +2858,28 @@ export const realSnapshot = {
       "openRate": 69.86,
       "clickRate": 60.28,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 10,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 11,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 12,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -676,6 +2893,48 @@ export const realSnapshot = {
       "openRate": 64.17,
       "clickRate": 5.08,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/videnscenter-for-psykologi/",
+          "firstPosition": 2,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/uddannelse-og-karriere/praksisuddannelse/",
+          "firstPosition": 3,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.efpa.eu/sites/default/files/2025-10/EuroPsy%20Regulations%202025_1.pdf",
+          "firstPosition": 4,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.survey-xact.dk/LinkCollector",
+          "firstPosition": 5,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.videnscenterpsykologi.dk/",
+          "firstPosition": 8,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 12,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 13,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/",
+          "firstPosition": 14,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -689,6 +2948,103 @@ export const realSnapshot = {
       "openRate": 52.52,
       "clickRate": 15.1,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://mitdp.dk/Home/MyProfile/",
+          "firstPosition": 3,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/netvaerk-og-job/",
+          "firstPosition": 6,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/ansaettelsesvilkaar/loen/loenberegner/",
+          "firstPosition": 8,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/ok26/",
+          "firstPosition": 11,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/fag-og-politik/politik/psykologer-paa-stemmesedlen/",
+          "firstPosition": 15,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://xn--kbenhavnerkonferencen-qfc.dk/",
+          "firstPosition": 16,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/posts/dea-seidenfaden-9208695_det-er-nu-vi-skal-t%C3%A6nke-nyt-for-b%C3%B8rn-og-activity-7439234941386919937-mcaH/",
+          "firstPosition": 17,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/lovgivning/klager-og-tilsyn/",
+          "firstPosition": 20,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/uddannelse-og-karriere/praksisuddannelse/",
+          "firstPosition": 27,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.efpa.eu/sites/default/files/2025-10/EuroPsy%20Regulations%202025_1.pdf",
+          "firstPosition": 28,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.lberhverv.dk/lp/psykologer",
+          "firstPosition": 29,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/course/den-medicinerede-klient-403292/",
+          "firstPosition": 31,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/medlemskab/medlemsfordele/kontante-fordele/yogavivo-med-rabat/",
+          "firstPosition": 34,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/medlemskab/medlemsfordele/kontante-fordele/",
+          "firstPosition": 36,
+          "occurrences": 1
+        },
+        {
+          "destination": "http://www.psykologjob.dk/",
+          "firstPosition": 37,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 45,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 46,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 47,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -702,6 +3058,38 @@ export const realSnapshot = {
       "openRate": 64.09,
       "clickRate": 6.4,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/videnscenter-for-psykologi/",
+          "firstPosition": 2,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://survey.au.dk/LinkCollector",
+          "firstPosition": 3,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.videnscenterpsykologi.dk/",
+          "firstPosition": 7,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 11,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 12,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/",
+          "firstPosition": 13,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -715,6 +3103,38 @@ export const realSnapshot = {
       "openRate": 69.9,
       "clickRate": 16.37,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.dp.dk/wp-content/uploads/2026/01/POK-Forhandlingsaftale-2026-DP-RLTN_ENDELIG.pdf",
+          "firstPosition": 3,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/selvstaendig/psykolog-med-ydernummer/pok/",
+          "firstPosition": 4,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 11,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 12,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 13,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -728,6 +3148,43 @@ export const realSnapshot = {
       "openRate": 54.28,
       "clickRate": 7.79,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://xn--kbenhavnerkonferencen-qfc.dk/",
+          "firstPosition": 6,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/p-psykologernes-fagmagasin/artikler/ai-vil-aldrig-erstatte-terapi/",
+          "firstPosition": 15,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/ny-ok-aftale/",
+          "firstPosition": 18,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 26,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 27,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 28,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -741,6 +3198,43 @@ export const realSnapshot = {
       "openRate": 62.02,
       "clickRate": 2.7,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://mitdp.dk/Home/MyProfile/",
+          "firstPosition": 5,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/course/tr-moede-om-ok26-forlig-404213/",
+          "firstPosition": 6,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/course/tr-moede-om-ok26-forlig-404214/",
+          "firstPosition": 7,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 13,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 14,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 15,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -754,6 +3248,48 @@ export const realSnapshot = {
       "openRate": 51.66,
       "clickRate": 7.97,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/videnscenter-for-psykologi/",
+          "firstPosition": 2,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://iga-aarhus.dk/",
+          "firstPosition": 10,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/uddannelse-og-karriere/kurser-og-arrangementer/",
+          "firstPosition": 13,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.dp.dk/course/den-medicinerede-klient-403292/",
+          "firstPosition": 23,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/uddannelse-og-karriere/aarsmoede-2026/",
+          "firstPosition": 25,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/videnscenter-for-psykologi/forskning/optagelse-paa-forskerlisten/",
+          "firstPosition": 27,
+          "occurrences": 1
+        },
+        {
+          "destination": "http://www.psykologjob.dk/",
+          "firstPosition": 30,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.videnscenterpsykologi.dk/",
+          "firstPosition": 33,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -767,6 +3303,128 @@ export const realSnapshot = {
       "openRate": 50.12,
       "clickRate": 10.06,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://mitdp.dk/Home/MyProfile/",
+          "firstPosition": 3,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/netvaerk-og-job/karriere/",
+          "firstPosition": 4,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/ansaettelsesvilkaar/boern-og-barsel/barselsberegner/",
+          "firstPosition": 5,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/selvstaendig/selvstaendig-praksis/",
+          "firstPosition": 6,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.lederweb.dk/type/podcasts/",
+          "firstPosition": 10,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/selvstaendig/psykolog-med-ydernummer/pok/eksempler/",
+          "firstPosition": 14,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/netvaerk-og-job/netvaerk/sektioner/studerende/",
+          "firstPosition": 17,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/ok26/ok26-kommunernes-resultater/",
+          "firstPosition": 18,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/ok26/ok26-regionernes-resultater/",
+          "firstPosition": 20,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.facebook.com/reel/1294558069396791",
+          "firstPosition": 22,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/aflystefly/",
+          "firstPosition": 25,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.hogrefe.com/dk/shop/icd-11-personlighedsforstyrrelser-102942.html",
+          "firstPosition": 27,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/lovgivning/ny-autorisationsmodel/journalfoeringspligt/",
+          "firstPosition": 28,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/selvstaendig/psykolog-med-ydernummer/saadan-ydernummer/saadan-soeger-du-om-ydernummer/",
+          "firstPosition": 29,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.linkedin.com/posts/dea-seidenfaden-9208695_vi-er-n%C3%B8dt-til-at-blive-ved-med-at-tale-om-activity-7431670345872412672-LPGI",
+          "firstPosition": 31,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/uddannelse-og-karriere/aarsmoede-2026/",
+          "firstPosition": 33,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://iga-aarhus.dk/",
+          "firstPosition": 36,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/medlemskab/medlemsfordele/kontante-fordele/faa-medlemsfordele-i-laan-spar/",
+          "firstPosition": 37,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/medlemskab/medlemsfordele/kontante-fordele/25-rabat-paa-psyke-logos/",
+          "firstPosition": 39,
+          "occurrences": 2
+        },
+        {
+          "destination": "http://www.psykologjob.dk/",
+          "firstPosition": 43,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 51,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 52,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 53,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -780,6 +3438,38 @@ export const realSnapshot = {
       "openRate": 61.89,
       "clickRate": 4.32,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.dp.dk/wp-content/uploads/2026/01/Faglig-norm-for-psykologfaglig-behandling-uden-brug-af-psykiatriske-diagnoser-til-hoering.pdf",
+          "firstPosition": 9,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.survey-xact.dk/LinkCollector",
+          "firstPosition": 10,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 17,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 18,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 19,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -793,6 +3483,108 @@ export const realSnapshot = {
       "openRate": 51.08,
       "clickRate": 15.34,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://mitdp.dk/Home/MyProfile/",
+          "firstPosition": 3,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/wp-content/uploads/2024/08/startpakke-til-selvstaendige2024.pdf",
+          "firstPosition": 4,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/ansaettelsesvilkaar/loen/loenforhandling-for-ledere/",
+          "firstPosition": 8,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/netvaerk-og-job/tillidshverv/bliv-tillidsrepraesentant/",
+          "firstPosition": 10,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/feed/update/urn:li:activity:7429122224214794240/",
+          "firstPosition": 11,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/selvstaendig/psykolog-med-ydernummer/saadan-ydernummer/saadan-soeger-du-om-ydernummer/",
+          "firstPosition": 14,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.specialpsykologuddannelsen.dk/",
+          "firstPosition": 17,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/ok26/ok26-statens-resultater/",
+          "firstPosition": 18,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/ny-ok26-aftale/",
+          "firstPosition": 19,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/lovgivning/",
+          "firstPosition": 21,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.lsb.dk/lob/dp/fordele/loenkonto-medlemsfordel",
+          "firstPosition": 22,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.aka.dk/fordele-og-tilbud/events/event/",
+          "firstPosition": 24,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/medlemskab/medlemsfordele/kontante-fordele/sundhedsordning-med-dp/",
+          "firstPosition": 26,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://iga-aarhus.dk/",
+          "firstPosition": 28,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/medlemskab/medlemsfordele/kontante-fordele/",
+          "firstPosition": 34,
+          "occurrences": 1
+        },
+        {
+          "destination": "http://www.psykologjob.dk/",
+          "firstPosition": 35,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 43,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 44,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 45,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -806,6 +3598,43 @@ export const realSnapshot = {
       "openRate": 49.79,
       "clickRate": 8.56,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/videnscenter-for-psykologi/",
+          "firstPosition": 2,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://xn--kbenhavnerkonferencen-qfc.dk/",
+          "firstPosition": 5,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://iga-aarhus.dk/",
+          "firstPosition": 10,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/uddannelse-og-karriere/kurser-og-arrangementer/",
+          "firstPosition": 17,
+          "occurrences": 4
+        },
+        {
+          "destination": "https://www.dp.dk/uddannelse-og-karriere/aarsmoede-2026/",
+          "firstPosition": 18,
+          "occurrences": 1
+        },
+        {
+          "destination": "http://www.psykologjob.dk/",
+          "firstPosition": 34,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.videnscenterpsykologi.dk/",
+          "firstPosition": 37,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -819,6 +3648,38 @@ export const realSnapshot = {
       "openRate": 55.88,
       "clickRate": 7.4,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://iga-aarhus.dk/",
+          "firstPosition": 6,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/ny-ok26-aftale/",
+          "firstPosition": 15,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 22,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 23,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 24,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -832,6 +3693,33 @@ export const realSnapshot = {
       "openRate": 60.12,
       "clickRate": 5.52,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/selvstaendig/psykolog-med-ydernummer/pok/",
+          "firstPosition": 3,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 10,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 11,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 12,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -845,6 +3733,33 @@ export const realSnapshot = {
       "openRate": 64.79,
       "clickRate": 11.41,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/selvstaendig/psykolog-med-ydernummer/pok/",
+          "firstPosition": 3,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 11,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 12,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 13,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -858,6 +3773,53 @@ export const realSnapshot = {
       "openRate": 78.63,
       "clickRate": 24.89,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/ok26/",
+          "firstPosition": 3,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 4,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.godtarbejdsmiljo.dk/kompetencer-til-arbejdsmiljo",
+          "firstPosition": 6,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.samarbejdssekretariatet.dk/kursuskalender/",
+          "firstPosition": 8,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://vpt.dk/organisation-udvikling/saadan-ansoeger-du",
+          "firstPosition": 12,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/uddannelse-og-karriere/",
+          "firstPosition": 18,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 29,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 30,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -871,6 +3833,108 @@ export const realSnapshot = {
       "openRate": 49.79,
       "clickRate": 12.85,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://mitdp.dk/Home/MyProfile/",
+          "firstPosition": 3,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/ansaettelsesvilkaar/ferie-og-fridage/ferie-og-sygdom/",
+          "firstPosition": 4,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/selvstaendig/selvstaendig-praksis/oekonomi-moms-og-administration/saadan-skal-du-bogfoere/",
+          "firstPosition": 8,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/selvstaendig/psykolog-med-ydernummer/pok/",
+          "firstPosition": 9,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.linkedin.com/posts/dea-seidenfaden-9208695_tr%C3%A6t-og-tilfreds-vi-er-nu-lykkedes-med-activity-7422717916984475648-cWf2/",
+          "firstPosition": 10,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.e-pages.dk/regioner/251/",
+          "firstPosition": 15,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.survey-xact.dk/LinkCollector",
+          "firstPosition": 16,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/ok26/",
+          "firstPosition": 17,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 18,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/ansaettelsesvilkaar/loen/loenberegner/",
+          "firstPosition": 21,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.hogrefe.com/dk/shop/icd-11-personlighedsforstyrrelser-102942.html",
+          "firstPosition": 23,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dmpg.dk/retningslinjer/dmpg-retningslinjer/",
+          "firstPosition": 25,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://iga-aarhus.dk/",
+          "firstPosition": 31,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/medlemskab/medlemsfordele/kontante-fordele/bonus-med-forbrugsforeningen/",
+          "firstPosition": 32,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/medlemskab/medlemsfordele/kontante-fordele/medlemsrabat-paa-hotelvaerelser/",
+          "firstPosition": 34,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/medlemskab/medlemsfordele/kontante-fordele/",
+          "firstPosition": 36,
+          "occurrences": 1
+        },
+        {
+          "destination": "http://www.psykologjob.dk/",
+          "firstPosition": 38,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 47,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 48,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -884,6 +3948,38 @@ export const realSnapshot = {
       "openRate": 62.4,
       "clickRate": 15.14,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.dp.dk/wp-content/uploads/2026/01/Faglig-norm-for-psykologfaglig-behandling-uden-brug-af-psykiatriske-diagnoser-til-hoering.pdf",
+          "firstPosition": 3,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.survey-xact.dk/LinkCollector",
+          "firstPosition": 4,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 12,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 13,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 14,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -897,6 +3993,28 @@ export const realSnapshot = {
       "openRate": 70.6,
       "clickRate": 0.63,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 8,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 9,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 10,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -910,6 +4028,83 @@ export const realSnapshot = {
       "openRate": 50.9,
       "clickRate": 10.9,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://mitdp.dk/Home/MyProfile/",
+          "firstPosition": 3,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/arbejdsliv/karrierevejledning/",
+          "firstPosition": 4,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://vpt.dk/organisation-udvikling/saadan-ansoeger-du",
+          "firstPosition": 7,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.sygeforsikring.dk/tilskud/psykologhjaelp",
+          "firstPosition": 8,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/fag-og-politik/politik/ppr2026/",
+          "firstPosition": 11,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://skolemonitor.dk/nyheder/debat/article18843641.ece",
+          "firstPosition": 14,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://xn--kbenhavnerkonferencen-qfc.dk/",
+          "firstPosition": 15,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/uddannelse-og-karriere/aarsmoede-2026/",
+          "firstPosition": 23,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://lsb.nemtilmeld.dk/911/",
+          "firstPosition": 26,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/medlemskab/medlemsfordele/kontante-fordele/25-rabat-paa-psyke-logos/",
+          "firstPosition": 33,
+          "occurrences": 2
+        },
+        {
+          "destination": "http://www.psykologjob.dk/",
+          "firstPosition": 35,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 43,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 44,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 45,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -923,6 +4118,38 @@ export const realSnapshot = {
       "openRate": 54.63,
       "clickRate": 7.3,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.hogrefe.com/dk/shop/icd-11-personlighedsforstyrrelser-102942.html",
+          "firstPosition": 6,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://xn--kbenhavnerkonferencen-qfc.dk/",
+          "firstPosition": 13,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 27,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 28,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 29,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -936,6 +4163,33 @@ export const realSnapshot = {
       "openRate": 71.8,
       "clickRate": 4.14,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.tekstognode.dk/selvbetjening/copycloud/",
+          "firstPosition": 3,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 12,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 13,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 14,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -949,6 +4203,33 @@ export const realSnapshot = {
       "openRate": 49.92,
       "clickRate": 11.1,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/videnscenter-for-psykologi/",
+          "firstPosition": 2,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://xn--kbenhavnerkonferencen-qfc.dk/",
+          "firstPosition": 5,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/uddannelse-og-karriere/kurser-og-arrangementer/",
+          "firstPosition": 17,
+          "occurrences": 4
+        },
+        {
+          "destination": "http://www.psykologjob.dk/",
+          "firstPosition": 31,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.videnscenterpsykologi.dk/",
+          "firstPosition": 34,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -962,6 +4243,83 @@ export const realSnapshot = {
       "openRate": 54.18,
       "clickRate": 18.32,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://mitdp.dk/Home/MyProfile/",
+          "firstPosition": 3,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/uddannelse-og-karriere/kurser-til-ledige-psykologer/",
+          "firstPosition": 4,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/selvstaendig/psykolog-med-ydernummer/pok/",
+          "firstPosition": 6,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/ok26/",
+          "firstPosition": 10,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.hogrefe.com/dk/shop/icd-11-personlighedsforstyrrelser-102942.html",
+          "firstPosition": 14,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://stps.dk/sundhedsfaglig/autorisation/soeg-autorisation/psykolog",
+          "firstPosition": 15,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/lovgivning/ny-autorisationsmodel/",
+          "firstPosition": 16,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/medlemskab/medlemsfordele/kontante-fordele/sundhedsordning-med-dp/",
+          "firstPosition": 19,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/medlemskab/medlemsfordele/kontante-fordele/yogavivo-med-rabat/",
+          "firstPosition": 21,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.psykologjob.dk/job/",
+          "firstPosition": 24,
+          "occurrences": 1
+        },
+        {
+          "destination": "http://www.psykologjob.dk/",
+          "firstPosition": 31,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 39,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 40,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 41,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -975,6 +4333,93 @@ export const realSnapshot = {
       "openRate": 52.52,
       "clickRate": 19.73,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://mitdp.dk/Home/MyProfile/",
+          "firstPosition": 3,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://danskpsykologforening.podbean.com/e/overlevelsesguide-til-dit-f%c3%b8rste-job-som-psykolog/",
+          "firstPosition": 5,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/netvaerk-og-job/netvaerk/sektioner/studerende/",
+          "firstPosition": 8,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/groups/danskpsykologforening/posts/25191414887217155/",
+          "firstPosition": 9,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/selvstaendig/psykolog-med-ydernummer/saadan-ydernummer/tildeling-af-ydernumre/",
+          "firstPosition": 11,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/groups/danskpsykologforening/posts/25205729349119042/",
+          "firstPosition": 13,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/lovgivning/ny-autorisationsmodel/journalfoeringspligt/",
+          "firstPosition": 14,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/medlemskab/medlemsfordele/kontante-fordele/",
+          "firstPosition": 16,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/medlemskab/medlemsfordele/kontante-fordele/koeb-rudolph-care-med-25/",
+          "firstPosition": 17,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/medlemskab/medlemsfordele/kontante-fordele/faa-medlemsfordele-i-laan-spar/",
+          "firstPosition": 19,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/lovgivning/ny-autorisationsmodel/sundhedsfaglig-virksomhed/",
+          "firstPosition": 21,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/kontakt-os/",
+          "firstPosition": 30,
+          "occurrences": 1
+        },
+        {
+          "destination": "http://www.psykologjob.dk/",
+          "firstPosition": 31,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 39,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 40,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 41,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -988,6 +4433,28 @@ export const realSnapshot = {
       "openRate": 69.73,
       "clickRate": 7.43,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 9,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 10,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 11,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -1001,6 +4468,43 @@ export const realSnapshot = {
       "openRate": 54.5,
       "clickRate": 8.08,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.lberhverv.dk/lp/psykologer",
+          "firstPosition": 9,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/ok24loenstigning/",
+          "firstPosition": 18,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/meritregler/",
+          "firstPosition": 19,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 26,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 27,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 28,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -1014,6 +4518,43 @@ export const realSnapshot = {
       "openRate": 77.39,
       "clickRate": 16.76,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.dp.dk/medlemskab/",
+          "firstPosition": 3,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/fag-og-politik/ny-autorisationsmodel/",
+          "firstPosition": 5,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/uddannelse-og-karriere/",
+          "firstPosition": 9,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 19,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 20,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 21,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -1027,6 +4568,28 @@ export const realSnapshot = {
       "openRate": 73.12,
       "clickRate": 0.54,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 9,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 10,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 11,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -1040,6 +4603,38 @@ export const realSnapshot = {
       "openRate": 49.12,
       "clickRate": 9.59,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/videnscenter-for-psykologi/",
+          "firstPosition": 2,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.linkedin.com/feed/update/urn:li:activity:7400182227797524481/",
+          "firstPosition": 5,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.lberhverv.dk/lp/psykologer",
+          "firstPosition": 7,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/uddannelse-og-karriere/kurser-og-arrangementer/",
+          "firstPosition": 17,
+          "occurrences": 2
+        },
+        {
+          "destination": "http://www.psykologjob.dk/",
+          "firstPosition": 26,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.videnscenterpsykologi.dk/",
+          "firstPosition": 29,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -1053,6 +4648,28 @@ export const realSnapshot = {
       "openRate": 68.1,
       "clickRate": 1.34,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 9,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 10,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 11,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -1066,6 +4683,28 @@ export const realSnapshot = {
       "openRate": 67.62,
       "clickRate": 0.5,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 8,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 9,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 10,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -1079,6 +4718,108 @@ export const realSnapshot = {
       "openRate": 49.68,
       "clickRate": 9.43,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://mitdp.dk/Home/MyProfile/",
+          "firstPosition": 3,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/selvstaendig/psykolog-med-ydernummer/pok/",
+          "firstPosition": 4,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.linkedin.com/posts/dea-seidenfaden-9208695_psykologordningen-er-en-krumtap-i-det-n%C3%A6re-activity-7399471295240937472-3-BF",
+          "firstPosition": 5,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/kontakt-os/",
+          "firstPosition": 7,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/netvaerk-og-job/netvaerk/sektioner/studerende/studentersektionen/",
+          "firstPosition": 8,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/netvaerk-og-job/guide/",
+          "firstPosition": 9,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/fag-og-politik/ny-autorisationsmodel/meritguide/",
+          "firstPosition": 11,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.hogrefe.com/dk/shop/hoj-begavelse-og-talent.html",
+          "firstPosition": 12,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/medlemskab/",
+          "firstPosition": 14,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://mentalsundhed.dk/partnerskabet",
+          "firstPosition": 15,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/feed/update/urn:li:activity:7400182227797524481/",
+          "firstPosition": 17,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/videnscenter-for-psykologi/",
+          "firstPosition": 18,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/medlemskab/medlemsfordele/kontante-fordele/bonus-med-forbrugsforeningen/",
+          "firstPosition": 20,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/medlemskab/medlemsfordele/kontante-fordele/saerpris-i-tivoli/",
+          "firstPosition": 22,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/p-psykologernes-fagmagasin/artikler/sjaelens-plads-i-psykologien/",
+          "firstPosition": 26,
+          "occurrences": 2
+        },
+        {
+          "destination": "http://www.psykologjob.dk/",
+          "firstPosition": 28,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 36,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 37,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 38,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -1092,6 +4833,38 @@ export const realSnapshot = {
       "openRate": 65.4,
       "clickRate": 10.16,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.dp.dk/videnscenter-for-psykologi/",
+          "firstPosition": 9,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/fag-og-politik/hoeringer-og-udpegninger/tilsynsafgoerelser/",
+          "firstPosition": 10,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 21,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 22,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 23,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -1105,6 +4878,93 @@ export const realSnapshot = {
       "openRate": 50,
       "clickRate": 16.29,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://mitdp.dk/Home/MyProfile/",
+          "firstPosition": 3,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://flipa.dk/",
+          "firstPosition": 4,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/ok24loenstigning/",
+          "firstPosition": 9,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/ansaettelsesvilkaar/boern-og-barsel/barselsberegner/",
+          "firstPosition": 10,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/meritregler/",
+          "firstPosition": 18,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/fag-og-politik/ny-autorisationsmodel/",
+          "firstPosition": 20,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/opdaterer-faglige-standarder/",
+          "firstPosition": 21,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/fag-og-politik/hoeringer-og-udpegninger/",
+          "firstPosition": 23,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.stpk.dk/job/sagkyndig-konsulent",
+          "firstPosition": 26,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.lberhverv.dk/lp/psykologer",
+          "firstPosition": 27,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/fag-og-politik/hoeringer-og-udpegninger/tilsynsafgoerelser/",
+          "firstPosition": 28,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/medlemskab/medlemsfordele/kontante-fordele/sundhedsordning-med-dp/",
+          "firstPosition": 32,
+          "occurrences": 1
+        },
+        {
+          "destination": "http://www.psykologjob.dk/",
+          "firstPosition": 33,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 41,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 42,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 43,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -1118,6 +4978,43 @@ export const realSnapshot = {
       "openRate": 54.12,
       "clickRate": 7.3,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.dp.dk/p-psykologernes-fagmagasin/artikler/sjaelens-plads-i-psykologien/",
+          "firstPosition": 3,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.runa.dk/psykologen",
+          "firstPosition": 6,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/fag-og-politik/ny-autorisationsmodel/meritguide/",
+          "firstPosition": 14,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 22,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 23,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 24,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -1131,6 +5028,43 @@ export const realSnapshot = {
       "openRate": 51.2,
       "clickRate": 10.75,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/videnscenter-for-psykologi/",
+          "firstPosition": 2,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/uddannelse-og-karriere/program-for-aarsmoede-2025/",
+          "firstPosition": 6,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/uddannelse-og-karriere/kurser-og-arrangementer/",
+          "firstPosition": 13,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/uddannelse-og-karriere/kurser-til-ledige-psykologer/",
+          "firstPosition": 14,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/course/psykofarmakologi-voksne-402826/",
+          "firstPosition": 15,
+          "occurrences": 1
+        },
+        {
+          "destination": "http://www.psykologjob.dk/",
+          "firstPosition": 23,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.videnscenterpsykologi.dk/",
+          "firstPosition": 26,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -1144,6 +5078,28 @@ export const realSnapshot = {
       "openRate": 69.53,
       "clickRate": 12.12,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 9,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 10,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 11,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -1157,6 +5113,78 @@ export const realSnapshot = {
       "openRate": 54.1,
       "clickRate": 13.79,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://mitdp.dk/Home/MyProfile/",
+          "firstPosition": 3,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/uddannelse-og-karriere/systematisk-efteruddannelse/",
+          "firstPosition": 8,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/selvstaendig/psykolog-med-ydernummer/pok/",
+          "firstPosition": 9,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/permalink.php",
+          "firstPosition": 13,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/netvaerk-og-job/netvaerk/sektioner/studerende/",
+          "firstPosition": 16,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.lsb.dk/lob/dp/fordele/studiekonto/konto",
+          "firstPosition": 18,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/medlemskab/medlemsfordele/kontante-fordele/medlemsrabatmorsdrenge/",
+          "firstPosition": 23,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/videnscenter-for-psykologi/efteruddannelse/specialistuddannelser/",
+          "firstPosition": 27,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/medlemskab/medlemsfordele/kontante-fordele/",
+          "firstPosition": 28,
+          "occurrences": 1
+        },
+        {
+          "destination": "http://www.psykologjob.dk/",
+          "firstPosition": 31,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 39,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 40,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 41,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -1170,6 +5198,33 @@ export const realSnapshot = {
       "openRate": 74.33,
       "clickRate": 6.68,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.survey-xact.dk/LinkCollector",
+          "firstPosition": 2,
+          "occurrences": 4
+        },
+        {
+          "destination": "https://www.dp.dk/kontakt-os/",
+          "firstPosition": 12,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://twitter.com/DanskPsykologF",
+          "firstPosition": 15,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.linkedin.com/company/dansk-psykolog-forening/",
+          "firstPosition": 17,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 19,
+          "occurrences": 2
+        }
+      ],
       "segments": []
     },
     {
@@ -1183,6 +5238,43 @@ export const realSnapshot = {
       "openRate": 75.73,
       "clickRate": 21.6,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.dp.dk/fag-og-politik/ny-autorisationsmodel/meritguide/",
+          "firstPosition": 7,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/fag-og-politik/ny-autorisationsmodel/sundhedsfaglig-virksomhed/",
+          "firstPosition": 8,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/fag-og-politik/ny-autorisationsmodel/autorisationogtitlertema/",
+          "firstPosition": 9,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 17,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 18,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 19,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -1196,6 +5288,38 @@ export const realSnapshot = {
       "openRate": 53.48,
       "clickRate": 5.07,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.runa.dk/psykologen",
+          "firstPosition": 5,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/fag-og-politik/ny-autorisationsmodel/meritguide/",
+          "firstPosition": 12,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 21,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 22,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 23,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -1209,6 +5333,88 @@ export const realSnapshot = {
       "openRate": 48.76,
       "clickRate": 15.26,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://mitdp.dk/Home/MyProfile/",
+          "firstPosition": 3,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/selvstaendig/selvstaendig-praksis/oekonomi-moms-og-administration/",
+          "firstPosition": 4,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/kontraktgennemgang/",
+          "firstPosition": 5,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/videnscenter-for-psykologi/standarder/",
+          "firstPosition": 9,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.stpk.dk/job/sagkyndig-konsulent/",
+          "firstPosition": 10,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.runa.dk/psykologen",
+          "firstPosition": 11,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/groups/danskpsykologforening/posts/24704412942584021/",
+          "firstPosition": 12,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/medlemskab/medlemsfordele/kontante-fordele/bonus-med-forbrugsforeningen/",
+          "firstPosition": 13,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/medlemskab/medlemsfordele/kontante-fordele/koeb-rudolph-care-med-25/",
+          "firstPosition": 15,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/medlemskab/medlemsfordele/kontante-fordele/saerpris-i-tivoli/",
+          "firstPosition": 16,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/course/virtuelt-autisme-og-icd-11-2/",
+          "firstPosition": 21,
+          "occurrences": 1
+        },
+        {
+          "destination": "http://www.psykologjob.dk/",
+          "firstPosition": 23,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 31,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 32,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 33,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -1222,6 +5428,48 @@ export const realSnapshot = {
       "openRate": 78.02,
       "clickRate": 20.23,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://puf.plan2learn.dk/kursusvalg.aspx",
+          "firstPosition": 15,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.samarbejdssekretariatet.dk/kursuskalender/",
+          "firstPosition": 20,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.godtarbejdsmiljo.dk/kompas",
+          "firstPosition": 21,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/uddannelse-og-karriere/",
+          "firstPosition": 23,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 33,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 34,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 35,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -1235,6 +5483,58 @@ export const realSnapshot = {
       "openRate": 51.07,
       "clickRate": 11.01,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/videnscenter-for-psykologi/",
+          "firstPosition": 2,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/videnscenter-for-psykologi/forskning/specialiseringsundersoegelse/",
+          "firstPosition": 3,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/uddannelse-og-karriere/program-for-aarsmoede-2025/",
+          "firstPosition": 11,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/videnscenter-for-psykologi/forskning/podcast-forskernes-stemme/",
+          "firstPosition": 17,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/course/psykofarmakologi-voksne-2/",
+          "firstPosition": 20,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/course/virtuelt-autisme-og-icd-11-2/",
+          "firstPosition": 22,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/uddannelse-og-karriere/kurser-og-arrangementer/",
+          "firstPosition": 23,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/uddannelse-og-karriere/kurser-til-ledige-psykologer/",
+          "firstPosition": 24,
+          "occurrences": 1
+        },
+        {
+          "destination": "http://www.psykologjob.dk/",
+          "firstPosition": 27,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.videnscenterpsykologi.dk/",
+          "firstPosition": 30,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -1248,6 +5548,28 @@ export const realSnapshot = {
       "openRate": 64.6,
       "clickRate": 12.05,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 9,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 10,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 11,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -1261,6 +5583,68 @@ export const realSnapshot = {
       "openRate": 57.09,
       "clickRate": 11.11,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://mitdp.dk/Home/MyProfile/",
+          "firstPosition": 3,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/permalink.php",
+          "firstPosition": 9,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.hogrefe.com/dk/shop/cpt.html",
+          "firstPosition": 12,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.psykologjob.dk/job/",
+          "firstPosition": 17,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/medlemskab/medlemsfordele/kontante-fordele/saerpris-i-tivoli/",
+          "firstPosition": 18,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/medlemskab/medlemsfordele/kontante-fordele/sundhedsordning-med-dp/",
+          "firstPosition": 20,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/medlemskab/medlemsfordele/kontante-fordele/25-rabat-paa-psyke-logos/",
+          "firstPosition": 21,
+          "occurrences": 1
+        },
+        {
+          "destination": "http://www.psykologjob.dk/",
+          "firstPosition": 26,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 34,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 35,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 36,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -1274,6 +5658,33 @@ export const realSnapshot = {
       "openRate": 79.41,
       "clickRate": 5.35,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.survey-xact.dk/LinkCollector",
+          "firstPosition": 2,
+          "occurrences": 4
+        },
+        {
+          "destination": "https://www.dp.dk/kontakt-os/",
+          "firstPosition": 12,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://twitter.com/DanskPsykologF",
+          "firstPosition": 15,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.linkedin.com/company/dansk-psykolog-forening/",
+          "firstPosition": 17,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 19,
+          "occurrences": 2
+        }
+      ],
       "segments": []
     },
     {
@@ -1287,6 +5698,93 @@ export const realSnapshot = {
       "openRate": 88.67,
       "clickRate": 23.44,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.dp.dk/medlemskab/kontingent/",
+          "firstPosition": 3,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/netvaerk-og-job/karriere/",
+          "firstPosition": 5,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/medlemskab/medlemsfordele/kontante-fordele/",
+          "firstPosition": 6,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/ansaettelsesvilkaar/loen/",
+          "firstPosition": 7,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/ansaettelsesvilkaar/ansaettelseskontrakt/",
+          "firstPosition": 8,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/om-dp/tr/",
+          "firstPosition": 9,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/uddannelse-og-karriere/kurser-og-arrangementer/",
+          "firstPosition": 10,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/om-dp/sekretariatet/",
+          "firstPosition": 11,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/netvaerk-og-job/cv/",
+          "firstPosition": 12,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/netvaerk-og-job/jobansoegning/",
+          "firstPosition": 13,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/category/nyheder/",
+          "firstPosition": 14,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://dk.linkedin.com/company/dansk-psykolog-forening",
+          "firstPosition": 16,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 17,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.facebook.com/groups/danskpsykologforening",
+          "firstPosition": 18,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 19,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 27,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -1300,6 +5798,28 @@ export const realSnapshot = {
       "openRate": 18.03,
       "clickRate": 3.28,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 11,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 12,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 13,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -1313,6 +5833,28 @@ export const realSnapshot = {
       "openRate": 75.15,
       "clickRate": 11.54,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 11,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 12,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 13,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -1326,6 +5868,118 @@ export const realSnapshot = {
       "openRate": 48.53,
       "clickRate": 10.01,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://mitdp.dk/Home/MyProfile/",
+          "firstPosition": 3,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/kontraktgennemgang/",
+          "firstPosition": 4,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/medlemskab/medlemsfordele/",
+          "firstPosition": 5,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/selvstaendig/psykolog-med-ydernummer/praksisoverenskomsten/",
+          "firstPosition": 7,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://psy.ku.dk/epic/for-psykologer/",
+          "firstPosition": 10,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.linkedin.com/feed/update/urn:li:activity:7371532907196256256",
+          "firstPosition": 12,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://vpt.dk/psykisk-arbejdsmiljoe/vaer-med-i-netvaerk-mod-vold",
+          "firstPosition": 13,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/videnscenter-for-psykologi/",
+          "firstPosition": 14,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.linkedin.com/posts/dea-seidenfaden-9208695_skolens-tabte-b%C3%B8rn-hjertesk%C3%A6rende-men-activity-7375929631222169600-xOiz",
+          "firstPosition": 17,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.runa.dk/psykologen",
+          "firstPosition": 19,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/fag-og-politik/ny-autorisationsmodel/sundhedsfaglig-virksomhed/",
+          "firstPosition": 20,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/fag-og-politik/ny-autorisationsmodel/autorisationogtitlertema/",
+          "firstPosition": 21,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/fag-og-politik/ny-autorisationsmodel/meritguide/",
+          "firstPosition": 22,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/videnscenter-for-psykologi/forskning/specialiseringsundersoegelse/",
+          "firstPosition": 24,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://lonealgotjeppesen.dk/",
+          "firstPosition": 26,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/medlemskab/medlemsfordele/kontante-fordele/faa-medlemsfordele-i-laan-spar/",
+          "firstPosition": 27,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/medlemskab/medlemsfordele/kontante-fordele/koeb-rudolph-care-med-25/",
+          "firstPosition": 29,
+          "occurrences": 2
+        },
+        {
+          "destination": "http://www.psykologjob.dk/",
+          "firstPosition": 35,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 43,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 44,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 45,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -1339,6 +5993,53 @@ export const realSnapshot = {
       "openRate": 53.51,
       "clickRate": 5.19,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.dp.dk/videnscenter-for-psykologi/forskning/podcast-forskernes-stemme/",
+          "firstPosition": 3,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.runa.dk/psykologen",
+          "firstPosition": 6,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://lonealgotjeppesen.dk/",
+          "firstPosition": 11,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/p-psykologernes-fagmagasin/artikler/tangoen-i-det-terapeutiske-rum/",
+          "firstPosition": 12,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/p-psykologernes-fagmagasin/artikler/anbragte-boerns-flytninger/",
+          "firstPosition": 16,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 27,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 28,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 29,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -1352,6 +6053,33 @@ export const realSnapshot = {
       "openRate": 66.35,
       "clickRate": 5.64,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.dp.dk/videnscenter-for-psykologi/",
+          "firstPosition": 3,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 10,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 11,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 12,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -1365,6 +6093,53 @@ export const realSnapshot = {
       "openRate": 54.89,
       "clickRate": 7.68,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.runa.dk/psykologen",
+          "firstPosition": 4,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/course/psykofarmakologi-voksne-2/",
+          "firstPosition": 14,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/uddannelse-og-karriere/kurser-og-arrangementer/",
+          "firstPosition": 16,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/uddannelse-og-karriere/kurser-til-ledige-psykologer/",
+          "firstPosition": 17,
+          "occurrences": 1
+        },
+        {
+          "destination": "http://www.psykologjob.dk/",
+          "firstPosition": 23,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 30,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 31,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 32,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -1378,6 +6153,73 @@ export const realSnapshot = {
       "openRate": 55.92,
       "clickRate": 10.54,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://mitdp.dk/Home/MyProfile/",
+          "firstPosition": 3,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/wp-content/uploads/2024/08/startpakke-til-selvstaendige2024.pdf",
+          "firstPosition": 5,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/selvstaendig/psykolog-med-ydernummer/",
+          "firstPosition": 8,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.lederweb.dk/events/",
+          "firstPosition": 9,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.hogrefe.com/dk/shop/cpt.html",
+          "firstPosition": 15,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/fag-og-politik/ny-autorisationsmodel/meritguide/",
+          "firstPosition": 16,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/fag-og-politik/ny-autorisationsmodel/sundhedsfaglig-virksomhed/",
+          "firstPosition": 18,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://lsb.nemtilmeld.dk/839/",
+          "firstPosition": 19,
+          "occurrences": 1
+        },
+        {
+          "destination": "http://www.psykologjob.dk/",
+          "firstPosition": 26,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 34,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 35,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 36,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -1391,6 +6233,33 @@ export const realSnapshot = {
       "openRate": 62.7,
       "clickRate": 5.33,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.dp.dk/netvaerk-og-job/karriere/del-dine-erfaringer/",
+          "firstPosition": 10,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 25,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 26,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 27,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -1404,6 +6273,28 @@ export const realSnapshot = {
       "openRate": 64.6,
       "clickRate": 22.32,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 4
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 10,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 11,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 12,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -1417,6 +6308,88 @@ export const realSnapshot = {
       "openRate": 53.98,
       "clickRate": 26.49,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://mitdp.dk/Home/MyProfile/",
+          "firstPosition": 3,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://kompetenceudvikling.dk/inspiration/ansogningsrunder/",
+          "firstPosition": 5,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/course/seniortraef-2/",
+          "firstPosition": 9,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/netvaerk-og-job/netvaerk/sektioner/studerende/studentersektionen/",
+          "firstPosition": 12,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/selvstaendig/psykolog-med-ydernummer/saadan-ydernummer/saadan-soeger-du-om-ydernummer/",
+          "firstPosition": 13,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.runa.dk/om/medlemsfordele/anbefalet-af-taenk",
+          "firstPosition": 15,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/fag-og-politik/ny-autorisationsmodel/autorisationogtitlertema/",
+          "firstPosition": 17,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/fag-og-politik/ny-autorisationsmodel/meritguide/",
+          "firstPosition": 18,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/posts/dea-seidenfaden-9208695_det-her-er-fuldst%C3%A6ndig-grotesk-at-v%C3%A6re-activity-7362162850716426240-ePsY",
+          "firstPosition": 19,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/p-psykologernes-fagmagasin/artikler/tangoen-i-det-terapeutiske-rum/",
+          "firstPosition": 25,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.survey-xact.dk/LinkCollector",
+          "firstPosition": 29,
+          "occurrences": 1
+        },
+        {
+          "destination": "http://www.psykologjob.dk/",
+          "firstPosition": 30,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 38,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 39,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 40,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -1430,6 +6403,38 @@ export const realSnapshot = {
       "openRate": 55.31,
       "clickRate": 7.05,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.runa.dk/om/medlemsfordele/anbefalet-af-taenk",
+          "firstPosition": 5,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.hogrefe.com/dk/shop/cpt.html",
+          "firstPosition": 10,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 22,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 23,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 24,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -1443,6 +6448,38 @@ export const realSnapshot = {
       "openRate": 76.52,
       "clickRate": 11.15,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.godtarbejdsmiljo.dk/trivsel/mangfoldighed/mangfoldighedskompas",
+          "firstPosition": 11,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/uddannelse-og-karriere/",
+          "firstPosition": 16,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 26,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 27,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 28,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -1456,6 +6493,53 @@ export const realSnapshot = {
       "openRate": 54.58,
       "clickRate": 10.66,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.dp.dk/uddannelse-og-karriere/kurser-og-arrangementer/",
+          "firstPosition": 7,
+          "occurrences": 4
+        },
+        {
+          "destination": "https://www.runa.dk/om/medlemsfordele/anbefalet-af-taenk",
+          "firstPosition": 11,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/course/psykologer-i-politik/",
+          "firstPosition": 12,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.pernillenejst.dk/lokaleleje/",
+          "firstPosition": 25,
+          "occurrences": 1
+        },
+        {
+          "destination": "http://www.psykologjob.dk/",
+          "firstPosition": 29,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 36,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 37,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 38,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -1469,6 +6553,58 @@ export const realSnapshot = {
       "openRate": 55.46,
       "clickRate": 12.11,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://mitdp.dk/Home/MyProfile/",
+          "firstPosition": 3,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/selvstaendig/psykolog-med-ydernummer/saadan-ydernummer/saadan-soeger-du-om-ydernummer/",
+          "firstPosition": 4,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://denregionalekompetencefond.dk/",
+          "firstPosition": 5,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/netvaerk-og-job/karriere/del-dine-erfaringer/",
+          "firstPosition": 6,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.hogrefe.com/dk/shop/cpt.html",
+          "firstPosition": 9,
+          "occurrences": 1
+        },
+        {
+          "destination": "http://www.psykologjob.dk/",
+          "firstPosition": 19,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 27,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 28,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 29,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -1482,6 +6618,78 @@ export const realSnapshot = {
       "openRate": 55.02,
       "clickRate": 19.48,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://mitdp.dk/Home/MyProfile/",
+          "firstPosition": 3,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/netvaerk-og-job/jobansoegning/",
+          "firstPosition": 4,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/netvaerk-og-job/karriere/del-dine-erfaringer/",
+          "firstPosition": 5,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.lederweb.dk/ledelseafunge/",
+          "firstPosition": 8,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.hogrefe.com/dk/shop/cpt.html",
+          "firstPosition": 10,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://lsb.nemtilmeld.dk/837/",
+          "firstPosition": 13,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/fag-og-politik/hoeringer-og-udpegninger/",
+          "firstPosition": 16,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.sdu.dk/da/sund/tompladsordning",
+          "firstPosition": 17,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/medlemskab/medlemsfordele/kontante-fordele/25-rabat-paa-psyke-logos/",
+          "firstPosition": 18,
+          "occurrences": 1
+        },
+        {
+          "destination": "http://www.psykologjob.dk/",
+          "firstPosition": 19,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 27,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 28,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 29,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -1495,6 +6703,28 @@ export const realSnapshot = {
       "openRate": 66.47,
       "clickRate": 20.9,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 9,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 10,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 11,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -1508,6 +6738,33 @@ export const realSnapshot = {
       "openRate": 17.74,
       "clickRate": 1.61,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://dpdk.onteamshare.com/CaseDocuments.aspx",
+          "firstPosition": 3,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 11,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 12,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 13,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -1521,6 +6778,38 @@ export const realSnapshot = {
       "openRate": 51.32,
       "clickRate": 8.34,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.rossgreeneidanmark.dk/",
+          "firstPosition": 6,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/feed/update/urn:li:activity:7310592423749988356/",
+          "firstPosition": 13,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 23,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 24,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 25,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -1534,6 +6823,58 @@ export const realSnapshot = {
       "openRate": 45.84,
       "clickRate": 8.27,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.dp.dk/uddannelse-og-karriere/program-for-aarsmoede-2025/",
+          "firstPosition": 3,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/uddannelse-og-karriere/kurser-og-arrangementer/",
+          "firstPosition": 14,
+          "occurrences": 4
+        },
+        {
+          "destination": "https://www.rossgreeneidanmark.dk/",
+          "firstPosition": 15,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.pernillenejst.dk/lokaleleje/",
+          "firstPosition": 25,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.sdu.dk/da/sund/tompladsordning",
+          "firstPosition": 35,
+          "occurrences": 1
+        },
+        {
+          "destination": "http://www.psykologjob.dk/",
+          "firstPosition": 36,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 43,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 44,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 45,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -1547,6 +6888,43 @@ export const realSnapshot = {
       "openRate": 85.87,
       "clickRate": 6.52,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.dp.dk/netvaerk-og-job/netvaerk/sektioner/studerende/",
+          "firstPosition": 4,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/netvaerk-og-job/karriere/",
+          "firstPosition": 5,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/medlemskab/medlemsfordele/kontante-fordele/",
+          "firstPosition": 6,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 12,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 13,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 14,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -1560,6 +6938,28 @@ export const realSnapshot = {
       "openRate": 71.15,
       "clickRate": 0.49,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 9,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 10,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 11,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -1573,6 +6973,63 @@ export const realSnapshot = {
       "openRate": 60.77,
       "clickRate": 11.13,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://mitdp.dk/Home/MyProfile/",
+          "firstPosition": 3,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/p-psykologernes-fagmagasin/podcasts/podcast-lyden-af-fagmagasinet-p/",
+          "firstPosition": 5,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/posts/dea-seidenfaden-9208695_ppr-skal-inddrages-tidligere-n%C3%A5r-et-barn-activity-7343275528000364547-R1Z2",
+          "firstPosition": 6,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.uvm.dk/-/media/filer/uvm/aktuelt/pdf25/juni/250624-tilgngeliggjort-afrapportering-fra-den-lovforberedende-ekspertgruppe-om-regler-p-inklusions-o.pdf",
+          "firstPosition": 8,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.hogrefe.com/dk/shop/cpt.html",
+          "firstPosition": 11,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/uddannelse-og-karriere/program-for-aarsmoede-2025/",
+          "firstPosition": 13,
+          "occurrences": 2
+        },
+        {
+          "destination": "http://www.psykologjob.dk/",
+          "firstPosition": 17,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 25,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 26,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 27,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -1586,6 +7043,28 @@ export const realSnapshot = {
       "openRate": 71.92,
       "clickRate": 0.62,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 9,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 10,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 11,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -1599,6 +7078,38 @@ export const realSnapshot = {
       "openRate": 61.11,
       "clickRate": 3.03,
       "content": [],
+      "links": [
+        {
+          "destination": "https://dm.dk/forskerforum/om-forskerforum/",
+          "firstPosition": 1,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 3,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://mitdp.dk/Home/MyProfile/",
+          "firstPosition": 6,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 13,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 14,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 15,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -1612,6 +7123,78 @@ export const realSnapshot = {
       "openRate": 47.92,
       "clickRate": 11.85,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://mitdp.dk/Home/MyProfile/",
+          "firstPosition": 3,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/selvstaendig/selvstaendig-praksis/samarbejdsaftaler/",
+          "firstPosition": 4,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/uddannelse-og-karriere/systematisk-efteruddannelse/",
+          "firstPosition": 5,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/netvaerk-og-job/karriere/del-dine-erfaringer/",
+          "firstPosition": 6,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://redcap.nexs.ku.dk/surveys/",
+          "firstPosition": 8,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.hogrefe.com/dk/shop/hoj-begavelse-og-talent.html",
+          "firstPosition": 11,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/selvstaendig/psykolog-med-ydernummer/saadan-ydernummer/tildeling-af-ydernumre/",
+          "firstPosition": 12,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/fag-og-politik/hoeringer-og-udpegninger/",
+          "firstPosition": 13,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/uddannelse-og-karriere/program-for-aarsmoede-2025/",
+          "firstPosition": 21,
+          "occurrences": 1
+        },
+        {
+          "destination": "http://www.psykologjob.dk/",
+          "firstPosition": 22,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 30,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 31,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 32,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -1625,6 +7208,78 @@ export const realSnapshot = {
       "openRate": 48.14,
       "clickRate": 15.47,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://mitdp.dk/Home/MyProfile/",
+          "firstPosition": 3,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/selvstaendig/selvstaendig-praksis/samarbejdsaftaler/",
+          "firstPosition": 4,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/uddannelse-og-karriere/systematisk-efteruddannelse/",
+          "firstPosition": 5,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/netvaerk-og-job/karriere/del-dine-erfaringer/",
+          "firstPosition": 6,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://redcap.nexs.ku.dk/surveys/",
+          "firstPosition": 8,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.hogrefe.com/dk/shop/hoj-begavelse-og-talent.html",
+          "firstPosition": 11,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/selvstaendig/psykolog-med-ydernummer/saadan-ydernummer/tildeling-af-ydernumre/",
+          "firstPosition": 12,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/fag-og-politik/hoeringer-og-udpegninger/",
+          "firstPosition": 13,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/uddannelse-og-karriere/program-for-aarsmoede-2025/",
+          "firstPosition": 21,
+          "occurrences": 1
+        },
+        {
+          "destination": "http://www.psykologjob.dk/",
+          "firstPosition": 22,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 30,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 31,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 32,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -1638,6 +7293,38 @@ export const realSnapshot = {
       "openRate": 53.08,
       "clickRate": 9.93,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://autismeogadhdkurser.dk/",
+          "firstPosition": 8,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/feed/update/urn:li:activity:7310592423749988356/",
+          "firstPosition": 15,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 29,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 30,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 31,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -1651,6 +7338,53 @@ export const realSnapshot = {
       "openRate": 51.27,
       "clickRate": 9.45,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.dp.dk/uddannelse-og-karriere/program-for-aarsmoede-2025/",
+          "firstPosition": 3,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://autismeogadhdkurser.dk/",
+          "firstPosition": 5,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/uddannelse-og-karriere/kurser-og-arrangementer/",
+          "firstPosition": 8,
+          "occurrences": 4
+        },
+        {
+          "destination": "http://linkedin.com/feed/update/urn:li:activity:7310592423749988356/",
+          "firstPosition": 20,
+          "occurrences": 1
+        },
+        {
+          "destination": "http://www.psykologjob.dk/",
+          "firstPosition": 30,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 37,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 38,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 39,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -1664,6 +7398,73 @@ export const realSnapshot = {
       "openRate": 51.52,
       "clickRate": 11.54,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://mitdp.dk/Home/MyProfile/",
+          "firstPosition": 3,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/ansaettelsesvilkaar/sygdom-og-fravaer/",
+          "firstPosition": 4,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://eva.dk/Media/638832476344989362/Fra%20viden%20til%20handling.pdf",
+          "firstPosition": 7,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/netvaerk-og-job/foerstejob/",
+          "firstPosition": 8,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.hogrefe.com/dk/shop/hoj-begavelse-og-talent.html",
+          "firstPosition": 9,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://sundhedsmonitor.dk/nyheder/debat/article18223533.ece",
+          "firstPosition": 13,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.lsb.dk/lob/dp/nyheder/boliglaan-uden-benspaend",
+          "firstPosition": 16,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/fag-og-politik/moed-dp-paa-folkemoede-2025/",
+          "firstPosition": 18,
+          "occurrences": 1
+        },
+        {
+          "destination": "http://www.psykologjob.dk/",
+          "firstPosition": 23,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 31,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 32,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 33,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -1677,6 +7478,63 @@ export const realSnapshot = {
       "openRate": 71.46,
       "clickRate": 14.79,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/ok26/",
+          "firstPosition": 10,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://sundhedsmonitor.dk/nyheder/debat/article18223533.ece",
+          "firstPosition": 12,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.godtarbejdsmiljo.dk/kompetencer-til-arbejdsmiljo",
+          "firstPosition": 13,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.puf.dk/med-klippekort-moduler",
+          "firstPosition": 14,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/course/tr-amr-aarsmoede-2025/",
+          "firstPosition": 16,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/uddannelse-og-karriere/",
+          "firstPosition": 20,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/uddannelse-og-karriere/kurser-og-arrangementer/",
+          "firstPosition": 25,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 33,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 34,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 35,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -1690,6 +7548,33 @@ export const realSnapshot = {
       "openRate": 65.44,
       "clickRate": 6.73,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.dp.dk/netvaerk-og-job/karriere/del-dine-erfaringer/",
+          "firstPosition": 9,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 22,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 23,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 24,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -1703,6 +7588,33 @@ export const realSnapshot = {
       "openRate": 69.26,
       "clickRate": 8.17,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.dp.dk/fag-og-politik/ny-autorisationsmodel/",
+          "firstPosition": 3,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 9,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 10,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 11,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -1716,6 +7628,33 @@ export const realSnapshot = {
       "openRate": 65.81,
       "clickRate": 8.89,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://redcap.nexs.ku.dk/surveys/",
+          "firstPosition": 5,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 11,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 12,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 13,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -1729,6 +7668,33 @@ export const realSnapshot = {
       "openRate": 64.24,
       "clickRate": 5.57,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.dp.dk/fag-og-politik/ny-autorisationsmodel/",
+          "firstPosition": 4,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 11,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 12,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 13,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -1742,6 +7708,98 @@ export const realSnapshot = {
       "openRate": 49.14,
       "clickRate": 9.9,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://mitdp.dk/Home/MyProfile/",
+          "firstPosition": 3,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/selvstaendig/selvstaendig-praksis/arbejdsgiverraadgivning/",
+          "firstPosition": 4,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/uas/login",
+          "firstPosition": 6,
+          "occurrences": 1
+        },
+        {
+          "destination": "http://www.dp.dk/raadgivning/ansaettelsesvilkaar/ferie-og-fridage/ferie-og-sygdom",
+          "firstPosition": 7,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://skolemonitor.dk/nyheder/debat/article18173940.ece",
+          "firstPosition": 8,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/course/seniortraef-2/",
+          "firstPosition": 10,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/netvaerk-og-job/karriere/karriereveje-som-psykolog/",
+          "firstPosition": 11,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/ansaettelsesvilkaar/loen/loenberegner/",
+          "firstPosition": 13,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.lsb.dk/lob/dp/nyheder/boliglaan-uden-benspaend",
+          "firstPosition": 16,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/uddannelse-og-karriere/kurser-og-arrangementer/",
+          "firstPosition": 18,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/fag-og-politik/moed-dp-paa-folkemoede-2025/",
+          "firstPosition": 19,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.hogrefe.com/dk/shop/hoj-begavelse-og-talent.html",
+          "firstPosition": 21,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/medlemskab/medlemsfordele/kontante-fordele/yogavivo-med-rabat/",
+          "firstPosition": 22,
+          "occurrences": 1
+        },
+        {
+          "destination": "http://www.psykologjob.dk/",
+          "firstPosition": 27,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 35,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 36,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 37,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -1755,6 +7813,43 @@ export const realSnapshot = {
       "openRate": 51.57,
       "clickRate": 7.85,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.psykologjob.dk/job/",
+          "firstPosition": 10,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/fag-og-politik/ny-autorisationsmodel/",
+          "firstPosition": 13,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/uddannelse-og-karriere/program-for-aarsmoede-2025/",
+          "firstPosition": 14,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 22,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 23,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 24,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -1768,6 +7863,28 @@ export const realSnapshot = {
       "openRate": 68.42,
       "clickRate": 2.63,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 9,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 10,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 11,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -1781,6 +7898,73 @@ export const realSnapshot = {
       "openRate": 47.46,
       "clickRate": 12.68,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.dp.dk/uddannelse-og-karriere/kurser-og-arrangementer/",
+          "firstPosition": 3,
+          "occurrences": 4
+        },
+        {
+          "destination": "https://www.dp.dk/course/med-individet-i-fokus/",
+          "firstPosition": 8,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/course/med-organisationen-i-fokus/",
+          "firstPosition": 10,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://lonealgotjeppesen.dk/",
+          "firstPosition": 16,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/uddannelse-og-karriere/aarsmoede-2025/",
+          "firstPosition": 17,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/uddannelse-og-karriere/program-for-aarsmoede-2025/",
+          "firstPosition": 18,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/p-psykologernes-fagmagasin/podcasts/",
+          "firstPosition": 20,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.metalog.dk/uddannelse",
+          "firstPosition": 22,
+          "occurrences": 1
+        },
+        {
+          "destination": "http://www.psykologjob.dk/",
+          "firstPosition": 32,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 39,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 40,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 41,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -1794,6 +7978,118 @@ export const realSnapshot = {
       "openRate": 51.67,
       "clickRate": 17.21,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://mitdp.dk/Home/MyProfile/",
+          "firstPosition": 3,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/selvstaendig/psykolog-med-ydernummer/saadan-ydernummer/saadan-soeger-du-om-ydernummer/",
+          "firstPosition": 4,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/selvstaendig/psykolog-med-ydernummer/",
+          "firstPosition": 8,
+          "occurrences": 1
+        },
+        {
+          "destination": "http://www.dp.dk/raadgivning/ansaettelsesvilkaar/ferie-og-fridage/ferie-og-sygdom",
+          "firstPosition": 9,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/netvaerk-og-job/karriere/kompetencefonde/",
+          "firstPosition": 10,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://vpt.dk/projekt/den-kommunale-kompetencefond",
+          "firstPosition": 11,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://regionaltarbejdsliv.dk/",
+          "firstPosition": 13,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/photo",
+          "firstPosition": 14,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.specialpsykologuddannelsen.dk/",
+          "firstPosition": 16,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/feed/update/urn:li:activity:7321516821365317652/",
+          "firstPosition": 17,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/fag-og-politik/ny-autorisationsmodel/",
+          "firstPosition": 19,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/uddannelse-og-karriere/program-for-aarsmoede-2025/",
+          "firstPosition": 20,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/uddannelse-og-karriere/aarsmoede-2025/",
+          "firstPosition": 21,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://sundhedsmonitor.dk/nyheder/debat/article18137699.ece",
+          "firstPosition": 22,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/uddannelse-og-karriere/kurser-og-arrangementer/",
+          "firstPosition": 23,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.hogrefe.com/dk/shop/hoj-begavelse-og-talent.html",
+          "firstPosition": 24,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/course/med-individet-i-fokus/",
+          "firstPosition": 27,
+          "occurrences": 1
+        },
+        {
+          "destination": "http://www.psykologjob.dk/",
+          "firstPosition": 28,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 36,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 37,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 38,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -1807,6 +8103,33 @@ export const realSnapshot = {
       "openRate": 75.89,
       "clickRate": 30.8,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://s.epinionglobal.com/mrIWeb/mrIWeb.srf",
+          "firstPosition": 3,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 9,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 10,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 11,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -1820,6 +8143,28 @@ export const realSnapshot = {
       "openRate": 69.49,
       "clickRate": 0.98,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 8,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 9,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 10,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -1833,6 +8178,78 @@ export const realSnapshot = {
       "openRate": 63.96,
       "clickRate": 10.87,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://mitdp.dk/Home/MyProfile/",
+          "firstPosition": 3,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/uddannelse-og-karriere/kurser-og-arrangementer/",
+          "firstPosition": 4,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.lederweb.dk/forhandling/",
+          "firstPosition": 7,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/wp-content/uploads/2025/03/33.01.1-Endelig-dateret-og-maskin-underskrevet-Overenskomst-for-akademikere-ansat-i-regioner.pdf",
+          "firstPosition": 9,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/wp-content/uploads/2025/03/31.01-Endelig-dateret-og-maskin-underskrevet-Overenskomst-for-akademikere-ansat-i-kommuner.pdf",
+          "firstPosition": 10,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.lsb.dk/privat/dit-liv/livet-som-studerende/mens-du-studerer/udveksling",
+          "firstPosition": 11,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.rossgreeneidanmark.dk/",
+          "firstPosition": 14,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/fag-og-politik/hoeringer-og-udpegninger/abortnaevn/",
+          "firstPosition": 18,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://events.aka.dk/hverdagsokonomi-pa-su/d33aafc0d9cf457ead19/join",
+          "firstPosition": 19,
+          "occurrences": 1
+        },
+        {
+          "destination": "http://www.psykologjob.dk/",
+          "firstPosition": 21,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 29,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 30,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 31,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -1846,6 +8263,73 @@ export const realSnapshot = {
       "openRate": 45.71,
       "clickRate": 6.94,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.dp.dk/uddannelse-og-karriere/program-for-aarsmoede-2025/",
+          "firstPosition": 3,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/uddannelse-og-karriere/aarsmoede-2025/",
+          "firstPosition": 4,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/course/med-individet-i-fokus/",
+          "firstPosition": 6,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/course/med-organisationen-i-fokus/",
+          "firstPosition": 8,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/uddannelse-og-karriere/kurser-og-arrangementer/",
+          "firstPosition": 10,
+          "occurrences": 4
+        },
+        {
+          "destination": "https://www.psykologjob.dk/resultat/autoriseret-psykologer-paa-37-timer-til-psykologfaellesskabet-i-faelles-lja-86018820.aspx",
+          "firstPosition": 18,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/p-psykologernes-fagmagasin/podcasts/podcast-lyden-af-fagmagasinet-p/",
+          "firstPosition": 19,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/course/neurokemi/",
+          "firstPosition": 21,
+          "occurrences": 1
+        },
+        {
+          "destination": "http://www.psykologjob.dk/",
+          "firstPosition": 33,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 40,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 41,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 42,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -1859,6 +8343,38 @@ export const realSnapshot = {
       "openRate": 52.36,
       "clickRate": 7.58,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.psykologjob.dk/resultat/autoriseret-psykologer-paa-37-timer-til-psykologfaellesskabet-i-faelles-lja-86018820.aspx",
+          "firstPosition": 13,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/p-psykologernes-fagmagasin/podcasts/podcast-lyden-af-fagmagasinet-p/",
+          "firstPosition": 14,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 26,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 27,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 28,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -1872,6 +8388,28 @@ export const realSnapshot = {
       "openRate": 73.01,
       "clickRate": 1.47,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 9,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 10,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 11,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -1885,6 +8423,78 @@ export const realSnapshot = {
       "openRate": 53.25,
       "clickRate": 16.1,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://mitdp.dk/Home/MyProfile/",
+          "firstPosition": 3,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/kontraktgennemgang/",
+          "firstPosition": 5,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/posts/dea-seidenfaden-9208695_gode-vilk%C3%A5r-for-psykologer-giver-bedre-behandling-activity-7311033892088512512-oPVp",
+          "firstPosition": 10,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/fag-og-politik/ny-autorisationsmodel/",
+          "firstPosition": 13,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.sundhed.dk/sundhedsfaglig/",
+          "firstPosition": 15,
+          "occurrences": 1
+        },
+        {
+          "destination": "http://hogrefe.com/dk/shop/hoj-begavelse-og-talent.html",
+          "firstPosition": 18,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/posts/dea-seidenfaden-9208695_godt-at-unge-med-angst-og-depression-f%C3%A5r-activity-7312071653662846976-V-xO",
+          "firstPosition": 19,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.psykiatri-regionh.dk/bryd-cirklen/Sider/default.aspx",
+          "firstPosition": 27,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/medlemskab/medlemsfordele/kontante-fordele/medlemsrabat-paa-hotelvaerelser/",
+          "firstPosition": 28,
+          "occurrences": 1
+        },
+        {
+          "destination": "http://www.psykologjob.dk/",
+          "firstPosition": 29,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 37,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 38,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 39,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -1898,6 +8508,28 @@ export const realSnapshot = {
       "openRate": 69.84,
       "clickRate": 0.61,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 8,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 9,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 10,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -1911,6 +8543,63 @@ export const realSnapshot = {
       "openRate": 59.2,
       "clickRate": 20.3,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.dp.dk/course/tr-amr-aarsmoede-2025/",
+          "firstPosition": 3,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://kurser.samarbejdssekretariatet.dk/",
+          "firstPosition": 21,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/ok26/",
+          "firstPosition": 22,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/wp-content/uploads/2025/03/33.01.1-Endelig-dateret-og-maskin-underskrevet-Overenskomst-for-akademikere-ansat-i-regioner.pdf",
+          "firstPosition": 24,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/wp-content/uploads/2025/03/31.01-Endelig-dateret-og-maskin-underskrevet-Overenskomst-for-akademikere-ansat-i-kommuner.pdf",
+          "firstPosition": 25,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/uddannelse-og-karriere/kurser-og-arrangementer/",
+          "firstPosition": 28,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.dp.dk/uddannelse-og-karriere/",
+          "firstPosition": 34,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 49,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 50,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 51,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -1924,6 +8613,58 @@ export const realSnapshot = {
       "openRate": 73.91,
       "clickRate": 13.04,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/",
+          "firstPosition": 3,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/uddannelse-og-karriere/",
+          "firstPosition": 5,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/medlemskab/medlemsfordele/kontante-fordele/",
+          "firstPosition": 7,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://mitdp.dk/Home/MyProfile/",
+          "firstPosition": 9,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/nyt-mitdp/",
+          "firstPosition": 11,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://skat.dk/borger",
+          "firstPosition": 12,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 19,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 20,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 21,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -1937,6 +8678,33 @@ export const realSnapshot = {
       "openRate": 73.46,
       "clickRate": 18.99,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.survey-xact.dk/LinkCollector",
+          "firstPosition": 4,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 17,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 18,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 19,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -1950,6 +8718,28 @@ export const realSnapshot = {
       "openRate": 68.96,
       "clickRate": 0.59,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 9,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 10,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 11,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -1963,6 +8753,93 @@ export const realSnapshot = {
       "openRate": 45.3,
       "clickRate": 7.57,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://mitdp.dk/Home/MyProfile/",
+          "firstPosition": 3,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/ansaettelsesvilkaar/ferie-og-fridage/",
+          "firstPosition": 4,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://akademikerpension.dk/alfapauseopsparing/",
+          "firstPosition": 11,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/lovgivning/persondataforordningen-gdpr/",
+          "firstPosition": 13,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.sundhed.dk/",
+          "firstPosition": 14,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/photo/",
+          "firstPosition": 15,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.ieft.dk/",
+          "firstPosition": 17,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/uddannelse-og-karriere/aarsmoede-2025/",
+          "firstPosition": 18,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://candidate.hr-manager.net/ApplicationInit.aspx",
+          "firstPosition": 23,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/fag-og-politik/hoeringer-og-udpegninger/abortnaevn/",
+          "firstPosition": 24,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/nyt-mitdp/",
+          "firstPosition": 29,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://lsb.nemtilmeld.dk/826/",
+          "firstPosition": 30,
+          "occurrences": 1
+        },
+        {
+          "destination": "http://www.psykologjob.dk/",
+          "firstPosition": 31,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 39,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 40,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 41,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -1976,6 +8853,53 @@ export const realSnapshot = {
       "openRate": 51.58,
       "clickRate": 6.31,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.psykologjob.dk/resultat/psykolog-til-boerne-og-ungeomraadet-i-det-nationale-sorgcenter-i-aalbo-lja-85971239.aspx",
+          "firstPosition": 9,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.psykologjob.dk/resultat/psykolog-til-boerne-og-ungeomraadet-i-det-nationale-sorgcenter-i-aarhus-lja-85969755.aspx",
+          "firstPosition": 16,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/p-psykologernes-fagmagasin/podcasts/podcast-lyden-af-fagmagasinet-p/",
+          "firstPosition": 17,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/selvstaendig/psykolog-med-ydernummer/saadan-ydernummer/",
+          "firstPosition": 21,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/selvstaendig/psykolog-med-ydernummer/saadan-ydernummer/saadan-soeger-du-om-ydernummer/ledige-ydernumre/",
+          "firstPosition": 22,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 30,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 31,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 32,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -1989,6 +8913,83 @@ export const realSnapshot = {
       "openRate": 45.71,
       "clickRate": 8.62,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.dp.dk/uddannelse-og-karriere/kurser-og-arrangementer/",
+          "firstPosition": 3,
+          "occurrences": 4
+        },
+        {
+          "destination": "https://www.psykologjob.dk/resultat/psykolog-til-boerne-og-ungeomraadet-i-det-nationale-sorgcenter-i-aalbo-lja-85971239.aspx",
+          "firstPosition": 8,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/course/supervision-af-supervision-2/",
+          "firstPosition": 12,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.psykologjob.dk/resultat/psykolog-til-boerne-og-ungeomraadet-i-det-nationale-sorgcenter-i-aarhus-lja-85969755.aspx",
+          "firstPosition": 16,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/p-psykologernes-fagmagasin/podcasts/podcast-lyden-af-fagmagasinet-p/",
+          "firstPosition": 17,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/course/nyt-den-medicinerede-klient/",
+          "firstPosition": 19,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/course/neurokemi/",
+          "firstPosition": 21,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/course/med-individet-i-fokus/",
+          "firstPosition": 23,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://skovpsykolog.dk/lejrbaalsmetoden/",
+          "firstPosition": 27,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/uddannelse-og-karriere/aarsmoede-2025/",
+          "firstPosition": 28,
+          "occurrences": 1
+        },
+        {
+          "destination": "http://www.psykologjob.dk/",
+          "firstPosition": 29,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 36,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 37,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 38,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -2002,6 +9003,53 @@ export const realSnapshot = {
       "openRate": 60.87,
       "clickRate": 4.35,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/ansaettelsesvilkaar/loen/",
+          "firstPosition": 3,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/ansaettelsesvilkaar/ansaettelseskontrakt/",
+          "firstPosition": 5,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/ansaettelsesvilkaar/ferie-og-fridage/",
+          "firstPosition": 7,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/ansaettelsesvilkaar/sygdom-og-fravaer/",
+          "firstPosition": 9,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/ansaettelsesvilkaar/afskedigelse-og-opsigelse/",
+          "firstPosition": 11,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 18,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 19,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 20,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -2015,6 +9063,63 @@ export const realSnapshot = {
       "openRate": 100,
       "clickRate": 0,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/om-dp/",
+          "firstPosition": 2,
+          "occurrences": 4
+        },
+        {
+          "destination": "https://mitdp.dk/Home/MyProfile/",
+          "firstPosition": 6,
+          "occurrences": 6
+        },
+        {
+          "destination": "https://www.dp.dk/nyt-mitdp/",
+          "firstPosition": 11,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/kontakt-os/",
+          "firstPosition": 13,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/medlemskab/",
+          "firstPosition": 15,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/",
+          "firstPosition": 16,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/netvaerk-og-job/karriere/",
+          "firstPosition": 18,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/medlemskab/medlemsfordele/",
+          "firstPosition": 20,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://twitter.com/DanskPsykologF",
+          "firstPosition": 24,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.linkedin.com/company/dansk-psykolog-forening/",
+          "firstPosition": 26,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 28,
+          "occurrences": 2
+        }
+      ],
       "segments": []
     },
     {
@@ -2028,6 +9133,103 @@ export const realSnapshot = {
       "openRate": 52.68,
       "clickRate": 19.58,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://mitdp.dk/Home/MyProfile/",
+          "firstPosition": 3,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/ansaettelsesvilkaar/boern-og-barsel/planlaeg-din-barsel/",
+          "firstPosition": 4,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/ansaettelsesvilkaar/boern-og-barsel/barselsberegner/",
+          "firstPosition": 5,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://vpt.dk/projekt/den-kommunale-kompetencefond",
+          "firstPosition": 6,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://denregionalekompetencefond.dk/",
+          "firstPosition": 7,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://kompetenceudvikling.dk/fonden/akademiker-fondspuljen/",
+          "firstPosition": 8,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/netvaerk-og-job/tillidshverv/bliv-tillidsrepraesentant/",
+          "firstPosition": 12,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/ansaettelsesvilkaar/ferie-og-fridage/",
+          "firstPosition": 14,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/selvstaendig/psykolog-med-ydernummer/saadan-ydernummer/saadan-soeger-du-om-ydernummer/",
+          "firstPosition": 15,
+          "occurrences": 2
+        },
+        {
+          "destination": "http://www.psy-kursusgruppen.dk/",
+          "firstPosition": 19,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.hogrefe.com/dk/kursus/mmpi-2-introduktionskursus",
+          "firstPosition": 23,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://skovpsykolog.dk/lejrbaalsmetoden/",
+          "firstPosition": 26,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/fag-og-politik/ny-autorisationsmodel/",
+          "firstPosition": 27,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/uddannelse-og-karriere/aarsmoede-2025/",
+          "firstPosition": 32,
+          "occurrences": 2
+        },
+        {
+          "destination": "http://www.psykologjob.dk/",
+          "firstPosition": 34,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 42,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 43,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 44,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -2041,6 +9243,33 @@ export const realSnapshot = {
       "openRate": 74.38,
       "clickRate": 24.38,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/ok26/",
+          "firstPosition": 9,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 16,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 17,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 18,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -2054,6 +9283,33 @@ export const realSnapshot = {
       "openRate": 60.87,
       "clickRate": 4.35,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.dp.dk/kontakt-os/",
+          "firstPosition": 9,
+          "occurrences": 6
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 21,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 22,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 23,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -2067,6 +9323,53 @@ export const realSnapshot = {
       "openRate": 66.84,
       "clickRate": 25.65,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.dp.dk/fag-og-politik/hoeringer-og-udpegninger/",
+          "firstPosition": 14,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/fag-og-politik/ny-autorisationsmodel/",
+          "firstPosition": 16,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.mbk.dk/",
+          "firstPosition": 19,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.mbk.dk/gratis-foredrag/",
+          "firstPosition": 20,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://vimeo.com/1055580450",
+          "firstPosition": 22,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 28,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 29,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 30,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -2080,6 +9383,58 @@ export const realSnapshot = {
       "openRate": 73.91,
       "clickRate": 13.04,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.dp.dk/netvaerk-og-job/karriere/autorisation-som-psykolog/",
+          "firstPosition": 3,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/netvaerk-og-job/karriere/",
+          "firstPosition": 5,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/fag-og-politik/fag/",
+          "firstPosition": 7,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/uddannelse-og-karriere/kurser-og-arrangementer/",
+          "firstPosition": 9,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/ansaettelsesvilkaar/loen/loenberegner/",
+          "firstPosition": 11,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/selvstaendig/selvstaendig-praksis/",
+          "firstPosition": 13,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 19,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 20,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 21,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -2093,6 +9448,63 @@ export const realSnapshot = {
       "openRate": 46.87,
       "clickRate": 10.45,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://mitdp.dk/Home/MyProfile/",
+          "firstPosition": 3,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/selvstaendig/psykolog-med-ydernummer/saadan-ydernummer/",
+          "firstPosition": 6,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.lsb.dk/lob/dp/fordele/loenkonto-medlemsfordel",
+          "firstPosition": 14,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/ansaettelsesvilkaar/boern-og-barsel/barselsberegner/",
+          "firstPosition": 15,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.linkedin.com/posts/dea-seidenfaden-9208695_mindre-kontrol-mere-st%C3%B8tte-politikerne-activity-7293285840712003585-yMos",
+          "firstPosition": 17,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/fag-og-politik/hoeringer-og-udpegninger/",
+          "firstPosition": 18,
+          "occurrences": 1
+        },
+        {
+          "destination": "http://www.psykologjob.dk/",
+          "firstPosition": 25,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 33,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 34,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 35,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -2106,6 +9518,33 @@ export const realSnapshot = {
       "openRate": 73.88,
       "clickRate": 25,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.survey-xact.dk/LinkCollector",
+          "firstPosition": 4,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 14,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 15,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 16,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -2119,6 +9558,83 @@ export const realSnapshot = {
       "openRate": 43.77,
       "clickRate": 6.66,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.dp.dk/uddannelse-og-karriere/kurser-og-arrangementer/",
+          "firstPosition": 3,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.dp.dk/course/med-individet-i-fokus/",
+          "firstPosition": 5,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/course/med-organisationen-i-fokus/",
+          "firstPosition": 7,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://iga-aarhus.dk/",
+          "firstPosition": 10,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/p-psykologernes-fagmagasin/podcasts/",
+          "firstPosition": 11,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/uddannelse-og-karriere/kurser-til-ledige-psykologer/",
+          "firstPosition": 13,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://casper-aaen.com/",
+          "firstPosition": 14,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/course/nyt-den-medicinerede-klient/",
+          "firstPosition": 21,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/course/neurokemi/",
+          "firstPosition": 23,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/uddannelse-og-karriere/aarsmoede-2025/",
+          "firstPosition": 26,
+          "occurrences": 1
+        },
+        {
+          "destination": "http://www.psykologjob.dk/",
+          "firstPosition": 27,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 34,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 35,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 36,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -2132,6 +9648,38 @@ export const realSnapshot = {
       "openRate": 59.13,
       "clickRate": 7.65,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.psykologjob.dk/resultat/psykologer-37-timer-til-paedagogisk-psykologisk-raadgivning-ppr-lja-85916576.aspx",
+          "firstPosition": 5,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.specialpsykologuddannelsen.dk/",
+          "firstPosition": 12,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 22,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 23,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 24,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -2145,6 +9693,108 @@ export const realSnapshot = {
       "openRate": 53.06,
       "clickRate": 13.53,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://mitdp.dk/Home/MyProfile/",
+          "firstPosition": 3,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://kompetenceudvikling.dk/",
+          "firstPosition": 5,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/netvaerk-og-job/netvaerk/sektioner/studerende/god-semester-og-studiestart/",
+          "firstPosition": 6,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/netvaerk-og-job/netvaerk/sektioner/studerende/god-semester-og-studiestart/;",
+          "firstPosition": 7,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/medlemskab/medlemsfordele/kontante-fordele/",
+          "firstPosition": 9,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/selvstaendig/psykolog-med-ydernummer/",
+          "firstPosition": 12,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/selvstaendig/selvstaendig-praksis/oekonomi-moms-og-administration/honorarer/",
+          "firstPosition": 13,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/selvstaendig/psykolog-med-ydernummer/saadan-ydernummer/",
+          "firstPosition": 14,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/selvstaendig/",
+          "firstPosition": 15,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/posts/dea-seidenfaden-9208695_gode-behandlingstilbud-tilstr%C3%A6kkelig-kapacitet-activity-7291113295690829825-BKJ8",
+          "firstPosition": 18,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/posts/dea-seidenfaden-9208695_hurtigere-hj%C3%A6lp-og-bedre-st%C3%B8tte-til-familier-activity-7290801391202103296-Yemp",
+          "firstPosition": 19,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/medlemskab/medlemsfordele/kontante-fordele/faa-medlemsfordele-i-laan-spar/",
+          "firstPosition": 33,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.specialpsykologuddannelsen.dk/",
+          "firstPosition": 35,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.hogrefe.com/dk/shop/five-digit-test.html",
+          "firstPosition": 36,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.psykologjob.dk/resultat/psykologer-37-timer-til-paedagogisk-psykologisk-raadgivning-ppr-lja-85916576.aspx",
+          "firstPosition": 37,
+          "occurrences": 1
+        },
+        {
+          "destination": "http://www.psykologjob.dk/",
+          "firstPosition": 38,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 46,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 47,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 48,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -2158,6 +9808,28 @@ export const realSnapshot = {
       "openRate": 100,
       "clickRate": 100,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 9,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 10,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 11,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -2171,6 +9843,48 @@ export const realSnapshot = {
       "openRate": 59.73,
       "clickRate": 16.97,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.dp.dk/uddannelse-og-karriere/kurser-og-arrangementer/",
+          "firstPosition": 10,
+          "occurrences": 4
+        },
+        {
+          "destination": "https://www.samarbejdssekretariatet.dk/kursuskalender/",
+          "firstPosition": 11,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/uddannelse-og-karriere/",
+          "firstPosition": 21,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/course/tr-amr-aarsmoede-2025/",
+          "firstPosition": 24,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 37,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 38,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 39,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -2184,6 +9898,33 @@ export const realSnapshot = {
       "openRate": 81.48,
       "clickRate": 7.41,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.sbst.dk/viso/kontakt-og-henvendelse/raadgivning-groenland",
+          "firstPosition": 4,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 10,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 11,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 12,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -2197,6 +9938,63 @@ export const realSnapshot = {
       "openRate": 82.61,
       "clickRate": 43.48,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/om-dp/",
+          "firstPosition": 2,
+          "occurrences": 4
+        },
+        {
+          "destination": "https://mitdp.dk/Home/MyProfile/",
+          "firstPosition": 6,
+          "occurrences": 6
+        },
+        {
+          "destination": "https://www.dp.dk/nyt-mitdp/",
+          "firstPosition": 11,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/kontakt-os/",
+          "firstPosition": 13,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/medlemskab/",
+          "firstPosition": 15,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/",
+          "firstPosition": 16,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/netvaerk-og-job/karriere/",
+          "firstPosition": 18,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/medlemskab/medlemsfordele/",
+          "firstPosition": 20,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://twitter.com/DanskPsykologF",
+          "firstPosition": 24,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.linkedin.com/company/dansk-psykolog-forening/",
+          "firstPosition": 26,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 28,
+          "occurrences": 2
+        }
+      ],
       "segments": []
     },
     {
@@ -2210,6 +10008,83 @@ export const realSnapshot = {
       "openRate": 60.73,
       "clickRate": 11.12,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.lederweb.dk/kan-du-lede-opad/",
+          "firstPosition": 6,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.lederweb.dk/",
+          "firstPosition": 7,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://denregionalekompetencefond.dk/",
+          "firstPosition": 11,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/netvaerk-og-job/karriere/kompetencefonde/",
+          "firstPosition": 13,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/fag-og-politik/hoeringer-og-udpegninger/",
+          "firstPosition": 14,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/uddannelse-og-karriere/systematisk-efteruddannelse/",
+          "firstPosition": 15,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://bsky.app/profile/danskpsykologf.bsky.social",
+          "firstPosition": 20,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://bsky.app/profile/deaseidenfaden.bsky.social",
+          "firstPosition": 21,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://rm.plan2learn.dk/kursusvalg.aspx",
+          "firstPosition": 22,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://hestengeinsider.dk/datc-psyk",
+          "firstPosition": 27,
+          "occurrences": 1
+        },
+        {
+          "destination": "http://www.psykologjob.dk/",
+          "firstPosition": 28,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 35,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 36,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 37,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -2223,6 +10098,48 @@ export const realSnapshot = {
       "openRate": 47.32,
       "clickRate": 7.16,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.dp.dk/p-psykologernes-fagmagasin/artikler/hvad-er-barnets-perspektiv/",
+          "firstPosition": 8,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://rm.plan2learn.dk/kursusvalg.aspx",
+          "firstPosition": 14,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/medlemskab/medlemsfordele/kontante-fordele/sundhedsordning-med-dp/",
+          "firstPosition": 19,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/selvstaendig/psykolog-med-ydernummer/saadan-ydernummer/tildeling-af-ydernumre/",
+          "firstPosition": 21,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 28,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 29,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 30,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -2236,6 +10153,33 @@ export const realSnapshot = {
       "openRate": 66.4,
       "clickRate": 8.8,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.dp.dk/uddannelse-og-karriere/kurser-og-arrangementer/",
+          "firstPosition": 3,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 13,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 14,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 15,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -2249,6 +10193,63 @@ export const realSnapshot = {
       "openRate": 40.21,
       "clickRate": 9.44,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.dp.dk/uddannelse-og-karriere/kurser-og-arrangementer/",
+          "firstPosition": 3,
+          "occurrences": 4
+        },
+        {
+          "destination": "https://www.dp.dk/uddannelse-og-karriere/kurser-til-ledige-psykologer/",
+          "firstPosition": 8,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://kognitivudvikling.dk/kursus/",
+          "firstPosition": 9,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/course/med-individet-i-fokus/",
+          "firstPosition": 14,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://danskpsykologforening.podbean.com/e/overlevelsesguide-til-dit-f%c3%b8rste-job-som-psykolog/",
+          "firstPosition": 19,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://hestengeinsider.dk/datc-psyk",
+          "firstPosition": 21,
+          "occurrences": 1
+        },
+        {
+          "destination": "http://www.psykologjob.dk/",
+          "firstPosition": 29,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 36,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 37,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 38,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -2262,6 +10263,83 @@ export const realSnapshot = {
       "openRate": 55.8,
       "clickRate": 12.33,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "http://www.dp.dk/medlemskab/medlemsfordele",
+          "firstPosition": 3,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://psykologeridanmark.dk/2017/08/eksamensangst/",
+          "firstPosition": 4,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/ansaettelsesvilkaar/arbejdstid/registrering-af-din-arbejdstid/",
+          "firstPosition": 7,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/permalink.php",
+          "firstPosition": 8,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/selvstaendig/psykolog-med-ydernummer/saadan-ydernummer/tildeling-af-ydernumre/",
+          "firstPosition": 11,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/medlemskab/medlemsfordele/kontante-fordele/sundhedsordning-med-dp/",
+          "firstPosition": 12,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.hogrefe.com/dk/shop/five-digit-test.html",
+          "firstPosition": 13,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/fag-og-politik/hoeringer-og-udpegninger/apa/",
+          "firstPosition": 16,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.koceno.dk/kurser",
+          "firstPosition": 18,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/posts/dea-seidenfaden-9208695_m%C3%A6nd-og-%C3%A6ldre-k%C3%A6mper-ogs%C3%A5-med-kriser-og-psykiske-activity-7282035993287811074-75wt",
+          "firstPosition": 20,
+          "occurrences": 1
+        },
+        {
+          "destination": "http://www.psykologjob.dk/",
+          "firstPosition": 23,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 30,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 31,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 32,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -2275,6 +10353,38 @@ export const realSnapshot = {
       "openRate": 0,
       "clickRate": 0,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/medlemskab/medlemsfordele/",
+          "firstPosition": 2,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.survey-xact.dk/LinkCollector",
+          "firstPosition": 3,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/kontakt-os/",
+          "firstPosition": 6,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://twitter.com/DanskPsykologF",
+          "firstPosition": 9,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.linkedin.com/company/dansk-psykolog-forening/",
+          "firstPosition": 11,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 13,
+          "occurrences": 2
+        }
+      ],
       "segments": []
     },
     {
@@ -2288,6 +10398,33 @@ export const realSnapshot = {
       "openRate": 100,
       "clickRate": 0,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.dp.dk/uddannelse-og-karriere/",
+          "firstPosition": 3,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 9,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 10,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 11,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -2301,6 +10438,28 @@ export const realSnapshot = {
       "openRate": 0,
       "clickRate": 0,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 1,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 5,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 6,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 7,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -2314,6 +10473,28 @@ export const realSnapshot = {
       "openRate": 0,
       "clickRate": 0,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 1,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 5,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 6,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 7,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -2327,6 +10508,28 @@ export const realSnapshot = {
       "openRate": 100,
       "clickRate": 0,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 9,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 10,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 11,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -2340,6 +10543,48 @@ export const realSnapshot = {
       "openRate": 100,
       "clickRate": 0,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.dp.dk/",
+          "firstPosition": 2,
+          "occurrences": 3
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/",
+          "firstPosition": 3,
+          "occurrences": 2
+        },
+        {
+          "destination": "http://asdads/",
+          "firstPosition": 7,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.youtube.com/watch",
+          "firstPosition": 8,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 14,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 15,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://x.com/DanskPsykologF",
+          "firstPosition": 16,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.linkedin.com/company/3287699/",
+          "firstPosition": 17,
+          "occurrences": 1
+        }
+      ],
       "segments": []
     },
     {
@@ -2353,6 +10598,33 @@ export const realSnapshot = {
       "openRate": 0,
       "clickRate": 0,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.survey-xact.dk/LinkCollector",
+          "firstPosition": 2,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/kontakt-os/",
+          "firstPosition": 5,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://twitter.com/DanskPsykologF",
+          "firstPosition": 8,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.linkedin.com/company/dansk-psykolog-forening/",
+          "firstPosition": 10,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 12,
+          "occurrences": 2
+        }
+      ],
       "segments": []
     },
     {
@@ -2366,6 +10638,48 @@ export const realSnapshot = {
       "openRate": 0,
       "clickRate": 0,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.survey-xact.dk/LinkCollector",
+          "firstPosition": 2,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/fag-og-politik/",
+          "firstPosition": 4,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/",
+          "firstPosition": 5,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/medlemskab/medlemsfordele/",
+          "firstPosition": 6,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 7,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://twitter.com/DanskPsykologF",
+          "firstPosition": 9,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.linkedin.com/company/dansk-psykolog-forening/",
+          "firstPosition": 11,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 13,
+          "occurrences": 2
+        }
+      ],
       "segments": []
     },
     {
@@ -2379,6 +10693,48 @@ export const realSnapshot = {
       "openRate": 0,
       "clickRate": 0,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.survey-xact.dk/LinkCollector",
+          "firstPosition": 2,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/fag-og-politik/",
+          "firstPosition": 4,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/",
+          "firstPosition": 5,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/medlemskab/medlemsfordele/",
+          "firstPosition": 6,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.facebook.com/DanskPsykologForening",
+          "firstPosition": 7,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://twitter.com/DanskPsykologF",
+          "firstPosition": 9,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.linkedin.com/company/dansk-psykolog-forening/",
+          "firstPosition": 11,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 13,
+          "occurrences": 2
+        }
+      ],
       "segments": []
     },
     {
@@ -2392,6 +10748,33 @@ export const realSnapshot = {
       "openRate": 0,
       "clickRate": 0,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.survey-xact.dk/LinkCollector",
+          "firstPosition": 2,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/kontakt-os/",
+          "firstPosition": 6,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://twitter.com/DanskPsykologF",
+          "firstPosition": 9,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.linkedin.com/company/dansk-psykolog-forening/",
+          "firstPosition": 11,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 13,
+          "occurrences": 2
+        }
+      ],
       "segments": []
     },
     {
@@ -2405,6 +10788,43 @@ export const realSnapshot = {
       "openRate": 0,
       "clickRate": 0,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.survey-xact.dk/LinkCollector",
+          "firstPosition": 2,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/fag-og-politik/",
+          "firstPosition": 4,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/",
+          "firstPosition": 5,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/medlemskab/medlemsfordele/",
+          "firstPosition": 6,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://twitter.com/DanskPsykologF",
+          "firstPosition": 9,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.linkedin.com/company/dansk-psykolog-forening/",
+          "firstPosition": 11,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 13,
+          "occurrences": 2
+        }
+      ],
       "segments": []
     },
     {
@@ -2418,6 +10838,43 @@ export const realSnapshot = {
       "openRate": 0,
       "clickRate": 0,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.survey-xact.dk/LinkCollector",
+          "firstPosition": 2,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/fag-og-politik/",
+          "firstPosition": 4,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/",
+          "firstPosition": 5,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/medlemskab/medlemsfordele/",
+          "firstPosition": 6,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://twitter.com/DanskPsykologF",
+          "firstPosition": 9,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.linkedin.com/company/dansk-psykolog-forening/",
+          "firstPosition": 11,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 13,
+          "occurrences": 2
+        }
+      ],
       "segments": []
     },
     {
@@ -2431,6 +10888,43 @@ export const realSnapshot = {
       "openRate": 0,
       "clickRate": 0,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.survey-xact.dk/LinkCollector",
+          "firstPosition": 2,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/fag-og-politik/",
+          "firstPosition": 4,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/",
+          "firstPosition": 5,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/medlemskab/medlemsfordele/",
+          "firstPosition": 6,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://twitter.com/DanskPsykologF",
+          "firstPosition": 9,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.linkedin.com/company/dansk-psykolog-forening/",
+          "firstPosition": 11,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 13,
+          "occurrences": 2
+        }
+      ],
       "segments": []
     },
     {
@@ -2444,6 +10938,43 @@ export const realSnapshot = {
       "openRate": 100,
       "clickRate": 0,
       "content": [],
+      "links": [
+        {
+          "destination": "https://www.survey-xact.dk/LinkCollector",
+          "firstPosition": 2,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.dp.dk/fag-og-politik/",
+          "firstPosition": 4,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/raadgivning/",
+          "firstPosition": 5,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://www.dp.dk/medlemskab/medlemsfordele/",
+          "firstPosition": 6,
+          "occurrences": 1
+        },
+        {
+          "destination": "https://twitter.com/DanskPsykologF",
+          "firstPosition": 9,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.linkedin.com/company/dansk-psykolog-forening/",
+          "firstPosition": 11,
+          "occurrences": 2
+        },
+        {
+          "destination": "https://www.instagram.com/danskpsykologforening/",
+          "firstPosition": 13,
+          "occurrences": 2
+        }
+      ],
       "segments": []
     }
   ],
