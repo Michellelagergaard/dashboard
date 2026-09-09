@@ -1,5 +1,6 @@
 import { writeFile } from "node:fs/promises";
 import { fetchIssueLinkCatalog, fetchSentIssues } from "./ungapped-client.mjs";
+import { memberSegmentField, memberSegmentFieldLabel, memberSegments, minimumPublicSegmentSize } from "../config/member-segments.mjs";
 
 const issues = await fetchSentIssues(process.env.UG_API);
 const analysis = await mapConcurrent(issues, 4, async issue => {
@@ -46,7 +47,13 @@ await writeFile("classification-review.json", JSON.stringify({
   methodology: {
     linkCatalog: "Destinations found in issue HTML; query strings, fragments, unsubscribe links and possible personal tokens are excluded.",
     linkClicks: "Ungapped API does not document clicks per link. Catalog presence must not be interpreted as a click.",
-    segments: "Segment names are issue metadata. No segment performance is inferred without documented aggregate API data.",
+    segments: `Segment performance must be based on ${memberSegmentFieldLabel} (${memberSegmentField}) and the centrally maintained mapping. Only aggregate groups of at least ${minimumPublicSegmentSize} recipients may be published. No performance is inferred without documented aggregate API data.`,
+  },
+  memberSegmentMapping: {
+    field: memberSegmentField,
+    fieldLabel: memberSegmentFieldLabel,
+    minimumPublicSegmentSize,
+    segments: memberSegments,
   },
   analysis,
   issues: review,
