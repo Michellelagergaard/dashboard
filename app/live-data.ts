@@ -32,15 +32,28 @@ export type LiveDashboardData = {
   status: "live" | "snapshot" | "unavailable";
 };
 
+type UngappedIssue = {
+  id: string;
+  name?: string;
+  subject?: string;
+  category?: string;
+  suggestedCategory?: string | null;
+  sentAt: string | null;
+  delivered: number;
+  openRate?: number | null;
+  clickRate?: number | null;
+  classificationMetadata?: { segments?: string[] };
+};
+
 export async function getLiveDashboardData(): Promise<LiveDashboardData> {
   const apiKey = process.env.UG_API;
   if (!apiKey) return { mailings: [], updatedAt: null, status: "unavailable" };
 
   try {
-    const issues = await fetchSentIssues(apiKey);
+    const issues = await fetchSentIssues(apiKey) as UngappedIssue[];
     const mailings = issues
-      .sort((a: any, b: any) => String(b.sentAt).localeCompare(String(a.sentAt)))
-      .map((issue: any) => ({
+      .sort((a, b) => String(b.sentAt).localeCompare(String(a.sentAt)))
+      .map((issue) => ({
         id: issue.id,
         title: issue.name || issue.subject || "Uden titel",
         subject: issue.subject || "Emnefelt mangler",
