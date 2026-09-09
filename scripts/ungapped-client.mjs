@@ -204,6 +204,61 @@ export async function fetchIssueSegmentPerformance(apiKey, issueId, fetchImpl = 
   return { available: true, results };
 }
 
+// Linkstatistik behandles kun som aggregerede rækker. Kandidatstierne er
+// begrænset til den dokumenterede statistikfamilie og svar valideres, før de
+// må blive en del af den offentlige datasamling.
+export async function fetchIssueSegmentLinkPerformance(apiKey, issueId, fetchImpl = fetch) {
+  const baseline = await fetchIssueLinkPerformance(apiKey, issueId, null, fetchImpl);
+  if (!baseline.available) return [];
+  const output = [];
+  for (const segment of memberSegments) {
+    const result = await fetchIssueLinkPerformance(apiKey, issueId, contactFilter(segment.value), fetchImpl);
+    // Et uændret resultat betyder, at kontaktfilteret sandsynligvis blev
+    // ignoreret. Det må aldrig udgives som et segmentresultat.
+    if (!result.available || sameLinkResults(baseline.results, result.results)) continue;
+    for (const item of result.results) {
+      if (item.clicks < minimumPublicSegmentSize) continue;
+      output.push({ ...item, audience: segment.label });
+    }
+  }
+  return output;
+}
+
+async function fetchIssueLinkPerformance(apiKey, issueId, filter, fetchImpl) {
+  const candidates = ["VisitedLinks", "Links", "LinkClicks"];
+  for (const name of candidates) {
+    const url = new URL(`/Issues/${encodeURIComponent(issueId)}/Statistics/${name}`, API_BASE);
+    if (filter) url.searchParams.set("contactFilter", filter);
+    try {
+      const raw = await getJson(url, apiKey, fetchImpl);
+      const results = reduceLinkStatistics(raw);
+      if (results.length) return { available: true, results };
+    } catch {
+      // Ikke alle Ungapped-konti udstiller alle statistikvisninger i API'et.
+    }
+  }
+  return { available: false, results: [] };
+}
+
+function sameLinkResults(a, b) {
+  if (a.length !== b.length) return false;
+  const key = item => `${item.destination}|${item.clicks}`;
+  return [...a].map(key).sort().every((value, index) => value === [...b].map(key).sort()[index]);
+}
+
+function reduceLinkStatistics(raw) {
+  if (!Array.isArray(raw)) return [];
+  const rows = [];
+  for (const item of raw) {
+    if (!item || typeof item !== "object") continue;
+    const destination = safeDestination(item.Url || item.URL || item.Link || item.Destination || item.Href);
+    const clicks = number(item.UniqueClicks ?? item.UniqueClickCount ?? item.ClickCount ?? item.Clicks);
+    if (!destination || clicks < 1) continue;
+    rows.push({ title: destination, destination, clicks, rate: 0 });
+  }
+  return rows;
+}
+
 function contactFilter(value) {
   const escaped = String(value).replaceAll("'", "''");
   return `((${memberSegmentField} ne null and ${memberSegmentField} ne '' and indexof(${memberSegmentField}, '${escaped}') ge 0))`;
