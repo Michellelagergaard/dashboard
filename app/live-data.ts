@@ -24,6 +24,14 @@ export type LiveMailing = {
     occurrences: number;
   }>;
   segments: string[];
+  segmentPerformance?: Array<{
+    name: string;
+    recipientsLabel: string;
+    openRate: number;
+    clickRate: number;
+    ctor: number;
+    unsubscribes: number | null;
+  }>;
 };
 
 export type LiveDashboardData = {
