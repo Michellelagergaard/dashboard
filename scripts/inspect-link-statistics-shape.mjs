@@ -51,8 +51,3 @@ function safeDestination(value) {
     return !/(unsubscribe|afmeld|recipient|contact|email|token|signature|personal)/i.test(`${url.hostname}${url.pathname}`);
   } catch { return false; }
 }
-
-function safeDestination(value) {
-  if (typeof value !== "string" || !/^https?:\/\//i.test(value)) return false;
-  try { const url = new URL(value); return !/(unsubscribe|afmeld|recipient|contact|email|token|signature|personal)/i.test(`${url.hostname}${url.pathname}`); } catch { return false; }
-}
