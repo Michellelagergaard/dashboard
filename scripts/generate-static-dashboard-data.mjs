@@ -13,7 +13,10 @@ const sorted = [...issues].sort((a, b) => String(b.sentAt).localeCompare(String(
 const segmentIssueIds = new Set(sorted.filter(issue => issue.delivered >= 500).slice(0, 5).map(issue => issue.id));
 const linkIssueIds = new Set(sorted.slice(0, 20).map(issue => issue.id));
 
-// Link- og segmentmålinger hentes bevidst enkeltvis. Ungapped kan afvise\n// parallelle statistikforespørgsler; en stabil dataopdatering er vigtigere end\n// marginalt kortere køretid.\nconst mailings = await mapConcurrent(sorted, 1, async (issue) => {
+// Link- og segmentmålinger hentes bevidst enkeltvis. Ungapped kan afvise
+// parallelle statistikforespørgsler; en stabil dataopdatering er vigtigere end
+// marginalt kortere køretid.
+const mailings = await mapConcurrent(sorted, 1, async (issue) => {
   let links = [];
   if (linkIssueIds.has(issue.id)) {
     try {
@@ -81,7 +84,10 @@ const data = {
 
 await writeFile(
   new URL("../app/generated-dashboard-data.ts", import.meta.url),
-  `import type { LiveDashboardData } from "./live-data";\n\nexport const generatedDashboardData = ${JSON.stringify(data)} as const satisfies LiveDashboardData;\n`,
+  `import type { LiveDashboardData } from "./live-data";
+
+export const generatedDashboardData = ${JSON.stringify(data)} as const satisfies LiveDashboardData;
+`,
   "utf8",
 );
 
