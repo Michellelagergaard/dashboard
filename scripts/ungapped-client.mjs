@@ -206,9 +206,9 @@ export async function fetchIssueSegmentPerformance(apiKey, issueId, fetchImpl = 
   return { available: true, results };
 }
 
-// Linkstatistik behandles kun som aggregerede rækker. Kandidatstierne er
-// begrænset til den dokumenterede statistikfamilie og svar valideres, før de
-// må blive en del af den offentlige datasamling.
+// Linkstatistik behandles kun som aggregerede rækker fra Ungappeds
+// dokumenterede /Statistics/Links-visning. Svar valideres, før de må blive
+// en del af den offentlige datasamling.
 export async function fetchIssueSegmentLinkPerformance(apiKey, issueId, fetchImpl = fetch) {
   const baseline = await fetchIssueLinkPerformance(apiKey, issueId, null, fetchImpl);
   if (!baseline.available) return [];
@@ -228,7 +228,7 @@ export async function fetchIssueSegmentLinkPerformance(apiKey, issueId, fetchImp
 
 async function fetchIssueLinkPerformance(apiKey, issueId, filter, fetchImpl) {
   if (linkStatisticsUnavailable) return { available: false, results: [] };
-  const candidates = ["VisitedLinks", "Links", "LinkClicks"];
+  const candidates = ["Links"];
   const paths = resolvedLinkStatisticsPath ? [resolvedLinkStatisticsPath] : candidates;
   for (const name of paths) {
     const url = new URL(`/Issues/${encodeURIComponent(issueId)}/Statistics/${name}`, API_BASE);
@@ -255,12 +255,16 @@ function sameLinkResults(a, b) {
 }
 
 function reduceLinkStatistics(raw) {
-  if (!Array.isArray(raw)) return [];
+  const items = Array.isArray(raw)
+    ? raw
+    : raw && typeof raw === "object"
+      ? [raw.Items, raw.Results, raw.Links, raw.Value, raw.value].find(Array.isArray) || []
+      : [];
   const rows = [];
-  for (const item of raw) {
+  for (const item of items) {
     if (!item || typeof item !== "object") continue;
-    const destination = safeDestination(item.Url || item.URL || item.Link || item.Destination || item.Href);
-    const clicks = number(item.UniqueClicks ?? item.UniqueClickCount ?? item.ClickCount ?? item.Clicks);
+    const destination = safeDestination(item.Url || item.URL || item.Link || item.Destination || item.Href || item.TargetUrl);
+    const clicks = number(item.UniqueClicks ?? item.UniqueClickCount ?? item.UniqueClick ?? item.ClickCount ?? item.Clicks);
     if (!destination || clicks < 1) continue;
     rows.push({ title: destination, destination, clicks, rate: 0 });
   }
