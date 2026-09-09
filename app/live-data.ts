@@ -32,6 +32,12 @@ export type LiveMailing = {
     ctor: number;
     unsubscribes: number | null;
   }>;
+  segmentLinkPerformance?: Array<{
+    title: string;
+    audience: string;
+    clicks: number;
+    rate: number;
+  }>;
 };
 
 export type LiveDashboardData = {
