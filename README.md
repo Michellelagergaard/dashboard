@@ -1,6 +1,6 @@
 # DP's udsendelsesdashboard
 
-Prototype til analyse af Dansk Psykolog Forenings medlemskommunikation i Ungapped. Første version bruger udelukkende syntetiske testdata.
+Analyse af Dansk Psykolog Forenings medlemskommunikation i Ungapped. Den offentlige dashboard-udgave viser et dataminimeret øjebliksbillede af godkendte udsendelsesdata.
 
 ## Indhold
 
@@ -9,6 +9,8 @@ Prototype til analyse af Dansk Psykolog Forenings medlemskommunikation i Ungappe
 - Resultater pr. målgruppe og segment
 - Datakvalitet og synkroniseringsstatus
 - Responsivt layout og A4-udskrift
+
+Det fulde data- og beregningsgrundlag er beskrevet i [Ungapped data catalogue](docs/api-data-catalog.md).
 
 ## Lokal udvikling
 
