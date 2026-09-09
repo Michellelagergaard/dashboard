@@ -2,8 +2,9 @@ const apiKey = process.env.UG_API;
 if (!apiKey) throw new Error("UG_API mangler.");
 
 const base = "https://api.ungapped.com";
-const sent = await getJson(new URL("/Issues/SentList?page=0&pageSize=1", base));
-const issueId = sent?.[0]?.IssueId;
+const sent = await getJson(new URL("/Issues/SentList?page=0&pageSize=100", base));
+const target = sent.find(issue => String(issue.IssueName || issue.Subject || "").includes("46 ledige ydernumre")) || sent?.[0];
+const issueId = target?.IssueId;
 if (!issueId) throw new Error("Ingen udsendelse fundet.");
 
 const response = await getJson(new URL(`/Issues/${encodeURIComponent(issueId)}/Statistics/Links`, base));
@@ -40,4 +41,12 @@ function firstObject(value) {
 function nestedArrayKeys(value) {
   if (!value || typeof value !== "object" || Array.isArray(value)) return [];
   return Object.entries(value).filter(([, child]) => Array.isArray(child)).map(([key]) => key).sort();
+}
+
+function safeDestination(value) {
+  if (typeof value !== "string" || !/^https?:\/\//i.test(value)) return false;
+  try {
+    const url = new URL(value);
+    return !/(unsubscribe|afmeld|recipient|contact|email|token|signature|personal)/i.test(`${url.hostname}${url.pathname}`);
+  } catch { return false; }
 }
