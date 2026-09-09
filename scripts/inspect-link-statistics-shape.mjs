@@ -1,3 +1,4 @@
+import { fetchIssueLinkPerformance } from "./ungapped-client.mjs";
 const apiKey = process.env.UG_API;
 if (!apiKey) throw new Error("UG_API mangler.");
 
@@ -8,6 +9,7 @@ const issueId = target?.IssueId;
 if (!issueId) throw new Error("Ingen udsendelse fundet.");
 
 const response = await getJson(new URL(`/Issues/${encodeURIComponent(issueId)}/Statistics/Links`, base));
+const normalized = await fetchIssueLinkPerformance(apiKey, issueId);
 const rows = Array.isArray(response) ? response.filter(value => value && typeof value === "object") : [];
 const first = rows[0] || firstObject(response);
 
@@ -25,6 +27,8 @@ console.log(JSON.stringify({
   rowsWithPublicTotalClicks: rows.filter(row => Number(row.ClickCount) >= 5).length,
   rowsWithHttpUrl: rows.filter(row => typeof row.Url === "string" && /^https?:\/\//i.test(row.Url)).length,
   rowsPassingPublicationSafety: rows.filter(row => safeDestination(row.Url)).length,
+  clientMarksAvailable: normalized.available,
+  clientPublicRows: normalized.results.filter(row => row.clicks >= 5).length,
 }, null, 2));
 
 async function getJson(url) {
