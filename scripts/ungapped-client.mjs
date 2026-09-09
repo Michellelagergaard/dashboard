@@ -1,3 +1,5 @@
+import { memberSegmentField, memberSegments, minimumPublicSegmentSize } from "../config/member-segments.mjs";
+
 const API_BASE = "https://api.ungapped.com";
 const PAGE_SIZE = 100;
 const MAX_PAGES = 50;
@@ -158,6 +160,42 @@ export async function fetchSentIssues(apiKey, fetchImpl = fetch) {
     const statistics = await getJson(url, apiKey, fetchImpl);
     return sanitizeIssue(issue, statistics);
   });
+}
+
+// Henter kun den samme aggregerede statistik, som vises i Ungappeds filtervisning.
+// Ingen kontakter eller hændelser på personniveau hentes eller gemmes.
+export async function fetchIssueSegmentPerformance(apiKey, issueId, fetchImpl = fetch) {
+  const results = [];
+  for (const segment of memberSegments) {
+    const url = new URL(`/Issues/${encodeURIComponent(issueId)}/Statistics/Overview`, API_BASE);
+    url.searchParams.set("contactFilter", contactFilter(segment.value));
+    let statistics;
+    try {
+      statistics = await getJson(url, apiKey, fetchImpl);
+    } catch (error) {
+      return { available: false, results: [], reason: error instanceof Error ? error.message : "Ukendt API-fejl" };
+    }
+    const recipients = number(statistics.RecipientCount);
+    const delivered = number(statistics.ReceivedCount) || Math.max(0, recipients - number(statistics.FailedCount) - number(statistics.BounceCount));
+    if (recipients < minimumPublicSegmentSize || delivered < minimumPublicSegmentSize) continue;
+    const opens = number(statistics.OpenCount);
+    const clicks = number(statistics.ClickCount);
+    results.push({
+      name: segment.label,
+      recipients,
+      delivered,
+      openRate: rate(opens, delivered),
+      clickRate: rate(clicks, delivered),
+      ctor: rate(clicks, opens),
+      unsubscribes: number(statistics.UnsubscribeCount),
+    });
+  }
+  return { available: true, results };
+}
+
+function contactFilter(value) {
+  const escaped = String(value).replaceAll("'", "''");
+  return `((${memberSegmentField} ne null and ${memberSegmentField} ne '' and indexof(${memberSegmentField}, '${escaped}') ge 0))`;
 }
 
 async function getJson(url, apiKey, fetchImpl, attempt = 0) {
