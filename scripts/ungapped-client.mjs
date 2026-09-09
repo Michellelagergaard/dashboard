@@ -268,7 +268,10 @@ function reduceLinkStatistics(raw) {
   for (const item of items) {
     if (!item || typeof item !== "object") continue;
     const destination = safeDestination(item.Url || item.URL || item.Link || item.Destination || item.Href || item.TargetUrl);
-    // Ungappeds Links-statistik dokumenterer ContactCount som antallet af\n    // unikke kontakter, der har klikket. ClickCount er samlede klik og må ikke\n    // vises som unikke klik.\n    const clicks = number(item.UniqueClicks ?? item.UniqueClickCount ?? item.UniqueClick ?? item.ContactCount ?? item.ClickCount ?? item.Clicks);
+    // Ungappeds Links-statistik dokumenterer ContactCount som antallet af
+    // unikke kontakter, der har klikket. ClickCount er samlede klik og må ikke
+    // vises som unikke klik.
+    const clicks = number(item.UniqueClicks ?? item.UniqueClickCount ?? item.UniqueClick ?? item.ContactCount ?? item.ClickCount ?? item.Clicks);
     if (!destination || clicks < 1) continue;
     rows.push({ title: destination, destination, clicks, rate: 0 });
   }
