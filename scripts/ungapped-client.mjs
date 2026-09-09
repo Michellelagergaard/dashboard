@@ -3,6 +3,8 @@ import { memberSegmentField, memberSegments, minimumPublicSegmentSize } from "..
 const API_BASE = "https://api.ungapped.com";
 const PAGE_SIZE = 100;
 const MAX_PAGES = 50;
+let resolvedLinkStatisticsPath;
+let linkStatisticsUnavailable = false;
 
 export function sanitizeIssue(issue, statistics = issue) {
   const sent = number(statistics.SentCount);
@@ -225,18 +227,24 @@ export async function fetchIssueSegmentLinkPerformance(apiKey, issueId, fetchImp
 }
 
 async function fetchIssueLinkPerformance(apiKey, issueId, filter, fetchImpl) {
+  if (linkStatisticsUnavailable) return { available: false, results: [] };
   const candidates = ["VisitedLinks", "Links", "LinkClicks"];
-  for (const name of candidates) {
+  const paths = resolvedLinkStatisticsPath ? [resolvedLinkStatisticsPath] : candidates;
+  for (const name of paths) {
     const url = new URL(`/Issues/${encodeURIComponent(issueId)}/Statistics/${name}`, API_BASE);
     if (filter) url.searchParams.set("contactFilter", filter);
     try {
       const raw = await getJson(url, apiKey, fetchImpl);
       const results = reduceLinkStatistics(raw);
-      if (results.length) return { available: true, results };
+      if (results.length) {
+        resolvedLinkStatisticsPath = name;
+        return { available: true, results };
+      }
     } catch {
       // Ikke alle Ungapped-konti udstiller alle statistikvisninger i API'et.
     }
   }
+  if (!resolvedLinkStatisticsPath) linkStatisticsUnavailable = true;
   return { available: false, results: [] };
 }
 
