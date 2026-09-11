@@ -120,5 +120,28 @@ jobs:
             status: issueResponse.status,
             schema: describe(issue),
           }));
+
+          // Finder kun feltnavne, som kan repræsentere emnelinjevarianter.
+          // Værdier, indhold og modtageroplysninger må aldrig logges.
+          function subjectFieldPaths(value, path = "", depth = 0, found = []) {
+            if (depth > 5 || value == null || typeof value !== "object") return found;
+            if (Array.isArray(value)) {
+              if (value[0] !== undefined) subjectFieldPaths(value[0], `${path}[]`, depth + 1, found);
+              return found;
+            }
+            for (const [key, child] of Object.entries(value)) {
+              const childPath = path ? `${path}.${key}` : key;
+              if (/(subject|subjectline|preheader|variant|abtest|split)/i.test(key)) {
+                found.push({ path: childPath, shape: describe(child) });
+              }
+              subjectFieldPaths(child, childPath, depth + 1, found);
+            }
+            return found;
+          }
+          console.log(JSON.stringify({
+            name: "subject-variant-field-structure",
+            status: issueResponse.status,
+            fields: subjectFieldPaths(issue),
+          }));
           if (!issueResponse.ok) process.exitCode = 1;
           NODE
