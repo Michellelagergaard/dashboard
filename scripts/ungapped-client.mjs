@@ -142,6 +142,60 @@ export async function fetchIssueLinkCatalog(apiKey, issueId, fetchImpl = fetch) 
   return extractLinkCatalog(issue.BodyHtml || issue.AutosavedHtml || "");
 }
 
+
+// Dynamiske emnelinjer er en del af selve udsendelsesopsætningen. I DP's
+// nyhedsbrev styres de af Sektioner (Medlemskaber) / Contact.Custom3 og af
+// Har ydernummer / Contact.CustomLong2. Kun den konkrete regel og emnelinje
+// hentes; ingen kontakter eller individuelle modtagerdata indgår.
+export async function fetchIssueSegmentSubjects(apiKey, issueId, fetchImpl = fetch) {
+  if (!apiKey) throw new Error("UG_API er ikke konfigureret");
+  if (!text(issueId)) throw new Error("Udsendelses-id mangler");
+  const issue = await getJson(new URL(`/Issues/${encodeURIComponent(issueId)}`, API_BASE), apiKey, fetchImpl);
+  return extractSegmentSubjects(issue);
+}
+
+function extractSegmentSubjects(issue) {
+  const expected = new Map(memberSegments.map(segment => [normalize(segment.value), segment.label]));
+  const output = new Map();
+  const seen = new Set();
+
+  function conditionsWithin(value, depth = 0, found = []) {
+    if (depth > 4 || value == null) return found;
+    if (Array.isArray(value)) {
+      for (const item of value) conditionsWithin(item, depth + 1, found);
+      return found;
+    }
+    if (typeof value !== "object") return found;
+    const property = text(value.Property || value.PropertyName || value.Field || value.FieldName || value.ContactProperty);
+    const match = text(value.Value || value.ConditionValue || value.MatchValue || value.ComparisonValue);
+    if (property && match) found.push({ property, match });
+    for (const child of Object.values(value)) conditionsWithin(child, depth + 1, found);
+    return found;
+  }
+
+  function visit(value, depth = 0) {
+    if (depth > 6 || value == null || typeof value !== "object" || seen.has(value)) return;
+    seen.add(value);
+    if (Array.isArray(value)) {
+      for (const item of value) visit(item, depth + 1);
+      return;
+    }
+    const subject = text(value.Subject || value.SubjectLine || value.SubjectText || value.DynamicSubject);
+    if (subject) {
+      for (const condition of conditionsWithin(value)) {
+        const property = normalize(condition.property);
+        if (property !== "contact.custom3" && property !== "contact.customlong2") continue;
+        const audience = expected.get(normalize(condition.match));
+        if (audience) output.set(audience, subject);
+      }
+    }
+    for (const child of Object.values(value)) visit(child, depth + 1);
+  }
+
+  visit(issue);
+  return [...output.entries()].map(([audience, subject]) => ({ audience, subject }));
+}
+
 export async function fetchSentIssues(apiKey, fetchImpl = fetch) {
   if (!apiKey) throw new Error("UG_API er ikke konfigureret");
   const rawIssues = [];
