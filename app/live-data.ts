@@ -35,6 +35,7 @@ export type LiveMailing = {
   }>;
   segmentLinkPerformance?: Array<{
     title: string;
+    destination: string;
     audience: string;
     clicks: number;
     rate: number;
