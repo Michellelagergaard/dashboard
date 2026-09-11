@@ -7,10 +7,10 @@ if (!apiKey) throw new Error("UG_API mangler.");
 const newsletterTag = "Psykologernes Nyhedsbrev";
 const issues = await fetchSentIssues(apiKey);
 const sorted = issues
-  .filter((issue) => (issue.tags || []).some((tag) => normalize(tag) === normalize(newsletterTag)))
+  .filter((issue) => issue.category === newsletterTag || (issue.tags || []).some((tag) => normalize(tag) === normalize(newsletterTag)))
   .sort((a, b) => String(b.sentAt).localeCompare(String(a.sentAt)));
 
-// Dashboardet er bevidst afgrænset til det redaktionelle nyhedsbrev. De fem
+// Dashboardet er afgrænset til det redaktionelle nyhedsbrev. Når et ældre API-svar mangler tagget, bruges den eksisterende kategoriidentifikation som godkendt fallback. De fem
 // seneste udgaver med tilstrækkeligt grundlag får også segment- og segmentlinkdata.
 const segmentIssueIds = new Set(sorted.filter((issue) => issue.delivered >= 500).slice(0, 5).map((issue) => issue.id));
 const linkIssueIds = new Set(sorted.slice(0, 12).map((issue) => issue.id));
