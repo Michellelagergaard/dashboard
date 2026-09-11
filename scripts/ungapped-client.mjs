@@ -15,8 +15,10 @@ export function sanitizeIssue(issue, statistics = issue) {
   const opens = number(statistics.OpenCount);
   const clicks = number(statistics.ClickCount);
 
+  // Ungapped kan returnere samme tag med forskellige feltnavne afhængigt af
+  // udsendelsestype og API-version. Vi læser kun taggets visningsnavn.
   const tags = Array.isArray(issue.Tags)
-    ? issue.Tags.map(tag => text(tag?.Name || tag?.TagName || tag)).filter(Boolean)
+    ? issue.Tags.map(tag => text(tag?.Name || tag?.TagName || tag?.Title || tag?.Description || tag)).filter(Boolean)
     : [];
   const sanitized = {
     id: text(issue.IssueId),
