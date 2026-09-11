@@ -1,5 +1,5 @@
 import { writeFile } from "node:fs/promises";
-import { fetchIssueLinkCatalog, fetchIssueLinkPerformance, fetchIssueSegmentLinkPerformance, fetchIssueSegmentPerformance, fetchSentIssues } from "./ungapped-client.mjs";
+import { fetchIssueLinkCatalog, fetchIssueLinkPerformance, fetchIssueSegmentLinkPerformance, fetchIssueSegmentPerformance, fetchIssueSegmentSubjects, fetchSentIssues } from "./ungapped-client.mjs";
 
 const apiKey = process.env.UG_API;
 if (!apiKey) throw new Error("UG_API mangler.");
@@ -25,6 +25,7 @@ const mailings = await mapConcurrent(sorted, 1, async (issue) => {
   const linkPerformance = includeLinks ? await fetchIssueLinkPerformance(apiKey, issue.id) : { available: false, results: [] };
   const segmentData = includeSegments ? await fetchIssueSegmentPerformance(apiKey, issue.id) : { available: false, results: [] };
   const segmentLinkPerformance = includeSegments ? await fetchIssueSegmentLinkPerformance(apiKey, issue.id) : [];
+  const segmentSubjects = includeSegments ? await fetchIssueSegmentSubjects(apiKey, issue.id) : [];
   const segmentRecipientCounts = new Map(segmentData.results.map((item) => [item.name, item.recipients]));
   return {
     id: issue.id,
@@ -41,6 +42,7 @@ const mailings = await mapConcurrent(sorted, 1, async (issue) => {
     links,
     segments: issue.classificationMetadata?.segments || [],
     segmentPerformance: segmentData.results.map((item) => ({ name: item.name, recipientsLabel: item.recipients.toLocaleString("da-DK"), openRate: item.openRate ?? 0, clickRate: item.clickRate ?? 0, ctor: item.ctor ?? 0, unsubscribes: item.unsubscribes })),
+    segmentSubjects,
     segmentLinkPerformance: segmentLinkPerformance.map((item) => ({ title: item.title, destination: item.destination, audience: item.audience, clicks: item.clicks, rate: item.clicks / Math.max(1, segmentRecipientCounts.get(item.audience) || 1) * 100 })),
   };
 });
