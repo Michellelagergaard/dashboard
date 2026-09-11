@@ -33,6 +33,10 @@ export type LiveMailing = {
     ctor: number;
     unsubscribes: number | null;
   }>;
+  segmentSubjects?: Array<{
+    audience: string;
+    subject: string;
+  }>;
   segmentLinkPerformance?: Array<{
     title: string;
     destination: string;
