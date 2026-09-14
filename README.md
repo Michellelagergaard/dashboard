@@ -1,14 +1,13 @@
 # DP's udsendelsesdashboard
 
-Analyse af Dansk Psykolog Forenings medlemskommunikation i Ungapped. Den offentlige dashboard-udgave viser et dataminimeret øjebliksbillede af godkendte udsendelsesdata.
+Et enkelt redaktionelt dashboard for udsendelser, der har det faktiske Ungapped-tag **Psykologernes Nyhedsbrev**. GitHub Actions henter et dataminimeret øjebliksbillede; browseren kalder aldrig Ungapped direkte.
 
 ## Indhold
 
-- Overblik med centrale nøgletal og udvikling
-- Søgbar oversigt over udsendelser
-- Resultater pr. målgruppe og segment
-- Datakvalitet og synkroniseringsstatus
-- Responsivt layout og A4-udskrift
+- Seneste udsendelse, centrale nøgletal og mest klikkede links
+- Udvikling i åbninger og klik
+- Verificerbare resultater for de definerede målgrupper
+- Detaljer for én valgt udsendelse
 
 Det fulde data- og beregningsgrundlag er beskrevet i [Ungapped data catalogue](docs/api-data-catalog.md).
 
@@ -41,10 +40,10 @@ npm test
 - `app/globals.css`: design og responsivitet
 - `.github/workflows/ci.yml`: automatisk build og test
 
-## Næste fase
+## Bevidste begrænsninger
 
-1. Kortlæg Ungappeds officielle API og datafelter.
-2. Implementér read-only hentning med `UG_API` i GitHub Actions.
-3. Reducér rådata til godkendte optællinger og slet rådata efter kørslen.
-4. Afstem nøgletal mod Ungapped.
-5. Gennemfør GDPR-, sikkerheds- og fortrolighedsgodkendelse før udgivelse.
+- Dashboardet gætter ikke udsendelsestype ud fra volumen eller ugedag.
+- Målgruppetal vises kun, når API'et bevisligt anvender kontaktfilteret.
+- API'et leverer ikke sikre nyhedsoverskrifter til linkstatistikken. Derfor vises destinationen.
+- Summer over flere udsendelser kaldes leveringer, ikke unikke personer.
+- Åbninger er et udviklingssignal, som påvirkes af mailklienters privatlivsbeskyttelse.
