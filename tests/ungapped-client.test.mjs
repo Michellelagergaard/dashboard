@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { classifyIssue, extractLinkCatalog, fetchIssueLinkCatalog, sanitizeIssue, suggestCategory, validateIssues } from "../scripts/ungapped-client.mjs";
+import { classifyIssue, extractLinkCatalog, extractSegmentSubjects, fetchIssueLinkCatalog, sanitizeIssue, suggestCategory, validateIssues } from "../scripts/ungapped-client.mjs";
 
 test("sanitizes an Ungapped issue and calculates weighted rates", () => {
   const issue = sanitizeIssue(
@@ -41,6 +41,23 @@ test("classifies the agreed newsletter types and prioritizes flows", () => {
   assert.equal(classifyIssue({ subject: "Vi har brug for din hjælp – så vi kan blive endnu flere i fællesskabet", tags: [] }), "Automatiske flows");
   assert.equal(classifyIssue({ subject: "Walkthorugh January", tags: [] }), "Test og systemmails");
   assert.equal(classifyIssue({ subject: "Information", context: ["Medlemsoplysninger"] }), "Generel medlemskommunikation");
+});
+
+test("maps each DynamicSubject block to its own audience", () => {
+  const rows = extractSegmentSubjects({
+    Subject: "Fælles emnefelt",
+    DynamicSubject: [
+      "{{#if Contact.Custom3 'contains' 'Selvstændige psykologers sektion'}} Selvstændiges emne",
+      "{{#if Contact.Custom3 'contains' 'Hospitalssektionen'}} Regionalt emne",
+      "{{#if Contact.CustomLong2 'equals' 'true'}} Ydernummeremne",
+    ].join(" {{/if}} "),
+  });
+  assert.deepEqual(rows, [
+    { audience: "Selvstændige", subject: "Selvstændiges emne" },
+    { audience: "Regionalt ansatte", subject: "Regionalt emne" },
+    { audience: "Ydernummerpsykologer", subject: "Ydernummeremne" },
+  ]);
+  assert.equal(rows.some(row => row.subject === "Fælles emnefelt"), false);
 });
 
 test("builds a privacy-reduced link catalog without inventing click counts", () => {
