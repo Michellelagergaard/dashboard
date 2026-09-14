@@ -144,4 +144,28 @@ jobs:
             fields: subjectFieldPaths(issue),
           }));
           if (!issueResponse.ok) process.exitCode = 1;
+
+          // Find kun strukturen i DynamicSubject på et tagget nyhedsbrev.
+          // Ingen emnelinjer, kontaktdata, id'er eller HTML logges.
+          const subjectListResponse = await fetch(
+            "https://api.ungapped.com/Issues/SentList?page=0&pageSize=100",
+            { headers: { "x-api-key": apiKey, accept: "application/json" } },
+          );
+          const subjectList = await subjectListResponse.json();
+          const taggedNewsletter = subjectList.find(item =>
+            Array.isArray(item.Tags) &&
+            item.Tags.some(tag => String(tag?.Title || tag?.Name || tag).trim().toLowerCase() === "psykologernes nyhedsbrev")
+          );
+          if (!taggedNewsletter) throw new Error("Ingen tagget udsendelse fundet til DynamicSubject-kontrol");
+          const taggedResponse = await fetch(
+            `https://api.ungapped.com/Issues/${taggedNewsletter.IssueId}`,
+            { headers: { "x-api-key": apiKey, accept: "application/json" } },
+          );
+          const taggedIssue = await taggedResponse.json();
+          console.log(JSON.stringify({
+            name: "newsletter-dynamic-subject-structure",
+            status: taggedResponse.status,
+            schema: describe(taggedIssue.DynamicSubject),
+          }));
+          if (!taggedResponse.ok) process.exitCode = 1;
           NODE
