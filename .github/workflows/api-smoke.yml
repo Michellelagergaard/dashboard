@@ -168,12 +168,26 @@ jobs:
             parsedDynamicSubject = JSON.parse(taggedIssue.DynamicSubject);
             parsesAsJson = true;
           } catch {}
+          const dynamicRaw = String(taggedIssue.DynamicSubject || "");
+          const decodedUri = (() => { try { return decodeURIComponent(dynamicRaw); } catch { return ""; } })();
+          const decodedBase64 = (() => { try { return Buffer.from(dynamicRaw, "base64").toString("utf8"); } catch { return ""; } })();
+          function jsonShape(candidate) {
+            try { return describe(JSON.parse(candidate)); } catch { return null; }
+          }
+          const grammarMask = dynamicRaw
+            .slice(0, 500)
+            .replace(/[A-Za-zÆØÅæøå0-9]+/g, "x")
+            .replace(/x+/g, "x");
           console.log(JSON.stringify({
             name: "newsletter-dynamic-subject-structure",
             status: taggedResponse.status,
             rawType: typeof taggedIssue.DynamicSubject,
+            length: dynamicRaw.length,
             parsesAsJson,
-            schema: describe(parsedDynamicSubject),
+            directSchema: describe(parsedDynamicSubject),
+            uriDecodedJsonSchema: jsonShape(decodedUri),
+            base64DecodedJsonSchema: jsonShape(decodedBase64),
+            grammarMask,
           }));
           if (!taggedResponse.ok) process.exitCode = 1;
           NODE
