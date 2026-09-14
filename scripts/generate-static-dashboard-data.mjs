@@ -7,11 +7,15 @@ if (!apiKey) throw new Error("UG_API mangler.");
 const newsletterTag = "Psykologernes Nyhedsbrev";
 const issues = await fetchSentIssues(apiKey);
 const sorted = issues
-  .filter((issue) => issue.category === newsletterTag || issue.suggestedCategory === newsletterTag || (issue.tags || []).some((tag) => normalize(tag) === normalize(newsletterTag)))
+  .filter((issue) => (issue.tags || []).some((tag) => normalize(tag) === normalize(newsletterTag)))
   .sort((a, b) => String(b.sentAt).localeCompare(String(a.sentAt)));
 
-// Dashboardet er afgrænset til det redaktionelle nyhedsbrev. Det dokumenterede tag prioriteres. Når det mangler i et API-svar, bruges den eksisterende kategoriidentifikation og den godkendte nyhedsbrevsregel som fallback. De fem
-// seneste udgaver med tilstrækkeligt grundlag får også segment- og segmentlinkdata.
+if (sorted.length === 0) {
+  throw new Error(`Ingen sendte udsendelser havde tagget "${newsletterTag}". Seneste gyldige dashboard bevares.`);
+}
+
+// Dashboardet er afgrænset til det redaktionelle nyhedsbrev via det dokumenterede tag.
+// De fem seneste udgaver med tilstrækkeligt grundlag får også segment- og segmentlinkdata.
 const segmentIssueIds = new Set(sorted.filter((issue) => issue.delivered >= 500).slice(0, 5).map((issue) => issue.id));
 const linkIssueIds = new Set(sorted.slice(0, 12).map((issue) => issue.id));
 
@@ -22,10 +26,10 @@ const mailings = await mapConcurrent(sorted, 1, async (issue) => {
   if (includeLinks) {
     try { links = (await fetchIssueLinkCatalog(apiKey, issue.id)).links; } catch { /* Keep last valid rows from the remaining issues. */ }
   }
-  const linkPerformance = includeLinks ? await fetchIssueLinkPerformance(apiKey, issue.id) : { available: false, results: [] };
-  const segmentData = includeSegments ? await fetchIssueSegmentPerformance(apiKey, issue.id) : { available: false, results: [] };
-  const segmentLinkPerformance = includeSegments ? await fetchIssueSegmentLinkPerformance(apiKey, issue.id) : [];
-  const segmentSubjects = includeSegments ? await fetchIssueSegmentSubjects(apiKey, issue.id) : [];
+  const linkPerformance = includeLinks ? await safe(() => fetchIssueLinkPerformance(apiKey, issue.id), { available: false, results: [] }) : { available: false, results: [] };
+  const segmentData = includeSegments ? await safe(() => fetchIssueSegmentPerformance(apiKey, issue.id), { available: false, results: [] }) : { available: false, results: [] };
+  const segmentLinkPerformance = includeSegments ? await safe(() => fetchIssueSegmentLinkPerformance(apiKey, issue.id), []) : [];
+  const segmentSubjects = includeSegments ? await safe(() => fetchIssueSegmentSubjects(apiKey, issue.id), []) : [];
   const segmentRecipientCounts = new Map(segmentData.results.map((item) => [item.name, item.recipients]));
   return {
     id: issue.id,
@@ -53,3 +57,4 @@ await writeFile(new URL("../app/generated-dashboard-data.ts", import.meta.url), 
 function normalize(value) { return String(value || "").trim().normalize("NFKC").toLocaleLowerCase("da-DK"); }
 function formatDate(value) { if (!value) return "Dato mangler"; return new Intl.DateTimeFormat("da-DK", { day: "numeric", month: "short", year: "numeric", timeZone: "Europe/Copenhagen" }).format(new Date(value)); }
 async function mapConcurrent(items, concurrency, mapper) { const output = new Array(items.length); let next = 0; async function worker() { while (next < items.length) { const index = next++; output[index] = await mapper(items[index], index); } } await Promise.all(Array.from({ length: Math.min(concurrency, items.length) }, worker)); return output; }
+async function safe(operation, fallback) { try { return await operation(); } catch { return fallback; } }
