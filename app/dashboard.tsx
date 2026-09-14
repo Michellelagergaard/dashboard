@@ -117,7 +117,8 @@ function DataGap({ title, text }: { title: string; text: string }) { return <div
 function Empty({ title, text }: { title: string; text: string }) { return <section className="panel"><DataGap title={title} text={text} /></section>; }
 function EmptyRow({ columns, text }: { columns: number; text: string }) { return <tr><td className="empty-cell" colSpan={columns}>{text}</td></tr>; }
 function segmentRows(mailing: Mailing) { return mailing.segmentPerformance || []; }
-function segmentLinkRows(mailing: Mailing) { return mailing.segmentLinkPerformance || []; }\nfunction subjectForAudience(mailing: Mailing, audience: string) { return mailing.segmentSubjects?.find((item) => item.audience === audience)?.subject; }
+function segmentLinkRows(mailing: Mailing) { return mailing.segmentLinkPerformance || []; }
+function subjectForAudience(mailing: Mailing, audience: string) { return mailing.segmentSubjects?.find((item) => item.audience === audience)?.subject; }
 function sentTime(mailing: Mailing) { return mailing.sentAt ? new Date(mailing.sentAt).getTime() : 0; }
 function parseNumber(value: string) { return Number(value.replaceAll(".", "").replaceAll(",", ".")) || 0; }
 function weightedSegment(rows: Array<{ data: NonNullable<LiveMailing["segmentPerformance"]>[number] }>, field: "openRate" | "clickRate", recipients: number) { return recipients ? rows.reduce((sum, item) => sum + parseNumber(item.data.recipientsLabel) * item.data[field], 0) / recipients : 0; }
