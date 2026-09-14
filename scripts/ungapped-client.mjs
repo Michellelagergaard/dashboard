@@ -159,17 +159,19 @@ function extractSegmentSubjects(issue) {
   const output = new Map();
   const seen = new Set();
 
-  function conditionsWithin(value, depth = 0, found = []) {
+  function audiencesWithin(value, depth = 0, found = new Set()) {
     if (depth > 4 || value == null) return found;
+    if (typeof value === "string") {
+      const audience = expected.get(normalize(value));
+      if (audience) found.add(audience);
+      return found;
+    }
     if (Array.isArray(value)) {
-      for (const item of value) conditionsWithin(item, depth + 1, found);
+      for (const item of value) audiencesWithin(item, depth + 1, found);
       return found;
     }
     if (typeof value !== "object") return found;
-    const property = text(value.Property || value.PropertyName || value.Field || value.FieldName || value.ContactProperty);
-    const match = text(value.Value || value.ConditionValue || value.MatchValue || value.ComparisonValue);
-    if (property && match) found.push({ property, match });
-    for (const child of Object.values(value)) conditionsWithin(child, depth + 1, found);
+    for (const child of Object.values(value)) audiencesWithin(child, depth + 1, found);
     return found;
   }
 
@@ -180,14 +182,9 @@ function extractSegmentSubjects(issue) {
       for (const item of value) visit(item, depth + 1);
       return;
     }
-    const subject = text(value.Subject || value.SubjectLine || value.SubjectText || value.DynamicSubject);
-    if (subject) {
-      for (const condition of conditionsWithin(value)) {
-        const property = normalize(condition.property);
-        if (property !== "contact.custom3" && property !== "contact.customlong2") continue;
-        const audience = expected.get(normalize(condition.match));
-        if (audience) output.set(audience, subject);
-      }
+    const subject = text(value.Subject || value.SubjectLine || value.SubjectText || value.DynamicSubject || value.EmailSubject || value.MessageSubject);
+    if (depth > 0 && subject) {
+      for (const audience of audiencesWithin(value)) output.set(audience, subject);
     }
     for (const child of Object.values(value)) visit(child, depth + 1);
   }
@@ -195,7 +192,6 @@ function extractSegmentSubjects(issue) {
   visit(issue);
   return [...output.entries()].map(([audience, subject]) => ({ audience, subject }));
 }
-
 export async function fetchSentIssues(apiKey, fetchImpl = fetch) {
   if (!apiKey) throw new Error("UG_API er ikke konfigureret");
   const rawIssues = [];
