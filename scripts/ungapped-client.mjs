@@ -154,64 +154,37 @@ export async function fetchIssueSegmentSubjects(apiKey, issueId, fetchImpl = fet
   return extractSegmentSubjects(issue);
 }
 
-function extractSegmentSubjects(issue) {
-  const expected = new Map(memberSegments.map(segment => [normalize(segment.value), segment.label]));
-  const leaves = [];
-  const seen = new Set();
-
-  function collect(value, path = [], depth = 0) {
-    if (depth > 14 || value == null) return;
-    if (typeof value === "string") {
-      const cleaned = text(value);
-      if (cleaned) leaves.push({ value: cleaned, path });
-      return;
-    }
-    if (typeof value !== "object" || seen.has(value)) return;
-    seen.add(value);
-    if (Array.isArray(value)) {
-      value.forEach((item, index) => collect(item, [...path, String(index)], depth + 1));
-      return;
-    }
-    for (const [key, child] of Object.entries(value)) collect(child, [...path, key], depth + 1);
-  }
-
-  collect(issue);
-
-  const audiences = [];
-  for (const leaf of leaves) {
-    const normalized = normalize(leaf.value);
-    for (const [configuredValue, label] of expected) {
-      if (normalized === configuredValue || normalized.includes(configuredValue)) {
-        audiences.push({ label, path: leaf.path });
-      }
-    }
-  }
-
-  const subjects = leaves.filter(leaf => {
-    const fieldPath = leaf.path.join(".").toLocaleLowerCase("da-DK");
-    if (!/(subject|subjectline|subjecttext|dynamicsubject|emailsubject|messagesubject)/.test(fieldPath)) return false;
-    const normalized = normalize(leaf.value);
-    return leaf.value.length > 2 && ![...expected.keys()].some(value => normalized === value || normalized.includes(value));
-  });
+export function extractSegmentSubjects(issue) {
+  const template = text(issue?.DynamicSubject);
+  if (!template) return [];
 
   const output = new Map();
-  for (const audience of audiences) {
-    const ranked = subjects
-      .map(subject => ({ subject, distance: pathDistance(audience.path, subject.path) }))
-      .sort((a, b) => a.distance - b.distance || b.subject.path.length - a.subject.path.length);
-    const nearest = ranked[0];
-    // En dynamisk regel holder normalt betingelse og emnefelt tæt sammen.
-    // En stor afstand er usikker og må ikke udgives som en dokumenteret kobling.
-    if (nearest && nearest.distance <= 10) output.set(audience.label, nearest.subject.value);
+  const blockPattern = /{{#([^}]*)}}([\s\S]*?)(?={{[#/]|$)/g;
+
+  for (const match of template.matchAll(blockPattern)) {
+    const condition = normalize(match[1]);
+    const subject = cleanDynamicSubject(match[2]);
+    if (!subject) continue;
+
+    for (const segment of memberSegments) {
+      const matchesMembership = condition.includes(normalize(segment.value));
+      const matchesProviderNumber = segment.label === "Ydernummerpsykologer"
+        && /customlong2/.test(condition)
+        && /(?:true|ja|1)/.test(condition);
+      if (matchesMembership || matchesProviderNumber) output.set(segment.label, subject);
+    }
   }
 
   return [...output.entries()].map(([audience, subject]) => ({ audience, subject }));
 }
 
-function pathDistance(a, b) {
-  let shared = 0;
-  while (shared < a.length && shared < b.length && a[shared] === b[shared]) shared += 1;
-  return (a.length - shared) + (b.length - shared);
+function cleanDynamicSubject(value) {
+  return String(value || "")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&nbsp;|&#160;/gi, " ")
+    .replace(/&amp;|&#38;/gi, "&")
+    .replace(/\s+/g, " ")
+    .trim();
 }
 
 export async function fetchSentIssues(apiKey, fetchImpl = fetch) {
