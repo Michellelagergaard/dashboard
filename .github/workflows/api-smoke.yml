@@ -162,10 +162,18 @@ jobs:
             { headers: { "x-api-key": apiKey, accept: "application/json" } },
           );
           const taggedIssue = await taggedResponse.json();
+          let parsedDynamicSubject = null;
+          let parsesAsJson = false;
+          try {
+            parsedDynamicSubject = JSON.parse(taggedIssue.DynamicSubject);
+            parsesAsJson = true;
+          } catch {}
           console.log(JSON.stringify({
             name: "newsletter-dynamic-subject-structure",
             status: taggedResponse.status,
-            schema: describe(taggedIssue.DynamicSubject),
+            rawType: typeof taggedIssue.DynamicSubject,
+            parsesAsJson,
+            schema: describe(parsedDynamicSubject),
           }));
           if (!taggedResponse.ok) process.exitCode = 1;
           NODE
