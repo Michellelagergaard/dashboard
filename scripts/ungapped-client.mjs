@@ -156,42 +156,64 @@ export async function fetchIssueSegmentSubjects(apiKey, issueId, fetchImpl = fet
 
 function extractSegmentSubjects(issue) {
   const expected = new Map(memberSegments.map(segment => [normalize(segment.value), segment.label]));
-  const output = new Map();
+  const leaves = [];
   const seen = new Set();
 
-  function audiencesWithin(value, depth = 0, found = new Set()) {
-    if (depth > 4 || value == null) return found;
+  function collect(value, path = [], depth = 0) {
+    if (depth > 14 || value == null) return;
     if (typeof value === "string") {
-      const audience = expected.get(normalize(value));
-      if (audience) found.add(audience);
-      return found;
-    }
-    if (Array.isArray(value)) {
-      for (const item of value) audiencesWithin(item, depth + 1, found);
-      return found;
-    }
-    if (typeof value !== "object") return found;
-    for (const child of Object.values(value)) audiencesWithin(child, depth + 1, found);
-    return found;
-  }
-
-  function visit(value, depth = 0) {
-    if (depth > 6 || value == null || typeof value !== "object" || seen.has(value)) return;
-    seen.add(value);
-    if (Array.isArray(value)) {
-      for (const item of value) visit(item, depth + 1);
+      const cleaned = text(value);
+      if (cleaned) leaves.push({ value: cleaned, path });
       return;
     }
-    const subject = text(value.Subject || value.SubjectLine || value.SubjectText || value.DynamicSubject || value.EmailSubject || value.MessageSubject);
-    if (depth > 0 && subject) {
-      for (const audience of audiencesWithin(value)) output.set(audience, subject);
+    if (typeof value !== "object" || seen.has(value)) return;
+    seen.add(value);
+    if (Array.isArray(value)) {
+      value.forEach((item, index) => collect(item, [...path, String(index)], depth + 1));
+      return;
     }
-    for (const child of Object.values(value)) visit(child, depth + 1);
+    for (const [key, child] of Object.entries(value)) collect(child, [...path, key], depth + 1);
   }
 
-  visit(issue);
+  collect(issue);
+
+  const audiences = [];
+  for (const leaf of leaves) {
+    const normalized = normalize(leaf.value);
+    for (const [configuredValue, label] of expected) {
+      if (normalized === configuredValue || normalized.includes(configuredValue)) {
+        audiences.push({ label, path: leaf.path });
+      }
+    }
+  }
+
+  const subjects = leaves.filter(leaf => {
+    const fieldPath = leaf.path.join(".").toLocaleLowerCase("da-DK");
+    if (!/(subject|subjectline|subjecttext|dynamicsubject|emailsubject|messagesubject)/.test(fieldPath)) return false;
+    const normalized = normalize(leaf.value);
+    return leaf.value.length > 2 && ![...expected.keys()].some(value => normalized === value || normalized.includes(value));
+  });
+
+  const output = new Map();
+  for (const audience of audiences) {
+    const ranked = subjects
+      .map(subject => ({ subject, distance: pathDistance(audience.path, subject.path) }))
+      .sort((a, b) => a.distance - b.distance || b.subject.path.length - a.subject.path.length);
+    const nearest = ranked[0];
+    // En dynamisk regel holder normalt betingelse og emnefelt tæt sammen.
+    // En stor afstand er usikker og må ikke udgives som en dokumenteret kobling.
+    if (nearest && nearest.distance <= 10) output.set(audience.label, nearest.subject.value);
+  }
+
   return [...output.entries()].map(([audience, subject]) => ({ audience, subject }));
 }
+
+function pathDistance(a, b) {
+  let shared = 0;
+  while (shared < a.length && shared < b.length && a[shared] === b[shared]) shared += 1;
+  return (a.length - shared) + (b.length - shared);
+}
+
 export async function fetchSentIssues(apiKey, fetchImpl = fetch) {
   if (!apiKey) throw new Error("UG_API er ikke konfigureret");
   const rawIssues = [];
