@@ -27,10 +27,27 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm test
+      - name: Beregn historiknøgle
+        id: history-key
+        run: echo "date=$(date -u +%Y-%m-%d)" >> "$GITHUB_OUTPUT"
+      - name: Hent valideret dashboardhistorik
+        id: history-cache
+        uses: actions/cache/restore@v4
+        with:
+          path: .cache/dashboard-history.json
+          key: dashboard-history-${{ steps.history-key.outputs.date }}
+          restore-keys: |
+            dashboard-history-
       - name: Hent og anonymisér aktuelle Ungapped-data
         env:
           UG_API: ${{ secrets.UG_API }}
         run: npm run sync:static
+      - name: Gem valideret dashboardhistorik
+        if: steps.history-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: .cache/dashboard-history.json
+          key: dashboard-history-${{ steps.history-key.outputs.date }}
       - run: npm run build:pages
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
