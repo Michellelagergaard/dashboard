@@ -15,20 +15,27 @@ if (sorted.length === 0) {
 }
 
 // Dashboardet er afgrænset til det redaktionelle nyhedsbrev via det dokumenterede tag.
-// De fem seneste udgaver med tilstrækkeligt grundlag får også segment- og segmentlinkdata.
-const segmentIssueIds = new Set(sorted.filter((issue) => issue.delivered >= 500).slice(0, 5).map((issue) => issue.id));
+// Målgruppetal og dynamiske emnefelter hentes for alle udgaver fra de seneste
+// 12 måneder. De langsommere målgruppefordelte linkopslag begrænses til fem.
+const segmentCutoff = new Date();
+segmentCutoff.setUTCFullYear(segmentCutoff.getUTCFullYear() - 1);
+const segmentIssueIds = new Set(sorted
+  .filter((issue) => issue.delivered >= 500 && issue.sentAt && new Date(issue.sentAt) >= segmentCutoff)
+  .map((issue) => issue.id));
+const segmentLinkIssueIds = new Set(sorted.filter((issue) => segmentIssueIds.has(issue.id)).slice(0, 5).map((issue) => issue.id));
 const linkIssueIds = new Set(sorted.slice(0, 12).map((issue) => issue.id));
 
 const mailings = await mapConcurrent(sorted, 1, async (issue) => {
   const includeLinks = linkIssueIds.has(issue.id);
   const includeSegments = segmentIssueIds.has(issue.id);
+  const includeSegmentLinks = segmentLinkIssueIds.has(issue.id);
   let links = [];
   if (includeLinks) {
     try { links = (await fetchIssueLinkCatalog(apiKey, issue.id)).links; } catch { /* Keep last valid rows from the remaining issues. */ }
   }
   const linkPerformance = includeLinks ? await safe(() => fetchIssueLinkPerformance(apiKey, issue.id), { available: false, results: [] }) : { available: false, results: [] };
   const segmentData = includeSegments ? await safe(() => fetchIssueSegmentPerformance(apiKey, issue.id), { available: false, results: [] }) : { available: false, results: [] };
-  const segmentLinkPerformance = includeSegments ? await safe(() => fetchIssueSegmentLinkPerformance(apiKey, issue.id), []) : [];
+  const segmentLinkPerformance = includeSegmentLinks ? await safe(() => fetchIssueSegmentLinkPerformance(apiKey, issue.id), []) : [];
   const segmentSubjects = includeSegments ? await safe(() => fetchIssueSegmentSubjects(apiKey, issue.id), []) : [];
   const segmentRecipientCounts = new Map(segmentData.results.map((item) => [item.name, item.recipients]));
   return {
