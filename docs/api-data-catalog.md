@@ -38,3 +38,11 @@ This catalogue is the project source of truth for data mapping, dashboard calcul
 | Flows | Flow name, steps, active recipients, mail volume, engagement, unsubscribes and latest activity |
 
 Fields are shown only when the Ungapped endpoint has supplied them and their definition is documented. Missing fields are labelled as unavailable, never treated as zero.
+
+## Editorial intelligence
+
+- **Common result** means link clicks for the entire mailing without a contact filter.
+- **Audience-distributed result** means link clicks returned after Ungapped accepted a verified contact filter.
+- An audience-distributed result documents who clicked. It does not prove that the content block was exclusive to that audience.
+- Editorial topics are assigned deterministically from the documented link title and destination. The maintained rules are in `config/editorial-topics.mjs`, and unmatched links are labelled **Andet**.
+- Automated conclusions report observed click volume and data coverage only. They do not infer why recipients clicked or claim that a topic caused higher engagement.

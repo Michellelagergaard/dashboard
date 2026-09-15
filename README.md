@@ -7,6 +7,7 @@ Et enkelt redaktionelt dashboard for udsendelser, der har det faktiske Ungapped-
 - Seneste udsendelse, centrale nøgletal og mest klikkede links
 - Udvikling i åbninger og klik
 - Verificerbare resultater for de definerede målgrupper
+- Regelbaserede emnekategorier og dokumenterede redaktionelle konklusioner
 - Detaljer for én valgt udsendelse
 
 Det fulde data- og beregningsgrundlag er beskrevet i [Ungapped data catalogue](docs/api-data-catalog.md).
@@ -44,6 +45,7 @@ npm test
 
 - Dashboardet gætter ikke udsendelsestype ud fra volumen eller ugedag.
 - Målgruppetal vises kun, når API'et bevisligt anvender kontaktfilteret.
-- API'et leverer ikke sikre nyhedsoverskrifter til linkstatistikken. Derfor vises destinationen.
+- Linktitler udledes af udsendelsens dokumenterede linktekst; destinationen vises som kontrolspor.
+- Et målgruppefiltreret klik dokumenterer målgruppens reaktion, men ikke at indholdet var eksklusivt for målgruppen.
 - Summer over flere udsendelser kaldes leveringer, ikke unikke personer.
 - Åbninger er et udviklingssignal, som påvirkes af mailklienters privatlivsbeskyttelse.
