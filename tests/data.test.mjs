@@ -50,4 +50,5 @@ test("dashboardet forklarer grænsen mellem fælles og målgruppefordelte result
   assert.match(dashboardSource, /Samlede klik i hele udsendelsen uden målgruppefilter/);
   assert.match(dashboardSource, /dokumenterer, hvem der klikkede/);
   assert.match(dashboardSource, /dokumenterer ikke, hvorfor medlemmerne klikkede/);
+  assert.match(dashboardSource, /kunne ikke kategoriseres sikkert og står som Andet/);
 });
