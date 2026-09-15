@@ -1,0 +1,19 @@
+name: Inspect Ungapped segment mapping
+on:
+  push:
+    branches: [diagnostics/segment-mapping]
+permissions:
+  contents: read
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Read mapping metadata only
+        env:
+          UG_API: ${{ secrets.UG_API }}
+        run: node scripts/inspect-segment-mapping.mjs
