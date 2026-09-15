@@ -10,13 +10,13 @@ export const editorialTopicNames = [
 ];
 
 const rules = [
-  ["Praksis og ydernummer", /ydernummer|selvst.ndig|praksis|honorar|budgetl.gning|regionernes.udbud|pok\b/],
-  ["Løn og arbejdsliv", /overenskomst|ok\d{2}|l.n|rettighed|ferie|arbejdsliv|arbejdsmilj|barsel|pension/],
-  ["Autorisation og regler", /autorisation|tilsyn|journalf.r|klage|lovgivning|lovforslag|persondata|gdpr/],
-  ["Faglighed og forskning", /faglig|forsk|psykologfag|behandling|psykiatri|ppr|icd|videnscenter|supervision/],
-  ["Medlemsfordele og arrangementer", /medlemsfordel|tivoli|rabat|arrangement|webinar|fyraftensm.de|tilmeld|kursus|forbrugsforening/],
-  ["Job og karriere", /psykologjob|ledige.still|karriere|job\b|dimittend/],
-  ["Politik og presse", /linkedin|politik|folketing|valg\b|h.ring|presse|reaktion/],
+  ["Praksis og ydernummer", /ydernummer|selvstændig|selvstaendig|praksis|honorar|budgetlægning|budgetlaegning|regionernes.udbud|\bpok\b/],
+  ["Løn og arbejdsliv", /overenskomst|\bok\d{2}\b|\bløn\b|\bloen\b|lønstign|loenstign|rettighed|ferie|arbejdsliv|arbejdsmiljø|arbejdsmiljo|barsel|pension/],
+  ["Autorisation og regler", /autorisation|tilsyn|journalføring|journalforing|klage|lovgivning|lovforslag|persondata|gdpr/],
+  ["Job og karriere", /psykologjob|ledige.still|karriere|\bjob\b|dimittend/],
+  ["Faglighed og forskning", /faglig|forsk|psykologfag|behandling|psykiatri|\bppr\b|\bicd|videnscenter|supervision/],
+  ["Medlemsfordele og arrangementer", /medlemsfordel|tivoli|rabat|arrangement|webinar|fyraftensmøde|fyraftensmode|tilmeld|kursus|forbrugsforening/],
+  ["Politik og presse", /politik|folketing|\bvalg\b|høring|horing|presse|reaktion|generalforsamling|\bgf\d{2}\b/],
 ];
 
 export function editorialCategory(item) {

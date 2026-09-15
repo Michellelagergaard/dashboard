@@ -31,6 +31,9 @@ test("redaktionelle emner klassificeres med faste og gennemsigtige regler", () =
   assert.equal(editorialCategory({ title: "Se OK26-resultaterne", destination: "https://dp.dk/ok26" }), "Løn og arbejdsliv");
   assert.equal(editorialCategory({ title: "Sådan søger du ydernummer", destination: "https://dp.dk/ydernummer" }), "Praksis og ydernummer");
   assert.equal(editorialCategory({ title: "Ny vejledning om autorisation", destination: "https://dp.dk/autorisation" }), "Autorisation og regler");
+  assert.equal(editorialCategory({ title: "Børnehus Sjælland", destination: "https://psykologjob.dk/job/" }), "Job og karriere");
+  assert.equal(editorialCategory({ title: "Læs opslaget på LinkedIn", destination: "https://linkedin.com/feed/update/123" }), "Andet");
+  assert.equal(editorialCategory({ title: "Find din vej ind i psykologfaget", destination: "https://dp.dk/netvaerk-og-job/karriere/" }), "Job og karriere");
   assert.equal(editorialCategory({ title: "Ukendt tema", destination: "https://example.com/x" }), "Andet");
   assert.equal(new Set(editorialTopicNames).size, editorialTopicNames.length);
 });
