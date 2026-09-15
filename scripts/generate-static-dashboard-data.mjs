@@ -6,9 +6,11 @@ if (!apiKey) throw new Error("UG_API mangler.");
 
 const newsletterTag = "Psykologernes Nyhedsbrev";
 const historyCacheUrl = new URL("../.cache/dashboard-history.json", import.meta.url);
+const baselineUrl = new URL("../data/dashboard-history-baseline.json", import.meta.url);
 const historyCutoff = new Date();
 historyCutoff.setUTCMonth(historyCutoff.getUTCMonth() - 1);
 const historyById = await loadHistoryCache(historyCacheUrl);
+const baselineById = await loadBaseline(baselineUrl);
 const issues = await fetchSentIssues(apiKey);
 const sorted = issues
   .filter((issue) => (issue.tags || []).some((tag) => normalize(tag) === normalize(newsletterTag)))
@@ -32,7 +34,7 @@ const linkIssueIds = new Set(sorted.slice(0, 12).map((issue) => issue.id));
 const mailings = await mapConcurrent(sorted, 1, async (issue) => {
   const historicalMailing = historyById.get(issue.id);
   if (isOlderThan(issue.sentAt, historyCutoff) && historicalMailing) {
-    return historicalMailing;
+    return mergeHistoricalMailing(historicalMailing, baselineById.get(issue.id));
   }
 
   const includeLinks = linkIssueIds.has(issue.id);
@@ -48,7 +50,7 @@ const mailings = await mapConcurrent(sorted, 1, async (issue) => {
   const segmentSubjects = includeSegments ? await safe(() => fetchIssueSegmentSubjects(apiKey, issue.id), []) : [];
   const segmentRecipientCounts = new Map(segmentData.results.map((item) => [item.name, item.recipients]));
   const linkTitles = new Map(links.map((item) => [item.destination, item.title]).filter(([, title]) => title));
-  return {
+  const mailing = {
     id: issue.id,
     title: issue.name || issue.subject || "Uden titel",
     subject: issue.subject || "Emnefelt mangler",
@@ -72,6 +74,7 @@ const mailings = await mapConcurrent(sorted, 1, async (issue) => {
       segmentLinkPerformance: Boolean(includeSegmentLinks && segmentLinkPerformance.length),
     },
   };
+  return mergeHistoricalMailing(mailing, baselineById.get(issue.id));
 });
 
 const data = { mailings, updatedAt: new Date().toISOString(), status: "live" };
@@ -90,6 +93,38 @@ async function loadHistoryCache(url) {
   } catch {
     return new Map();
   }
+}
+async function loadBaseline(url) {
+  try {
+    const baseline = JSON.parse(await readFile(url, "utf8"));
+    if (baseline?.version !== 1 || !Array.isArray(baseline.mailings)) return new Map();
+    return new Map(baseline.mailings.filter((mailing) => typeof mailing?.id === "string").map((mailing) => [mailing.id, mailing]));
+  } catch {
+    return new Map();
+  }
+}
+function mergeHistoricalMailing(mailing, baseline) {
+  if (!baseline) return mailing;
+  const content = mailing.content.length ? mailing.content : baseline.content || [];
+  const links = mailing.links.length ? mailing.links : baseline.links || [];
+  const segmentPerformance = mailing.segmentPerformance.length ? mailing.segmentPerformance : baseline.segmentPerformance || [];
+  const segmentSubjects = mailing.segmentSubjects.length ? mailing.segmentSubjects : baseline.segmentSubjects || [];
+  const segmentLinkPerformance = mailing.segmentLinkPerformance.length ? mailing.segmentLinkPerformance : baseline.segmentLinkPerformance || [];
+  return {
+    ...mailing,
+    content,
+    links,
+    segmentPerformance,
+    segmentSubjects,
+    segmentLinkPerformance,
+    dataCoverage: {
+      ...mailing.dataCoverage,
+      linkPerformance: mailing.dataCoverage.linkPerformance || content.length > 0,
+      segmentPerformance: mailing.dataCoverage.segmentPerformance || segmentPerformance.length > 0,
+      segmentSubjects: mailing.dataCoverage.segmentSubjects || segmentSubjects.length > 0,
+      segmentLinkPerformance: mailing.dataCoverage.segmentLinkPerformance || segmentLinkPerformance.length > 0,
+    },
+  };
 }
 function isValidCachedMailing(mailing) {
   return mailing && typeof mailing.id === "string" && typeof mailing.sentAt === "string"
