@@ -35,9 +35,9 @@ jobs:
         uses: actions/cache/restore@v4
         with:
           path: .cache/dashboard-history.json
-          key: dashboard-history-${{ steps.history-key.outputs.date }}
+          key: dashboard-history-v2-${{ steps.history-key.outputs.date }}
           restore-keys: |
-            dashboard-history-
+            dashboard-history-v2-
       - name: Hent og anonymisér aktuelle Ungapped-data
         env:
           UG_API: ${{ secrets.UG_API }}
@@ -47,7 +47,7 @@ jobs:
         uses: actions/cache/save@v4
         with:
           path: .cache/dashboard-history.json
-          key: dashboard-history-${{ steps.history-key.outputs.date }}
+          key: dashboard-history-v2-${{ steps.history-key.outputs.date }}
       - run: npm run build:pages
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3

@@ -47,6 +47,7 @@ const mailings = await mapConcurrent(sorted, 1, async (issue) => {
   const segmentLinkPerformance = includeSegmentLinks ? await safe(() => fetchIssueSegmentLinkPerformance(apiKey, issue.id), []) : [];
   const segmentSubjects = includeSegments ? await safe(() => fetchIssueSegmentSubjects(apiKey, issue.id), []) : [];
   const segmentRecipientCounts = new Map(segmentData.results.map((item) => [item.name, item.recipients]));
+  const linkTitles = new Map(links.map((item) => [item.destination, item.title]).filter(([, title]) => title));
   return {
     id: issue.id,
     title: issue.name || issue.subject || "Uden titel",
@@ -58,19 +59,25 @@ const mailings = await mapConcurrent(sorted, 1, async (issue) => {
     openRate: issue.openRate ?? 0,
     clickRate: issue.clickRate ?? 0,
     unsubscribes: issue.unsubscribes ?? 0,
-    content: linkPerformance.results.filter((item) => item.clicks >= 5).map((item) => ({ title: item.title, destination: item.destination, recipients: issue.delivered, clicks: item.clicks, rate: item.clicks / Math.max(1, issue.delivered) * 100 })),
+    content: linkPerformance.results.filter((item) => item.clicks >= 5).map((item) => ({ title: linkTitles.get(item.destination) || item.title, destination: item.destination, recipients: issue.delivered, clicks: item.clicks, rate: item.clicks / Math.max(1, issue.delivered) * 100 })),
     links,
     segments: issue.classificationMetadata?.segments || [],
     segmentPerformance: segmentData.results.map((item) => ({ name: item.name, recipientsLabel: item.recipients.toLocaleString("da-DK"), openRate: item.openRate ?? 0, clickRate: item.clickRate ?? 0, ctor: item.ctor ?? 0, unsubscribes: item.unsubscribes })),
     segmentSubjects,
-    segmentLinkPerformance: segmentLinkPerformance.map((item) => ({ title: item.title, destination: item.destination, audience: item.audience, clicks: item.clicks, rate: item.clicks / Math.max(1, segmentRecipientCounts.get(item.audience) || 1) * 100 })),
+    segmentLinkPerformance: segmentLinkPerformance.map((item) => ({ title: linkTitles.get(item.destination) || item.title, destination: item.destination, audience: item.audience, clicks: item.clicks, rate: item.clicks / Math.max(1, segmentRecipientCounts.get(item.audience) || 1) * 100 })),
+    dataCoverage: {
+      linkPerformance: Boolean(includeLinks && linkPerformance.available),
+      segmentPerformance: Boolean(includeSegments && segmentData.available),
+      segmentSubjects: Boolean(includeSegments && segmentSubjects.length),
+      segmentLinkPerformance: Boolean(includeSegmentLinks && segmentLinkPerformance.length),
+    },
   };
 });
 
 const data = { mailings, updatedAt: new Date().toISOString(), status: "live" };
 await writeFile(new URL("../app/generated-dashboard-data.ts", import.meta.url), `import type { LiveDashboardData } from "./live-data";\n\nexport const generatedDashboardData = ${JSON.stringify(data)} as const satisfies LiveDashboardData;\n`, "utf8");
 await mkdir(new URL("../.cache/", import.meta.url), { recursive: true });
-await writeFile(historyCacheUrl, `${JSON.stringify({ version: 1, updatedAt: data.updatedAt, mailings })}\n`, "utf8");
+await writeFile(historyCacheUrl, `${JSON.stringify({ version: 2, updatedAt: data.updatedAt, mailings })}\n`, "utf8");
 
 function normalize(value) { return String(value || "").trim().normalize("NFKC").toLocaleLowerCase("da-DK"); }
 function formatDate(value) { if (!value) return "Dato mangler"; return new Intl.DateTimeFormat("da-DK", { day: "numeric", month: "short", year: "numeric", timeZone: "Europe/Copenhagen" }).format(new Date(value)); }
@@ -78,7 +85,7 @@ function isOlderThan(value, cutoff) { return Boolean(value) && new Date(value) <
 async function loadHistoryCache(url) {
   try {
     const cached = JSON.parse(await readFile(url, "utf8"));
-    if (cached?.version !== 1 || !Array.isArray(cached.mailings)) return new Map();
+    if (cached?.version !== 2 || !Array.isArray(cached.mailings)) return new Map();
     return new Map(cached.mailings.filter(isValidCachedMailing).map((mailing) => [mailing.id, mailing]));
   } catch {
     return new Map();
@@ -88,7 +95,11 @@ function isValidCachedMailing(mailing) {
   return mailing && typeof mailing.id === "string" && typeof mailing.sentAt === "string"
     && Array.isArray(mailing.content) && Array.isArray(mailing.links)
     && Array.isArray(mailing.segmentPerformance) && Array.isArray(mailing.segmentSubjects)
-    && Array.isArray(mailing.segmentLinkPerformance);
+    && Array.isArray(mailing.segmentLinkPerformance) && mailing.dataCoverage
+    && typeof mailing.dataCoverage.linkPerformance === "boolean"
+    && typeof mailing.dataCoverage.segmentPerformance === "boolean"
+    && typeof mailing.dataCoverage.segmentSubjects === "boolean"
+    && typeof mailing.dataCoverage.segmentLinkPerformance === "boolean";
 }
 async function mapConcurrent(items, concurrency, mapper) { const output = new Array(items.length); let next = 0; async function worker() { while (next < items.length) { const index = next++; output[index] = await mapper(items[index], index); } } await Promise.all(Array.from({ length: Math.min(concurrency, items.length) }, worker)); return output; }
 async function safe(operation, fallback) { try { return await operation(); } catch { return fallback; } }

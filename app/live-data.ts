@@ -20,6 +20,7 @@ export type LiveMailing = {
     rate: number;
   }>;
   links: Array<{
+    title?: string;
     destination: string;
     firstPosition: number;
     occurrences: number;
@@ -44,6 +45,12 @@ export type LiveMailing = {
     clicks: number;
     rate: number;
   }>;
+  dataCoverage?: {
+    linkPerformance: boolean;
+    segmentPerformance: boolean;
+    segmentSubjects: boolean;
+    segmentLinkPerformance: boolean;
+  };
 };
 
 export type LiveDashboardData = {

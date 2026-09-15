@@ -69,6 +69,7 @@ test("builds a privacy-reduced link catalog without inventing click counts", () 
     <a href="https://example.com/member/0123456789abcdef0123456789abcdef">Personligt</a>
   `);
   assert.deepEqual(result.links, [{
+    title: "Gentaget",
     destination: "https://www.dp.dk/nyheder/artikel",
     firstPosition: 1,
     occurrences: 2,
@@ -86,7 +87,21 @@ test("fetches only issue HTML and returns the reduced catalog", async () => {
       LastModifiedBy: { Email: "must-not-leak@example.com" },
     }) };
   });
-  assert.deepEqual(result.links, [{ destination: "https://www.dp.dk/kurser", firstPosition: 1, occurrences: 1 }]);
+  assert.deepEqual(result.links, [{ title: "Kursus", destination: "https://www.dp.dk/kurser", firstPosition: 1, occurrences: 1 }]);
   assert.equal(JSON.stringify(result).includes("must-not-leak"), false);
   assert.equal(calls[0].options.method, "GET");
+});
+
+test("uses the most descriptive title when several links share a destination", () => {
+  const result = extractLinkCatalog(`
+    <a href="https://www.dp.dk/raadgivning/lon"><img alt="" />Læs mere</a>
+    <a href="https://www.dp.dk/raadgivning/lon?utm_source=newsletter"><strong>Din løn stiger 1. oktober</strong></a>
+    <a href="https://www.dp.dk/raadgivning/lon">Klik her</a>
+  `);
+  assert.deepEqual(result.links, [{
+    title: "Din løn stiger 1. oktober",
+    destination: "https://www.dp.dk/raadgivning/lon",
+    firstPosition: 1,
+    occurrences: 3,
+  }]);
 });

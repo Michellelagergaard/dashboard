@@ -120,19 +120,65 @@ export function extractLinkCatalog(html) {
   const links = new Map();
   let excludedCount = 0;
   let position = 0;
-  const hrefPattern = /<a\b[^>]*?\bhref\s*=\s*(["'])(.*?)\1/gis;
-  for (const match of html.matchAll(hrefPattern)) {
+  const anchorPattern = /<a\b[^>]*?\bhref\s*=\s*(["'])(.*?)\1[^>]*>([\s\S]*?)<\/a>/gis;
+  for (const match of html.matchAll(anchorPattern)) {
     position += 1;
     const destination = safeDestination(match[2]);
     if (!destination) {
       excludedCount += 1;
       continue;
     }
+    const title = extractLinkTitle(match[3]);
     const existing = links.get(destination);
-    if (existing) existing.occurrences += 1;
-    else links.set(destination, { destination, firstPosition: position, occurrences: 1 });
+    if (existing) {
+      existing.occurrences += 1;
+      existing.title = preferLinkTitle(existing.title, title);
+    } else {
+      links.set(destination, { title, destination, firstPosition: position, occurrences: 1 });
+    }
   }
   return { links: [...links.values()], excludedCount };
+}
+
+function extractLinkTitle(innerHtml) {
+  const imageAlt = [...String(innerHtml).matchAll(/<img\b[^>]*?\balt\s*=\s*(["'])(.*?)\1/gi)]
+    .map((match) => cleanLinkTitle(match[2]))
+    .find(Boolean);
+  const visibleText = cleanLinkTitle(String(innerHtml)
+    .replace(/<style\b[\s\S]*?<\/style>/gi, " ")
+    .replace(/<script\b[\s\S]*?<\/script>/gi, " ")
+    .replace(/<br\s*\/?\s*>/gi, " ")
+    .replace(/<[^>]+>/g, " "));
+  return preferLinkTitle(imageAlt, visibleText);
+}
+
+function cleanLinkTitle(value) {
+  const cleaned = decodeHtmlEntities(String(value || ""))
+    .replace(/\s+/g, " ")
+    .trim()
+    .slice(0, 180);
+  if (!cleaned || /^https?:\/\//i.test(cleaned) || /[\w.+-]+@[\w.-]+\.[a-z]{2,}/i.test(cleaned)) return "";
+  return cleaned;
+}
+
+function preferLinkTitle(current, candidate) {
+  const values = [current, candidate].filter(Boolean);
+  return values.sort((a, b) => linkTitleScore(b) - linkTitleScore(a))[0] || "";
+}
+
+function linkTitleScore(value) {
+  const generic = /^(læs|læs mere|se mere|klik her|tilmeld|tilmeld dig|gå til|åbn|her)$/i.test(value);
+  return (generic ? 0 : 1000) + Math.min(value.length, 160);
+}
+
+function decodeHtmlEntities(value) {
+  return value
+    .replace(/&nbsp;|&#160;/gi, " ")
+    .replace(/&amp;|&#38;/gi, "&")
+    .replace(/&quot;|&#34;/gi, '"')
+    .replace(/&apos;|&#39;/gi, "'")
+    .replace(/&lt;|&#60;/gi, "<")
+    .replace(/&gt;|&#62;/gi, ">");
 }
 
 export async function fetchIssueLinkCatalog(apiKey, issueId, fetchImpl = fetch) {
@@ -311,7 +357,7 @@ function reduceLinkStatistics(raw) {
     : raw && typeof raw === "object"
       ? [raw.Items, raw.Results, raw.Links, raw.Value, raw.value].find(Array.isArray) || []
       : [];
-  const rows = [];
+  const rows = new Map();
   for (const item of items) {
     if (!item || typeof item !== "object") continue;
     const destination = safeDestination(item.Url || item.URL || item.Link || item.Destination || item.Href || item.TargetUrl);
@@ -320,9 +366,13 @@ function reduceLinkStatistics(raw) {
     // vises som unikke klik.
     const clicks = number(item.UniqueClicks ?? item.UniqueClickCount ?? item.UniqueClick ?? item.ContactCount ?? item.ClickCount ?? item.Clicks);
     if (!destination || clicks < 1) continue;
-    rows.push({ title: destination, destination, clicks, rate: 0 });
+    const existing = rows.get(destination);
+    // Samme destination kan ligge bag fx overskrift, billede og knap. Summen
+    // kan dobbelt-tælle personer, så vi bevarer det højeste dokumenterede
+    // antal unikke kontakter for destinationen.
+    if (!existing || clicks > existing.clicks) rows.set(destination, { title: destination, destination, clicks, rate: 0 });
   }
-  return rows;
+  return [...rows.values()];
 }
 
 function contactFilter(value) {
