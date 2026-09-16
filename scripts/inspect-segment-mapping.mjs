@@ -26,9 +26,19 @@ for (const issue of issues) {
     if (/customlong2/i.test(condition)) {
       // Emit only the field and a primitive comparison, never an arbitrary literal.
       const comparisons = condition.match(/(?:Contact\.)?CustomLong2\s*(?:==|!=|eq|ne|=)\s*(?:true|false|[01]|['"](?:Ja|Nej|true|false|[01])['"])/gi) || [];
-      const safeCondition = condition.replace(/(['"])(.*?)\1/g, (_, quote, literal) => quote + (wanted.includes(literal) || /^(true|false|ja|nej|[01])$/i.test(literal) ? literal : '[redacted]') + quote);
+      const safeCondition = condition.replace(/(['"])(.*?)\1/g, (_, quote, literal) => quote + (wanted.some(value => literal.includes(value)) && literal.length < 80 || /^(true|false|ja|nej|[01]|contains|in|equals|==|!=|=)$/i.test(literal) ? literal : '[redacted]') + quote);
       output.add(JSON.stringify({ source: 'template condition', field: 'CustomLong2', comparisons, safeCondition }));
     }
   }
 }
 console.log('MAPPING_METADATA ' + JSON.stringify({ inspectedIssues: issues.length, rules: [...output].map(x => JSON.parse(x)) }));
+const latestId = issues[0]?.IssueId;
+if (latestId) {
+  const baseline = await get(`/Issues/${encodeURIComponent(latestId)}/Statistics/Overview`);
+  for (const value of wanted) {
+    const field = value === 'Har ydernummer' ? 'CustomLong2' : 'CustomLong1';
+    const query = new URLSearchParams({contactFilter: `((${field} ne null and ${field} ne '' and indexof(${field}, '${value}') ge 0))`});
+    const result = await get(`/Issues/${encodeURIComponent(latestId)}/Statistics/Overview?${query}`);
+    console.log('MAPPING_CHECK ' + JSON.stringify({field, value, filterChangesTotal: result.RecipientCount < baseline.RecipientCount, recipients: result.RecipientCount >= 5 ? result.RecipientCount : 'under 5'}));
+  }
+}
