@@ -27,16 +27,14 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm test
-      - name: Beregn historiknøgle
-        id: history-key
-        run: echo "date=$(date -u +%Y-%m-%d)" >> "$GITHUB_OUTPUT"
       - name: Hent valideret dashboardhistorik
         id: history-cache
         uses: actions/cache/restore@v4
         with:
           path: .cache/dashboard-history.json
-          key: dashboard-history-v2-${{ steps.history-key.outputs.date }}
+          key: dashboard-history-v2-mapping1-${{ github.run_id }}-${{ github.run_attempt }}
           restore-keys: |
+            dashboard-history-v2-mapping1-
             dashboard-history-v2-
       - name: Hent og anonymisér aktuelle Ungapped-data
         env:
@@ -47,7 +45,7 @@ jobs:
         uses: actions/cache/save@v4
         with:
           path: .cache/dashboard-history.json
-          key: dashboard-history-v2-${{ steps.history-key.outputs.date }}
+          key: dashboard-history-v2-mapping1-${{ github.run_id }}-${{ github.run_attempt }}
       - run: npm run build:pages
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3

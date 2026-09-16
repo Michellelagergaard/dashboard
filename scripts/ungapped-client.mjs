@@ -190,8 +190,8 @@ export async function fetchIssueLinkCatalog(apiKey, issueId, fetchImpl = fetch) 
 
 
 // Dynamiske emnelinjer er en del af selve udsendelsesopsætningen. I DP's
-// nyhedsbrev styres de af Sektioner (Medlemskaber) / Contact.Custom3 og af
-// Har ydernummer / Contact.CustomLong2. Kun den konkrete regel og emnelinje
+// nyhedsbrev styres de af sektioner / Contact.Custom3, medlemskab /
+// Contact.CustomLong1 og Har ydernummer / Contact.CustomLong2. Kun regel og emnelinje
 // hentes; ingen kontakter eller individuelle modtagerdata indgår.
 export async function fetchIssueSegmentSubjects(apiKey, issueId, fetchImpl = fetch) {
   if (!apiKey) throw new Error("UG_API er ikke konfigureret");
@@ -213,11 +213,9 @@ export function extractSegmentSubjects(issue) {
     if (!subject) continue;
 
     for (const segment of memberSegments) {
-      const matchesMembership = condition.includes(normalize(segment.value));
-      const matchesProviderNumber = segment.label === "Ydernummerpsykologer"
-        && /customlong2/.test(condition)
-        && /(?:true|ja|1)/.test(condition);
-      if (matchesMembership || matchesProviderNumber) output.set(segment.label, subject);
+      const matchesMembership = condition.includes(normalize(segment.value))
+        && condition.includes(normalize(`Contact.${segment.field || memberSegmentField}`));
+      if (matchesMembership) output.set(segment.label, subject);
     }
   }
 
@@ -258,7 +256,7 @@ export async function fetchSentIssues(apiKey, fetchImpl = fetch) {
 
 // Henter kun den samme aggregerede statistik, som vises i Ungappeds filtervisning.
 // Ingen kontakter eller hændelser på personniveau hentes eller gemmes.
-export async function fetchIssueSegmentPerformance(apiKey, issueId, fetchImpl = fetch) {
+export async function fetchIssueSegmentPerformance(apiKey, issueId, fetchImpl = fetch, segments = memberSegments) {
   const baselineUrl = new URL(`/Issues/${encodeURIComponent(issueId)}/Statistics/Overview`, API_BASE);
   let baseline;
   try {
@@ -268,14 +266,14 @@ export async function fetchIssueSegmentPerformance(apiKey, issueId, fetchImpl = 
   }
   const baselineRecipients = number(baseline.RecipientCount);
   const results = [];
-  for (const segment of memberSegments) {
+  for (const segment of segments) {
     const url = new URL(`/Issues/${encodeURIComponent(issueId)}/Statistics/Overview`, API_BASE);
-    url.searchParams.set("contactFilter", contactFilter(segment.value));
+    url.searchParams.set("contactFilter", contactFilter(segment));
     let statistics;
     try {
       statistics = await getJson(url, apiKey, fetchImpl);
     } catch (error) {
-      return { available: false, results: [], reason: error instanceof Error ? error.message : "Ukendt API-fejl" };
+      return { available: false, results, reason: error instanceof Error ? error.message : "Ukendt API-fejl" };
     }
     const recipients = number(statistics.RecipientCount);
     const delivered = number(statistics.ReceivedCount) || Math.max(0, recipients - number(statistics.FailedCount) - number(statistics.BounceCount));
@@ -302,11 +300,17 @@ export async function fetchIssueSegmentPerformance(apiKey, issueId, fetchImpl = 
 // dokumenterede /Statistics/Links-visning. Svar valideres, før de må blive
 // en del af den offentlige datasamling.
 export async function fetchIssueSegmentLinkPerformance(apiKey, issueId, fetchImpl = fetch) {
+  return (await fetchIssueSegmentLinkData(apiKey, issueId, fetchImpl)).results;
+}
+
+export async function fetchIssueSegmentLinkData(apiKey, issueId, fetchImpl = fetch, segments = memberSegments) {
   const baseline = await fetchIssueLinkStatistics(apiKey, issueId, null, fetchImpl);
-  if (!baseline.available) return [];
+  if (!baseline.available) return { available: false, results: [] };
   const output = [];
-  for (const segment of memberSegments) {
-    const result = await fetchIssueLinkStatistics(apiKey, issueId, contactFilter(segment.value), fetchImpl);
+  let available = true;
+  for (const segment of segments) {
+    const result = await fetchIssueLinkStatistics(apiKey, issueId, contactFilter(segment), fetchImpl);
+    if (!result.available) available = false;
     // Et uændret resultat betyder, at kontaktfilteret sandsynligvis blev
     // ignoreret. Det må aldrig udgives som et segmentresultat.
     if (!result.available || sameLinkResults(baseline.results, result.results)) continue;
@@ -315,7 +319,7 @@ export async function fetchIssueSegmentLinkPerformance(apiKey, issueId, fetchImp
       output.push({ ...item, audience: segment.label });
     }
   }
-  return output;
+  return { available, results: output };
 }
 
 export async function fetchIssueLinkPerformance(apiKey, issueId, fetchImpl = fetch) {
@@ -334,7 +338,7 @@ async function fetchIssueLinkStatistics(apiKey, issueId, filter, fetchImpl) {
       await pause(1250);
       const raw = await getJson(url, apiKey, fetchImpl);
       const results = reduceLinkStatistics(raw);
-      if (results.length) {
+      if (results.length || Array.isArray(raw) && raw.length === 0) {
         resolvedLinkStatisticsPath = name;
         return { available: true, results };
       }
@@ -375,9 +379,10 @@ function reduceLinkStatistics(raw) {
   return [...rows.values()];
 }
 
-function contactFilter(value) {
-  const escaped = String(value).replaceAll("'", "''");
-  return `((${memberSegmentField} ne null and ${memberSegmentField} ne '' and indexof(${memberSegmentField}, '${escaped}') ge 0))`;
+function contactFilter(segment) {
+  const escaped = String(segment.value).replaceAll("'", "''");
+  const field = segment.field || memberSegmentField;
+  return `((${field} ne null and ${field} ne '' and indexof(${field}, '${escaped}') ge 0))`;
 }
 
 async function getJson(url, apiKey, fetchImpl, attempt = 0) {

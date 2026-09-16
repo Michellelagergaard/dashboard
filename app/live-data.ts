@@ -26,6 +26,8 @@ export type LiveMailing = {
     occurrences: number;
   }>;
   segments: string[];
+  segmentMappingVersion?: number;
+  segmentLinkMappingVersion?: number;
   segmentPerformance?: Array<{
     name: string;
     recipientsLabel: string;

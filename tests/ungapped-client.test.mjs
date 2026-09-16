@@ -49,7 +49,7 @@ test("maps each DynamicSubject block to its own audience", () => {
     DynamicSubject: [
       "{{#if Contact.Custom3 'contains' 'Selvstændige psykologers sektion'}} Selvstændiges emne",
       "{{#if Contact.Custom3 'contains' 'Hospitalssektionen'}} Regionalt emne",
-      "{{#if Contact.CustomLong2 'equals' 'true'}} Ydernummeremne",
+      "{{#compareelif Contact.CustomLong2 'contains' 'Har Ydernummer'}} Ydernummeremne",
     ].join(" {{/if}} "),
   });
   assert.deepEqual(rows, [
