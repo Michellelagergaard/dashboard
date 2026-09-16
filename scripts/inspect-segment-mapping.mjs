@@ -26,9 +26,17 @@ for (const issue of issues) {
     if (/customlong2/i.test(condition)) {
       // Emit only the field and a primitive comparison, never an arbitrary literal.
       const comparisons = condition.match(/(?:Contact\.)?CustomLong2\s*(?:==|!=|eq|ne|=)\s*(?:true|false|[01]|['"](?:Ja|Nej|true|false|[01])['"])/gi) || [];
-      const safeCondition = condition.replace(/(['"])(.*?)\1/g, (_, quote, literal) => quote + (wanted.some(value => literal.includes(value)) && literal.length < 80 || /^(true|false|ja|nej|[01]|contains|in|equals|==|!=|=)$/i.test(literal) ? literal : '[redacted]') + quote);
+      const safeCondition = condition.replace(/(['"])(.*?)\1/g, (_, quote, literal) => quote + (wanted.some(value => literal.toLowerCase().includes(value.toLowerCase())) && literal.length < 80 || /^(true|false|ja|nej|[01]|contains|in|equals|==|!=|=)$/i.test(literal) ? literal : '[redacted]') + quote);
       output.add(JSON.stringify({ source: 'template condition', field: 'CustomLong2', comparisons, safeCondition }));
     }
+  }
+}
+for (const issue of issues.slice(1, 6)) {
+  const field = 'CustomLong1';
+  for (const value of ['Pension DP', 'Pension']) {
+    const query = new URLSearchParams({contactFilter: `((${field} ne null and ${field} ne '' and indexof(${field}, '${value}') ge 0))`});
+    const result = await get(`/Issues/${encodeURIComponent(issue.IssueId)}/Statistics/Overview?${query}`);
+    console.log('PENSION_CHECK ' + JSON.stringify({value, recipients: result.RecipientCount >= 5 ? result.RecipientCount : 'under 5'}));
   }
 }
 console.log('MAPPING_METADATA ' + JSON.stringify({ inspectedIssues: issues.length, rules: [...output].map(x => JSON.parse(x)) }));
