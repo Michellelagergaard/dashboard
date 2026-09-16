@@ -31,9 +31,9 @@ for (const issue of issues) {
     }
   }
 }
-for (const issue of issues.slice(1, 6)) {
+for (const issue of issues.slice(0, 1)) {
   const field = 'CustomLong1';
-  for (const value of ['Pension DP', 'Pension']) {
+  for (const value of ['Pensionist DP', 'Pension - DP', 'Pension-DP', 'Pension  DP', 'PensionDP', 'Pension']) {
     const query = new URLSearchParams({contactFilter: `((${field} ne null and ${field} ne '' and indexof(${field}, '${value}') ge 0))`});
     const result = await get(`/Issues/${encodeURIComponent(issue.IssueId)}/Statistics/Overview?${query}`);
     console.log('PENSION_CHECK ' + JSON.stringify({value, recipients: result.RecipientCount >= 5 ? result.RecipientCount : 'under 5'}));
