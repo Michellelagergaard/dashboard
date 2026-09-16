@@ -4,9 +4,10 @@ import { useMemo, useState, type ReactNode } from "react";
 import { Activity, ChevronDown, ChevronRight, ChevronUp, Code2, Mail, MousePointerClick, Send, Users } from "lucide-react";
 import { CartesianGrid, Legend, Line, LineChart, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import type { LiveDashboardData, LiveMailing } from "./live-data";
-import { memberSegmentFieldLabel, memberSegmentNames, minimumPublicSegmentSize } from "../config/member-segments.mjs";
+import { memberSegmentNames, minimumPublicSegmentSize } from "../config/member-segments.mjs";
 import { editorialCategory, summarizeEditorialTopics } from "../config/editorial-topics.mjs";
 
+const memberSegmentFieldLabel = "Sektioner, medlemskab og egne felter";
 type View = "overview" | "audiences" | "mailing";
 type Mailing = LiveMailing;
 

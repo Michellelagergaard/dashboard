@@ -3,9 +3,21 @@ import { correctedMemberSegments, segmentMappingVersion } from "../config/member
 // Merge by stable row identity: partial API replies must never remove saved rows.
 export function mergeHistoricalMailing(mailing, baseline) {
   if (!baseline) return mailing;
-  const merge = (field, key) => [...new Map([
-    ...(baseline[field] || []), ...(mailing[field] || []),
-  ].map(row => [key(row), row])).values()];
+  const merge = (field, key) => {
+    const group = rows => {
+      const groups = new Map();
+      for (const row of rows || []) groups.set(key(row), [...(groups.get(key(row)) || []), row]);
+      return groups;
+    };
+    const saved = group(baseline[field]);
+    for (const [id, rows] of group(mailing[field])) {
+      // Older snapshots can contain several distinct placements of one URL.
+      // A single destination-level result cannot replace those original rows.
+      if ((saved.get(id)?.length || 0) > rows.length) continue;
+      saved.set(id, rows);
+    }
+    return [...saved.values()].flat();
+  };
   const content = merge("content", row => row.destination);
   const links = merge("links", row => row.destination);
   const segmentPerformance = merge("segmentPerformance", row => row.name);

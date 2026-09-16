@@ -92,6 +92,13 @@ test("failed historical reads preserve all saved rows and remain retryable", asy
   assert.deepEqual(result, saved);
 });
 
+test("distinct saved placements of the same URL survive a destination-level merge", () => {
+  const original = { ...saved, content: [{ destination: "https://dp.dk/a", clicks: 43 }, { destination: "https://dp.dk/a", clicks: 35 }] };
+  const merged = mergeHistoricalMailing({ ...saved, content: [{ destination: "https://dp.dk/a", clicks: 35 }] }, original);
+  assert.deepEqual(merged.content, original.content);
+  assert.deepEqual(mergeHistoricalMailing(merged, original).content, original.content);
+});
+
 test("dynamic subjects match the documented membership field", () => {
   const rows = extractSegmentSubjects({ DynamicSubject: "{{#compareif Contact.CustomLong1 'contains' '1 og 2 års kandidater'}}Dimittendemne{{/compareif}}{{#compareif Contact.Custom3 'contains' 'Ledig DP'}}Forkert felt{{/compareif}}" });
   assert.deepEqual(rows, [{ audience: "Dimittender", subject: "Dimittendemne" }]);
