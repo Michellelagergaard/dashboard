@@ -1,7 +1,7 @@
 // Read-only diagnostic. No contacts, cache writes, or dashboard generation.
 const key = process.env.UG_API;
 if (!key) throw new Error('UG_API mangler');
-const wanted = ['1 og 2 års kandidater', 'Ledig DP', 'Pension DP'];
+const wanted = ['1 og 2 års kandidater', 'Ledig DP', 'Pension DP', 'Har ydernummer'];
 async function get(path) {
   const response = await fetch(new URL(path, 'https://api.ungapped.com'), {
     headers: { 'x-api-key': key, accept: 'application/json' },
@@ -16,7 +16,8 @@ const issues = list.filter(x => (x.Tags || []).some(t => String(t?.Name || t?.Ta
 const output = new Set();
 for (const issue of issues) {
   const detail = await get(`/Issues/${encodeURIComponent(issue.IssueId)}`);
-  for (const match of String(detail.DynamicSubject || '').matchAll(/{{#([^}]*)}}/g)) {
+  const template = [detail.DynamicSubject, detail.Html, detail.BodyHtml, detail.Body, detail.Content].filter(x => typeof x === 'string').join('\n');
+  for (const match of template.matchAll(/{{#([^}]*)}}/g)) {
     const condition = match[1];
     const fields = [...new Set(condition.match(/(?:Contact\.)?Custom(?:Long|Date|Number)?\d+/g) || [])];
     for (const value of wanted) if (condition.toLocaleLowerCase('da').includes(value.toLocaleLowerCase('da'))) {
@@ -25,7 +26,8 @@ for (const issue of issues) {
     if (/customlong2/i.test(condition)) {
       // Emit only the field and a primitive comparison, never an arbitrary literal.
       const comparisons = condition.match(/(?:Contact\.)?CustomLong2\s*(?:==|!=|eq|ne|=)\s*(?:true|false|[01]|['"](?:Ja|Nej|true|false|[01])['"])/gi) || [];
-      output.add(JSON.stringify({ source: 'DynamicSubject condition', field: 'CustomLong2', comparisons }));
+      const safeCondition = condition.replace(/(['"])(.*?)\1/g, (_, quote, literal) => quote + (wanted.includes(literal) || /^(true|false|ja|nej|[01])$/i.test(literal) ? literal : '[redacted]') + quote);
+      output.add(JSON.stringify({ source: 'template condition', field: 'CustomLong2', comparisons, safeCondition }));
     }
   }
 }
