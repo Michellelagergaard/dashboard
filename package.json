@@ -14,7 +14,7 @@
     "sync:static": "node scripts/generate-static-dashboard-data.mjs",
     "build:azure": "node scripts/generate-azure-auth-config.mjs && npm run sync:static && vite build --config vite.azure.config.ts",
     "start": "WRANGLER_LOG_PATH=.wrangler/wrangler.log vinext start",
-    "test": "node --test tests/data.test.mjs tests/ungapped-client.test.mjs tests/segment-mapping.test.mjs tests/measurement-methods.test.mjs",
+    "test": "node --test tests/data.test.mjs tests/ungapped-client.test.mjs tests/segment-mapping.test.mjs tests/measurement-methods.test.mjs tests/editorial-content.test.mjs",
     "lint": "bash scripts/sites-env.sh -- eslint . --ignore-pattern dist --ignore-pattern .next",
     "db:generate": "bash scripts/sites-env.sh -- drizzle-kit generate"
   },
@@ -22,6 +22,7 @@
     "@base-ui/react": "^1.7.0",
     "@hookform/resolvers": "^5.7.1",
     "@shadcn/react": "^0.3.0",
+    "cheerio": "^1.1.2",
     "class-variance-authority": "0.7.1",
     "clsx": "2.1.1",
     "cmdk": "^1.1.1",

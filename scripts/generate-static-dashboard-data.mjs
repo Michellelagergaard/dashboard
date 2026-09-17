@@ -1,5 +1,6 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
-import { fetchIssueLinkCatalog, fetchIssueLinkPerformance, fetchIssueSegmentLinkData, fetchIssueSegmentPerformance, fetchIssueSegmentSubjects, fetchSentIssues } from "./ungapped-client.mjs";
+import { fetchIssueEditorialCatalog, fetchIssueLinkCatalog, fetchIssueLinkPerformance, fetchIssueSegmentLinkData, fetchIssueSegmentPerformance, fetchIssueSegmentSubjects, fetchSentIssues } from "./ungapped-client.mjs";
+import { editorialCatalogVersion } from "./editorial-catalog.mjs";
 import { mergeHistoricalMailing, supplementHistoricalSegments, publicSegmentRows } from "./dashboard-history.mjs";
 import { segmentMappingVersion } from "../config/member-segments.mjs";
 
@@ -12,10 +13,13 @@ const baselineUrl = new URL("../data/dashboard-history-baseline.json", import.me
 const historyCutoff = new Date();
 historyCutoff.setUTCMonth(historyCutoff.getUTCMonth() - 1);
 const historyById = await loadHistoryCache(historyCacheUrl);
-const preMeasurementArchive = JSON.parse(await readFile(new URL("../data/pre-measurement-v2.json", import.meta.url), "utf8"));
-for (const mailing of preMeasurementArchive.mailings) {
-  if (historyById.has(mailing.id)) historyById.set(mailing.id, mergeHistoricalMailing(historyById.get(mailing.id), mailing));
-  else historyById.set(mailing.id, mailing);
+// Newest archive first; current cache always wins. Older snapshots remain intact.
+for (const filename of ["pre-editorial-v1.json", "pre-measurement-v2.json"]) {
+  const archive = JSON.parse(await readFile(new URL(`../data/${filename}`, import.meta.url), "utf8"));
+  for (const mailing of archive.mailings) {
+    if (historyById.has(mailing.id)) historyById.set(mailing.id, mergeHistoricalMailing(historyById.get(mailing.id), mailing));
+    else historyById.set(mailing.id, mailing);
+  }
 }
 const baselineById = await loadBaseline(baselineUrl);
 const issues = await fetchSentIssues(apiKey);
@@ -90,6 +94,22 @@ for (const [id, saved] of historyById) {
   if (!currentIds.has(id)) mailings.push(mergeHistoricalMailing(saved, baselineById.get(id)));
 }
 mailings.sort((a, b) => String(b.sentAt).localeCompare(String(a.sentAt)));
+
+// Descriptive metadata lives beside the frozen measurements. Never rewrite rows.
+let enriched = 0;
+for (const mailing of mailings) {
+  if (!(mailing.content.length || mailing.segmentLinkPerformance?.length || mailing.links.length)) continue;
+  if (mailing.editorialCatalogVersion === editorialCatalogVersion) continue;
+  try {
+    const catalog = await fetchIssueEditorialCatalog(apiKey, mailing.id);
+    const merged = new Map((mailing.editorialCatalog || []).map(item => [item.destination, item]));
+    for (const item of catalog) merged.set(item.destination, item);
+    mailing.editorialCatalog = [...merged.values()];
+    mailing.editorialCatalogVersion = editorialCatalogVersion;
+    enriched++;
+  } catch { console.warn(`Indholdsnavne ikke opdateret for ${mailing.id}; tidligere navne og alle målinger bevares.`); }
+}
+console.log(`Indholdsmetadata: ${enriched} udgaver beriget; ${mailings.filter(m => m.editorialCatalogVersion === editorialCatalogVersion).length} med gemt katalog.`);
 
 const data = { mailings, updatedAt: new Date().toISOString(), status: "live" };
 await writeFile(new URL("../app/generated-dashboard-data.ts", import.meta.url), `import type { LiveDashboardData } from "./live-data";\n\nexport const generatedDashboardData = ${JSON.stringify(data)} as const satisfies LiveDashboardData;\n`, "utf8");

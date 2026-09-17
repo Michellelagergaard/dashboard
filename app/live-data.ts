@@ -7,7 +7,10 @@ export type ClickMeasurement = {
   aggregation: "single-link" | "max-per-destination";
   sourceRows: number;
 };
+export type EditorialMetadata = { mailingId: string; title: string; kind: string; category: string; source: string; ambiguous?: boolean };
 export type LiveMailing = {
+  editorialCatalogVersion?: number;
+  editorialCatalog?: Array<{ destination: string; title: string; titleSource: string; ambiguous?: boolean }>;
   id: string;
   title: string;
   subject: string;
@@ -21,6 +24,7 @@ export type LiveMailing = {
   clickRate: number;
   unsubscribes: number;
   content: Array<{
+    editorial?: EditorialMetadata;
     title: string;
     destination: string;
     recipients: number;
@@ -29,6 +33,7 @@ export type LiveMailing = {
     clickMeasurement?: ClickMeasurement;
   }>;
   links: Array<{
+    editorial?: EditorialMetadata;
     title?: string;
     destination: string;
     firstPosition: number;
@@ -54,6 +59,7 @@ export type LiveMailing = {
     subject: string;
   }>;
   segmentLinkPerformance?: Array<{
+    editorial?: EditorialMetadata;
     title: string;
     destination: string;
     audience: string;

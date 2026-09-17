@@ -1,5 +1,6 @@
 import { memberSegmentField, memberSegments, minimumPublicSegmentSize } from "../config/member-segments.mjs";
 import { measurementVersion } from "../config/measurement-methods.mjs";
+import { extractEditorialCatalog } from "./editorial-catalog.mjs";
 
 const API_BASE = "https://api.ungapped.com";
 const PAGE_SIZE = 100;
@@ -190,6 +191,14 @@ export async function fetchIssueLinkCatalog(apiKey, issueId, fetchImpl = fetch) 
   if (!text(issueId)) throw new Error("Udsendelses-id mangler");
   const issue = await getJson(new URL(`/Issues/${encodeURIComponent(issueId)}`, API_BASE), apiKey, fetchImpl);
   return extractLinkCatalog(issue.BodyHtml || issue.AutosavedHtml || "");
+}
+
+export async function fetchIssueEditorialCatalog(apiKey, issueId, fetchImpl = fetch) {
+  if (!apiKey || !text(issueId)) throw new Error("API-adgang eller udsendelses-id mangler");
+  const issue = await getJson(new URL(`/Issues/${encodeURIComponent(issueId)}`, API_BASE), apiKey, fetchImpl);
+  // Draft/autosave HTML is not evidence of what was sent.
+  if (!issue.BodyHtml) throw new Error("Den sendte HTML mangler");
+  return extractEditorialCatalog(issue.BodyHtml, safeDestination);
 }
 
 
