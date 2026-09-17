@@ -16,6 +16,8 @@ for (const [index, issue] of issues.entries()) {
   const links = Array.isArray(raw) ? raw : raw.Items || raw.Results || raw.Links || [];
   const detail = await get(root);
   const html = String(detail.BodyHtml || '');
+  const fieldTags = html.match(/<[^>]*Custom(?:Long|Date|Number)?\d+[^>]*>/gi) || [];
+  console.log('TARGETING_MARKUP ' + JSON.stringify({index, tagCount:fieldTags.length, tags:[...new Set(fieldTags.map(t=>(t.match(/^<\/?([\w:-]+)/)||[])[1]))], attributes:[...new Set(fieldTags.flatMap(t=>[...t.matchAll(/\s([\w:-]+)\s*=/g)].map(m=>m[1])))], customTemplateTokenCount:(html.match(/{{[^}]*Custom(?:Long|Date|Number)?\d+[^}]*}}/gi)||[]).length}));
   const conditions = [...html.matchAll(/{{#([^}]*)}}/g)].map(m => m[1]);
   const shape = value => Array.isArray(value) ? {array: value.length, keys: [...new Set(value.filter(v=>v && typeof v==='object').flatMap(Object.keys))]} : value && typeof value === 'object' ? Object.fromEntries(Object.entries(value).map(([k,v])=>[k,typeof v])) : typeof value;
   console.log('TARGETING_SCHEMA ' + JSON.stringify({index, detailKeys:Object.keys(detail), segments:shape(detail.Segments), htmlCustomFields:[...new Set(html.match(/(?:Contact\.)?Custom(?:Long|Date|Number)?\d+/gi)||[])], conditionalStructure:conditions.map(c=>c.replace(/(['"])(.*?)\1/g,'$1[value]$1').replace(/[0-9a-f]{8}-[0-9a-f-]{20,}/gi,'[id]').slice(0,200))}));
