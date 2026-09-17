@@ -13,7 +13,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - name: Read mapping metadata only
+      - run: npm install --no-save --ignore-scripts cheerio@1.1.2
+      - name: Read editorial metadata only
         env:
           UG_API: ${{ secrets.UG_API }}
         run: node scripts/inspect-segment-mapping.mjs
