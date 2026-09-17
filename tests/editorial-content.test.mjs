@@ -90,7 +90,7 @@ test("the complete archive survives editorial enrichment with all original field
   const result=enrichMailings(source,{version:1,corrections:[]});
   for(let i=0;i<source.length;i++){
     const restored={...result[i]};
-    for(const field of ["content","links","segmentLinkPerformance"]) restored[field]=restored[field].map(({editorial,...row})=>row);
+    for(const field of ["content","links","segmentLinkPerformance"]) restored[field]=restored[field].map(item=>{const row={...item};delete row.editorial;return row;});
     assert.deepEqual(restored,source[i]);
   }
 });

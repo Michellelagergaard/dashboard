@@ -44,5 +44,5 @@ export function extractEditorialCatalog(html, safeDestination) {
     if (!existing || candidate.score > existing.score) records.set(destination, { destination, ...candidate });
     else if (candidate.score === existing.score && candidate.title !== existing.title) existing.ambiguous = true;
   });
-  return [...records.values()].map(({score, ...item}) => item);
+  return [...records.values()].map(record => { const item = { ...record }; delete item.score; return item; });
 }

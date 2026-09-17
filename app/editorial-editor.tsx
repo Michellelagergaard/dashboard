@@ -1,5 +1,5 @@
 "use client";
-import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import { createContext, useContext, useMemo, useState, useSyncExternalStore, type ReactNode } from "react";
 import { contentKinds, correctionKey, correctionStorageKey, mergeCorrections, validateCorrections } from "../config/editorial-content.mjs";
 import { editorialTopicNames } from "../config/editorial-topics.mjs";
 import sharedFile from "../config/editorial-overrides.json";
@@ -9,20 +9,25 @@ type Correction = { mailingId: string; destination: string; title: string; kind:
 type CorrectionFile = { version: number; corrections: Correction[] };
 const shared = validateCorrections(sharedFile) as CorrectionFile;
 const empty: CorrectionFile = { version: 1, corrections: [] };
+function subscribe(callback: () => void) {
+  window.addEventListener("storage", callback);
+  window.addEventListener("dp-editorial-change", callback);
+  return () => { window.removeEventListener("storage", callback); window.removeEventListener("dp-editorial-change", callback); };
+}
+function storageSnapshot() { try { return localStorage.getItem(correctionStorageKey) || ""; } catch { return "unavailable"; } }
 const Context = createContext<{ save: (row: Correction) => boolean; reset: (row: Correction) => void; ready: boolean; local: Correction[] }>({ save: () => false, reset: () => {}, ready: false, local: [] });
 
 export function EditorialProvider({ children }: { children: (file: CorrectionFile) => ReactNode }) {
-  const [local, setLocal] = useState<CorrectionFile>(empty);
-  const [ready, setReady] = useState(false);
+  const stored = useSyncExternalStore(subscribe, storageSnapshot, () => null);
+  const ready = stored !== null;
   const [message, setMessage] = useState("");
-  useEffect(() => {
-    try { const value = localStorage.getItem(correctionStorageKey); if (value) setLocal(validateCorrections(JSON.parse(value))); }
-    catch { setMessage("Gemte rettelser kunne ikke læses. De er ikke overskrevet. Eksportér dine rettelser, før du lukker siden."); }
-    setReady(true);
-  }, []);
+  const { local, readError } = useMemo(() => {
+    try { return { local: stored ? validateCorrections(JSON.parse(stored)) as CorrectionFile : empty, readError: "" }; }
+    catch { return { local: empty, readError: "Gemte rettelser kunne ikke læses. De er ikke overskrevet. Browserens lagring kan være blokeret, eller rettelsesfilen kan være beskadiget." }; }
+  }, [stored]);
   const combined = mergeCorrections(shared, local) as CorrectionFile;
   function persist(file: CorrectionFile) {
-    try { const valid = validateCorrections(file); localStorage.setItem(correctionStorageKey, JSON.stringify(valid)); setLocal(valid); setMessage("Rettelsen er gemt i denne browser. Del rettelsesfilen for at bruge den hos kolleger."); return true; }
+    try { const valid = validateCorrections(file); localStorage.setItem(correctionStorageKey, JSON.stringify(valid)); window.dispatchEvent(new Event("dp-editorial-change")); setMessage("Rettelsen er gemt i denne browser. Del rettelsesfilen for at bruge den hos kolleger."); return true; }
     catch (error) { setMessage(error instanceof Error ? error.message : "Rettelsen kunne ikke gemmes."); return false; }
   }
   function save(row: Correction) { return persist(mergeCorrections(local, { version: 1, corrections: [row] })); }
@@ -40,6 +45,7 @@ export function EditorialProvider({ children }: { children: (file: CorrectionFil
   return <Context.Provider value={{ save, reset, ready, local: local.corrections }}>
     {children(combined)}
     <details className="editorial-sharing"><summary>Del og gem redaktionelle rettelser · {local.corrections.length} lokale</summary>
+      {readError ? <p role="alert">{readError}</p> : null}
       <p>Brug “Ret indhold” ved en historie. Rettelsen gælder samme link i samme udsendelse, også i målgruppevisningen. Målingerne ændres ikke.</p>
       <p><strong>Rettelser gemmes i denne browser.</strong> Kolleger kan importere filen. Fælles rettelser til alle brugere kræver, at filen gemmes i repositoryet; GitHub kræver skriveadgang.</p>
       <div className="editorial-actions"><button type="button" onClick={download} disabled={!ready}>Eksportér rettelsesfil</button><label className="file-label">Importér rettelsesfil<input type="file" accept="application/json,.json" disabled={!ready} onChange={event => { void importFile(event.target.files?.[0]); event.target.value = ""; }} /></label><a href="https://github.com/Michellelagergaard/dashboard/edit/main/config/editorial-overrides.json" target="_blank" rel="noreferrer">Åbn fælles rettelser i GitHub</a></div>
