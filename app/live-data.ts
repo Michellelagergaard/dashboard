@@ -1,6 +1,12 @@
 import "server-only";
 import { fetchSentIssues } from "../scripts/ungapped-client.mjs";
 
+export type ClickMeasurement = {
+  metric: "unique-contacts" | "total-clicks";
+  source: string;
+  aggregation: "single-link" | "max-per-destination";
+  sourceRows: number;
+};
 export type LiveMailing = {
   id: string;
   title: string;
@@ -9,6 +15,8 @@ export type LiveMailing = {
   date: string;
   sentAt: string | null;
   delivered: number;
+  measurementVersion?: number;
+  measurement?: { overviewSource: string; openSource: string; clickSource: string; denominator: string; deliverySource: string; uniqueness: string };
   openRate: number;
   clickRate: number;
   unsubscribes: number;
@@ -18,6 +26,7 @@ export type LiveMailing = {
     recipients: number;
     clicks: number;
     rate: number;
+    clickMeasurement?: ClickMeasurement;
   }>;
   links: Array<{
     title?: string;
@@ -31,6 +40,10 @@ export type LiveMailing = {
   segmentPerformance?: Array<{
     name: string;
     recipientsLabel: string;
+    recipients?: number;
+    delivered?: number;
+    measurementVersion?: number;
+    membershipTimeBasis?: string;
     openRate: number;
     clickRate: number;
     ctor: number;
@@ -46,6 +59,7 @@ export type LiveMailing = {
     audience: string;
     clicks: number;
     rate: number;
+    clickMeasurement?: ClickMeasurement;
   }>;
   dataCoverage?: {
     linkPerformance: boolean;
@@ -87,7 +101,7 @@ export async function getLiveDashboardData(): Promise<LiveDashboardData> {
         id: issue.id,
         title: issue.name || issue.subject || "Uden titel",
         subject: issue.subject || "Emnefelt mangler",
-        type: issue.category !== "Ikke kategoriseret"
+        type: issue.category && issue.category !== "Ikke kategoriseret"
           ? issue.category
           : issue.suggestedCategory || "Ikke kategoriseret",
         date: formatDate(issue.sentAt),

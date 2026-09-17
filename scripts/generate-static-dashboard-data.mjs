@@ -12,6 +12,11 @@ const baselineUrl = new URL("../data/dashboard-history-baseline.json", import.me
 const historyCutoff = new Date();
 historyCutoff.setUTCMonth(historyCutoff.getUTCMonth() - 1);
 const historyById = await loadHistoryCache(historyCacheUrl);
+const preMeasurementArchive = JSON.parse(await readFile(new URL("../data/pre-measurement-v2.json", import.meta.url), "utf8"));
+for (const mailing of preMeasurementArchive.mailings) {
+  if (historyById.has(mailing.id)) historyById.set(mailing.id, mergeHistoricalMailing(historyById.get(mailing.id), mailing));
+  else historyById.set(mailing.id, mailing);
+}
 const baselineById = await loadBaseline(baselineUrl);
 const issues = await fetchSentIssues(apiKey);
 const sorted = issues
@@ -61,12 +66,12 @@ const mailings = await mapConcurrent(sorted, 1, async (issue) => {
   const linkTitles = new Map(links.map((item) => [item.destination, item.title]).filter(([, title]) => title));
   const mailing = {
     ...emptyMailing(issue),
-    content: linkPerformance.results.filter((item) => item.clicks >= 5).map((item) => ({ title: linkTitles.get(item.destination) || item.title, destination: item.destination, recipients: issue.delivered, clicks: item.clicks, rate: item.clicks / Math.max(1, issue.delivered) * 100 })),
+    content: linkPerformance.results.filter((item) => item.clicks >= 5).map((item) => ({ title: linkTitles.get(item.destination) || item.title, destination: item.destination, recipients: issue.delivered, clicks: item.clicks, rate: item.clicks / Math.max(1, issue.delivered) * 100, clickMeasurement: item.clickMeasurement })),
     links,
     segments: issue.classificationMetadata?.segments || [],
     segmentPerformance: publicSegmentRows(segmentData.results),
     segmentSubjects,
-    segmentLinkPerformance: segmentLinkPerformance.filter(item => segmentRecipientCounts.get(item.audience) > 0).map((item) => ({ title: linkTitles.get(item.destination) || item.title, destination: item.destination, audience: item.audience, clicks: item.clicks, rate: item.clicks / segmentRecipientCounts.get(item.audience) * 100 })),
+    segmentLinkPerformance: segmentLinkPerformance.filter(item => segmentRecipientCounts.get(item.audience) > 0).map((item) => ({ title: linkTitles.get(item.destination) || item.title, destination: item.destination, audience: item.audience, clicks: item.clicks, rate: item.clicks / segmentRecipientCounts.get(item.audience) * 100, clickMeasurement: item.clickMeasurement })),
     ...(segmentData.available ? { segmentMappingVersion } : {}),
     ...(segmentLinkData.available ? { segmentLinkMappingVersion: segmentMappingVersion } : {}),
     dataCoverage: {
@@ -100,6 +105,7 @@ function emptyMailing(issue) {
     id: issue.id, title: issue.name || issue.subject || "Uden titel", subject: issue.subject || "Emnefelt mangler",
     type: newsletterTag, date: formatDate(issue.sentAt), sentAt: issue.sentAt,
     delivered: issue.delivered, openRate: issue.openRate ?? 0, clickRate: issue.clickRate ?? 0, unsubscribes: issue.unsubscribes ?? 0,
+    measurementVersion: issue.measurementVersion, measurement: issue.measurement,
     content: [], links: [], segments: issue.classificationMetadata?.segments || [],
     segmentPerformance: [], segmentSubjects: [], segmentLinkPerformance: [],
     dataCoverage: { linkPerformance: false, segmentPerformance: false, segmentSubjects: false, segmentLinkPerformance: false },

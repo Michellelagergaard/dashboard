@@ -1,4 +1,5 @@
 import { memberSegmentField, memberSegments, minimumPublicSegmentSize } from "../config/member-segments.mjs";
+import { measurementVersion } from "../config/measurement-methods.mjs";
 
 const API_BASE = "https://api.ungapped.com";
 const PAGE_SIZE = 100;
@@ -11,7 +12,7 @@ export function sanitizeIssue(issue, statistics = issue) {
   const failed = number(statistics.FailedCount);
   const bounced = number(statistics.BounceCount);
   const deliveryBase = recipients > 0 ? recipients : sent;
-  const delivered = number(statistics.ReceivedCount) || Math.max(0, deliveryBase - failed - bounced);
+  const delivered = finiteCount(statistics.ReceivedCount) ?? Math.max(0, deliveryBase - failed - bounced);
   const opens = number(statistics.OpenCount);
   const clicks = number(statistics.ClickCount);
 
@@ -26,6 +27,9 @@ export function sanitizeIssue(issue, statistics = issue) {
     subject: text(issue.Subject),
     sentAt: date(issue.Ended || issue.Started || issue.ScheduledForSending),
     delivered,
+    recipients,
+    measurementVersion,
+    measurement: { overviewSource: "Statistics/Overview", openSource: "OpenCount", clickSource: "ClickCount", denominator: "delivered", deliverySource: finiteCount(statistics.ReceivedCount) !== null ? "ReceivedCount" : "recipient-minus-failed-and-bounced", uniqueness: "not-verified" },
     uniqueOpens: opens,
     uniqueClicks: clicks,
     bounces: bounced,
@@ -276,7 +280,7 @@ export async function fetchIssueSegmentPerformance(apiKey, issueId, fetchImpl = 
       return { available: false, results, reason: error instanceof Error ? error.message : "Ukendt API-fejl" };
     }
     const recipients = number(statistics.RecipientCount);
-    const delivered = number(statistics.ReceivedCount) || Math.max(0, recipients - number(statistics.FailedCount) - number(statistics.BounceCount));
+    const delivered = finiteCount(statistics.ReceivedCount) ?? Math.max(0, recipients - number(statistics.FailedCount) - number(statistics.BounceCount));
     // Hvis API'et ignorerer kontaktfilteret, returnerer det udsendelsens
     // samlede tal. De må aldrig præsenteres som et segmentresultat.
     if (baselineRecipients > minimumPublicSegmentSize && recipients >= baselineRecipients) continue;
@@ -287,6 +291,8 @@ export async function fetchIssueSegmentPerformance(apiKey, issueId, fetchImpl = 
       name: segment.label,
       recipients,
       delivered,
+      measurementVersion,
+      membershipTimeBasis: "not-verified",
       openRate: rate(opens, delivered),
       clickRate: rate(clicks, delivered),
       ctor: rate(clicks, opens),
@@ -355,7 +361,7 @@ function sameLinkResults(a, b) {
   return [...a].map(key).sort().every((value, index) => value === [...b].map(key).sort()[index]);
 }
 
-function reduceLinkStatistics(raw) {
+export function reduceLinkStatistics(raw) {
   const items = Array.isArray(raw)
     ? raw
     : raw && typeof raw === "object"
@@ -368,15 +374,35 @@ function reduceLinkStatistics(raw) {
     // Ungappeds Links-statistik dokumenterer ContactCount som antallet af
     // unikke kontakter, der har klikket. ClickCount er samlede klik og må ikke
     // vises som unikke klik.
-    const clicks = number(item.UniqueClicks ?? item.UniqueClickCount ?? item.UniqueClick ?? item.ContactCount ?? item.ClickCount ?? item.Clicks);
-    if (!destination || clicks < 1) continue;
+    const uniqueSource = ["ContactCount", "UniqueClicks", "UniqueClickCount", "UniqueClick"].find(field => finiteCount(item[field]) !== null);
+    const totalSource = ["ClickCount", "Clicks"].find(field => finiteCount(item[field]) !== null);
+    const source = uniqueSource || totalSource;
+    if (!destination || !source) continue;
+    const clicks = finiteCount(item[source]);
+    const metric = uniqueSource ? "unique-contacts" : "total-clicks";
     const existing = rows.get(destination);
     // Samme destination kan ligge bag fx overskrift, billede og knap. Summen
     // kan dobbelt-tælle personer, så vi bevarer det højeste dokumenterede
     // antal unikke kontakter for destinationen.
-    if (!existing || clicks > existing.clicks) rows.set(destination, { title: destination, destination, clicks, rate: 0 });
+    if (!existing) {
+      rows.set(destination, { title: destination, destination, clicks, rate: 0, clickMeasurement: { metric, source, aggregation: "single-link", sourceRows: 1 } });
+    } else {
+      // Do not compare an event count to a unique-contact count. Prefer the
+      // documented contact measurement, retaining the number of source rows.
+      const replace = metric === existing.clickMeasurement.metric ? clicks > existing.clicks : metric === "unique-contacts";
+      const previousRows = existing.clickMeasurement.sourceRows;
+      if (replace) { existing.clicks = clicks; existing.clickMeasurement = { metric, source }; }
+      existing.clickMeasurement.aggregation = "max-per-destination";
+      existing.clickMeasurement.sourceRows = previousRows + 1;
+    }
   }
-  return [...rows.values()];
+  return [...rows.values()].filter(row => row.clicks > 0);
+}
+
+function finiteCount(value) {
+  if (value === null || value === undefined || value === "" || typeof value === "boolean") return null;
+  const parsed = Number(value);
+  return Number.isFinite(parsed) && parsed >= 0 ? parsed : null;
 }
 
 function contactFilter(segment) {
