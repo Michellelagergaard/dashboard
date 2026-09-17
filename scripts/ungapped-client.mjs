@@ -263,7 +263,7 @@ export async function fetchSentIssues(apiKey, fetchImpl = fetch) {
     if (!id) return sanitizeIssue(issue);
     const url = new URL(`/Issues/${id}/Statistics/Overview`, API_BASE);
     const statistics = await getJson(url, apiKey, fetchImpl);
-    return sanitizeIssue(issue, statistics);
+    return { ...sanitizeIssue(issue, statistics), fetchedAt: new Date().toISOString() };
   });
 }
 

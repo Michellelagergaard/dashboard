@@ -15,12 +15,6 @@ test("alle centrale udsendelsestyper er repræsenteret", () => {
   for (const type of ["Psykologernes Nyhedsbrev", "TR/AMR Nyt", "Magasinet P", "Kompetencenyt", "Medlemskommunikation"]) assert.match(source, new RegExp(type.replace("/", "\\/")));
 });
 
-test("målgruppevisningen sammenligner med eget normalniveau", () => {
-  assert.match(dashboardSource, /Målgruppens normale niveau/);
-  assert.match(dashboardSource, /series\.slice\(1, 6\)/);
-  assert.match(dashboardSource, /ReferenceLine/);
-});
-
 test("lange målgruppetabeller kan foldes ud", () => {
   assert.match(dashboardSource, /aria-expanded=\{expanded\}/);
   assert.match(dashboardSource, /Vis alle \{total\}/);

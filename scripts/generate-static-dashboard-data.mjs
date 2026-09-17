@@ -3,9 +3,14 @@ import { fetchIssueEditorialCatalog, fetchIssueLinkCatalog, fetchIssueLinkPerfor
 import { editorialCatalogVersion } from "./editorial-catalog.mjs";
 import { mergeHistoricalMailing, supplementHistoricalSegments, publicSegmentRows } from "./dashboard-history.mjs";
 import { segmentMappingVersion } from "../config/member-segments.mjs";
+import { mergeCheckpointLedgers, recordCheckpoints, validateCheckpointLedger } from "../config/decision-methods.mjs";
 
 const apiKey = process.env.UG_API;
 if (!apiKey) throw new Error("UG_API mangler.");
+const checkpointUrl = new URL("../.cache/measurement-checkpoints.json", import.meta.url);
+let checkpoints;
+try { checkpoints = validateCheckpointLedger(JSON.parse(await readFile(checkpointUrl, "utf8"))); }
+catch (error) { if (error.code !== "ENOENT") throw error; checkpoints = { version: 1, records: [] }; }
 
 const newsletterTag = "Psykologernes Nyhedsbrev";
 const historyCacheUrl = new URL("../.cache/dashboard-history.json", import.meta.url);
@@ -14,7 +19,7 @@ const historyCutoff = new Date();
 historyCutoff.setUTCMonth(historyCutoff.getUTCMonth() - 1);
 const historyById = await loadHistoryCache(historyCacheUrl);
 // Newest archive first; current cache always wins. Older snapshots remain intact.
-for (const filename of ["pre-editorial-v1.json", "pre-measurement-v2.json"]) {
+for (const filename of ["pre-decisions-v1.json", "pre-editorial-v1.json", "pre-measurement-v2.json"]) {
   const archive = JSON.parse(await readFile(new URL(`../data/${filename}`, import.meta.url), "utf8"));
   for (const mailing of archive.mailings) {
     if (historyById.has(mailing.id)) historyById.set(mailing.id, mergeHistoricalMailing(historyById.get(mailing.id), mailing));
@@ -22,6 +27,7 @@ for (const filename of ["pre-editorial-v1.json", "pre-measurement-v2.json"]) {
   }
 }
 const baselineById = await loadBaseline(baselineUrl);
+checkpoints = mergeCheckpointLedgers(checkpoints, { version: 1, records: [...historyById.values()].flatMap(mailing => mailing.checkpoints || []) });
 const issues = await fetchSentIssues(apiKey);
 const sorted = issues
   .filter((issue) => (issue.tags || []).some((tag) => normalize(tag) === normalize(newsletterTag)))
@@ -63,6 +69,8 @@ const mailings = await mapConcurrent(sorted, 1, async (issue) => {
   }
   const linkPerformance = includeLinks ? await safe(() => fetchIssueLinkPerformance(apiKey, issue.id), { available: false, results: [] }) : { available: false, results: [] };
   const segmentData = includeSegments ? await safe(() => fetchIssueSegmentPerformance(apiKey, issue.id), { available: false, results: [] }) : { available: false, results: [] };
+  const segmentsObservedAt = new Date().toISOString();
+  checkpoints = recordCheckpoints(checkpoints, issue, segmentData.available ? publicSegmentRows(segmentData.results) : [], segmentsObservedAt);
   const segmentLinkData = includeSegmentLinks ? await safe(() => fetchIssueSegmentLinkData(apiKey, issue.id), { available: false, results: [] }) : { available: false, results: [] };
   const segmentLinkPerformance = segmentLinkData.results;
   const segmentSubjects = includeSegments ? await safe(() => fetchIssueSegmentSubjects(apiKey, issue.id), []) : [];
@@ -112,8 +120,10 @@ for (const mailing of mailings) {
 console.log(`Indholdsmetadata: ${enriched} udgaver beriget; ${mailings.filter(m => m.editorialCatalogVersion === editorialCatalogVersion).length} med gemt katalog.`);
 
 const data = { mailings, updatedAt: new Date().toISOString(), status: "live" };
+for (const mailing of mailings) mailing.checkpoints = checkpoints.records.filter(row => row.mailingId === mailing.id);
 await writeFile(new URL("../app/generated-dashboard-data.ts", import.meta.url), `import type { LiveDashboardData } from "./live-data";\n\nexport const generatedDashboardData = ${JSON.stringify(data)} as const satisfies LiveDashboardData;\n`, "utf8");
 await mkdir(new URL("../.cache/", import.meta.url), { recursive: true });
+await writeFile(checkpointUrl, JSON.stringify(checkpoints)+"\n", "utf8");
 await writeFile(historyCacheUrl, `${JSON.stringify({ version: 2, updatedAt: data.updatedAt, mailings })}\n`, "utf8");
 console.log("Målgruppedækning: " + JSON.stringify(Object.fromEntries(
   ["Dimittender", "Ledige", "Ydernummerpsykologer", "Pensionister"].map(name => [name, mailings.filter(mailing => mailing.segmentPerformance.some(row => row.name === name)).length]),
@@ -125,7 +135,7 @@ function emptyMailing(issue) {
     id: issue.id, title: issue.name || issue.subject || "Uden titel", subject: issue.subject || "Emnefelt mangler",
     type: newsletterTag, date: formatDate(issue.sentAt), sentAt: issue.sentAt,
     delivered: issue.delivered, openRate: issue.openRate ?? 0, clickRate: issue.clickRate ?? 0, unsubscribes: issue.unsubscribes ?? 0,
-    measurementVersion: issue.measurementVersion, measurement: issue.measurement,
+    measurementVersion: issue.measurementVersion, measurement: issue.measurement, observedAt: issue.fetchedAt,
     content: [], links: [], segments: issue.classificationMetadata?.segments || [],
     segmentPerformance: [], segmentSubjects: [], segmentLinkPerformance: [],
     dataCoverage: { linkPerformance: false, segmentPerformance: false, segmentSubjects: false, segmentLinkPerformance: false },

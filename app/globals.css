@@ -69,3 +69,27 @@
 @media (max-width: 900px) { .editorial-sharing { margin: 16px; } .content-filter { flex-direction: column; align-items: stretch; gap: 10px; } }
 .editorial-message button { display: block; margin-top: 8px; color: white; text-decoration: underline; background: transparent; border: 0; }
 @media (max-width: 700px) { .simple-dashboard .topbar { margin: -20px -14px 24px; padding: 20px 14px 25px; } }
+.decision-controls, .meeting-note-options { display: flex; gap: 18px; flex-wrap: wrap; margin: 18px 0; }
+.decision-controls label, .meeting-notes label { display: grid; gap: 6px; font-size: 14px; font-weight: 600; }
+.decision-controls select, .meeting-notes input, .meeting-notes select, .meeting-notes textarea { background: white; border: 1px solid #a8bdc6; border-radius: 6px; padding: 10px; color: #173a4a; font: inherit; width: 100%; max-width: 100%; }
+.decision-readout { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 14px; margin: 20px 0; }
+.decision-readout article { background: #eef3f7; padding: 16px; border-radius: 8px; }
+.decision-readout span, .decision-readout strong, .decision-readout small { display: block; }
+.decision-readout strong { color: #243c5e; font-size: 26px; margin: 5px 0; }
+.decision-readout small { font-size: 12px; color: #53616e; }
+.decision-chart { height: 300px; min-width: 0; margin-top: 20px; }
+.decision-evidence { border-top: 1px solid #d4dbe1; padding-top: 12px; margin-top: 14px; }
+.decision-evidence summary, .meeting-notes summary, .checkpoint-summary summary { cursor: pointer; font-weight: 700; }
+.decision-evidence p, .decision-evidence li, .checkpoint-summary p, .checkpoint-summary li { font-size: 13px; line-height: 1.6; }
+.decision-evidence ul, .checkpoint-summary ul, .documented-observations ul { padding-left: 22px; }
+.decision-evidence .row-link { margin-left: 10px; }
+.decision-gap { border-left: 4px solid #b48727; background: #faf5e9; padding: 14px; font-size: 14px; }
+.documented-observations li { margin: 14px 0; font-size: 15px; }
+.documented-observations li span { display: block; color: #53616e; font-size: 12px; margin-top: 5px; }
+.meeting-notes form { display: grid; gap: 16px; margin-top: 16px; }
+.meeting-notes p { font-size: 13px; line-height: 1.6; }
+.meeting-notes textarea { resize: vertical; min-height: 80px; }
+.meeting-notes button { width: fit-content; background: #3a557d; color: white; border: 0; border-radius: 6px; padding: 10px 16px; }
+.meeting-notes > details { margin-top: 18px; }
+.meeting-notes input[type=file] { max-width: 280px; }
+@media(max-width:700px) { .decision-readout { grid-template-columns: 1fr; } .decision-controls { display: grid; } .decision-chart { height: 260px; } .decision-evidence .row-link { display: block; margin: 4px 0; } }

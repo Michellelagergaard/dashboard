@@ -8,7 +8,10 @@ export type ClickMeasurement = {
   sourceRows: number;
 };
 export type EditorialMetadata = { mailingId: string; title: string; kind: string; category: string; source: string; ambiguous?: boolean };
+export type Checkpoint = { mailingId: string; day: number; capturedAt: string; ageHours: number; sentAt: string; delivered: number; openRate: number; clickRate: number; unsubscribes: number; measurementVersion: number; measurement?: LiveMailing["measurement"]; segmentPerformance: NonNullable<LiveMailing["segmentPerformance"]>; segmentsObservedAt: string | null };
 export type LiveMailing = {
+  checkpoints?: Checkpoint[];
+  observedAt?: string;
   editorialCatalogVersion?: number;
   editorialCatalog?: Array<{ destination: string; title: string; titleSource: string; ambiguous?: boolean }>;
   id: string;

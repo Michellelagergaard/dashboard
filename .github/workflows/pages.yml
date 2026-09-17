@@ -18,6 +18,10 @@ concurrency:
 
 jobs:
   build:
+    permissions:
+      contents: write
+      pages: write
+      id-token: write
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -27,6 +31,8 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm test
+      - name: Gendan versionsgemte målepunkter
+        run: node scripts/checkpoint-storage.mjs restore
       - name: Hent valideret dashboardhistorik
         id: history-cache
         uses: actions/cache/restore@v4
@@ -40,6 +46,8 @@ jobs:
         env:
           UG_API: ${{ secrets.UG_API }}
         run: npm run sync:static
+      - name: Gem faste målepunkter i separat datahistorik
+        run: node scripts/checkpoint-storage.mjs save
       - name: Gem valideret dashboardhistorik
         if: steps.history-cache.outputs.cache-hit != 'true'
         uses: actions/cache/save@v4

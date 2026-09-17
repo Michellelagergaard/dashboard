@@ -2,7 +2,7 @@
 
 import { useMemo, useState, type ReactNode } from "react";
 import { Activity, ChevronDown, ChevronRight, ChevronUp, Code2, Mail, MousePointerClick, Send, Users } from "lucide-react";
-import { CartesianGrid, Legend, Line, LineChart, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import { DecisionWorkbench } from "./decision-workbench";
 import type { ClickMeasurement, EditorialMetadata, LiveDashboardData, LiveMailing } from "./live-data";
 import { EditorialProvider, ContentEditor } from "./editorial-editor";
 import { contentKinds, enrichMailings } from "../config/editorial-content.mjs";
@@ -59,9 +59,9 @@ function DashboardContent({ liveData }: { liveData: LiveDashboardData }) {
       <MeasurementGuide />
       {view !== "overview" ? <section className="panel content-filter"><label>Vis indhold<select value={contentKind} onChange={event => setContentKind(event.target.value)}>{Object.entries(contentKinds).map(([value,label]) => <option key={value} value={value}>{label}</option>)}<option value="all">Alt indhold</option></select></label><p>Filteret gælder linktabellerne. Servicelinks og indhold til gennemgang er bevaret. Automatiske emner er forslag, som I kan rette ved hver historie.</p></section> : null}
       {liveData.status === "unavailable" ? <Empty title="Data er ikke tilgængelige" text="Den seneste dataopdatering kunne ikke læses. Prøv igen senere." /> : null}
-      {liveData.status !== "unavailable" && view === "overview" ? <Overview rows={mailings} onOpen={openMailing} /> : null}
-      {liveData.status !== "unavailable" && view === "audiences" ? <AudienceView rows={mailings} onOpen={openMailing} contentKind={contentKind} /> : null}
-      {liveData.status !== "unavailable" && view === "mailing" ? <MailingView rows={mailings} selected={selected} onChange={setSelectedId} contentKind={contentKind} /> : null}
+      {liveData.status !== "unavailable" && view === "overview" ? <Overview rows={mailings} onOpen={openMailing} asOf={liveData.updatedAt || new Date().toISOString()} /> : null}
+      {liveData.status !== "unavailable" && view === "audiences" ? <AudienceView rows={mailings} onOpen={openMailing} contentKind={contentKind} asOf={liveData.updatedAt || new Date().toISOString()} /> : null}
+      {liveData.status !== "unavailable" && view === "mailing" ? <MailingView rows={mailings} selected={selected} onChange={setSelectedId} contentKind={contentKind} asOf={liveData.updatedAt || new Date().toISOString()} /> : null}
     </main>
   </div>;
 }
@@ -70,27 +70,23 @@ function Nav({ active, onClick, icon, label }: { active: boolean; onClick: () =>
   return <button className={active ? "nav-item active" : "nav-item"} onClick={onClick}>{icon}<span>{label}</span><ChevronRight /></button>;
 }
 
-function Overview({ rows, onOpen }: { rows: Mailing[]; onOpen: (id: string) => void }) {
+function Overview({ rows, onOpen, asOf }: { rows: Mailing[]; onOpen: (id: string) => void; asOf: string }) {
   const latest = rows[0];
   const previous = rows[1];
   if (!latest) return <Empty title="Ingen udsendelser i perioden" text="Vælg en længere periode for at se Psykologernes Nyhedsbrev." />;
   const ctor = latest.openRate ? latest.clickRate / latest.openRate * 100 : 0;
-  const recentBaseline = rows.slice(1, 6);
-  const baselineClick = weightedRate(recentBaseline, "clickRate");
-  const baselineOpen = weightedRate(recentBaseline, "openRate");
-  const topLinks = [...latest.content].sort((a, b) => b.clicks - a.clicks).slice(0, 6);
+  const topLinks = latest.content.filter(item => item.editorial?.kind === "news").sort((a, b) => b.clicks - a.clicks).slice(0, 6);
   return <div className="stack">
     <CoverageSummary rows={rows} />
-    <section className="panel latest-hero"><PanelHeader eyebrow="Seneste udsendelse" title={latest.title} meta={latest.date} /><p className="subject-line"><span>Emnefelt</span>{latest.subject}</p><div className="kpi-grid compact"><Kpi icon={<Mail />} label="Leverede" value={num(latest.delivered)} note={previous ? `${signed(latest.delivered - previous.delivered)} mod forrige` : "Første udsendelse i perioden"} /><Kpi icon={<Activity />} label="Åbningsrate" value={pct(latest.openRate)} note={recentBaseline.length ? compare(latest.openRate, baselineOpen) : ""} /><Kpi icon={<MousePointerClick />} label="Klikrate" value={pct(latest.clickRate)} note={recentBaseline.length ? compare(latest.clickRate, baselineClick) : ""} /><Kpi icon={<Users />} label="CTOR" value={pct(ctor)} note="Klikrate delt med åbningsrate" /></div><button className="primary-action" onClick={() => onOpen(latest.id)}>Se hele udsendelsen <ChevronRight /></button></section>
-    <section className="panel editorial-readout"><PanelHeader eyebrow="Redaktionelt blik" title="Hvad skal I lægge mærke til?" meta="Op til fem tidligere udgaver" /><div className="readout-grid"><Readout label="Klik" current={latest.clickRate} baseline={baselineClick} /><Readout label="Åbninger" current={latest.openRate} baseline={baselineOpen} /></div><p className="method-note">Brug klik som det vigtigste signal om indholdets relevans. Åbninger er et støttesignal og påvirkes af mailklienters privatlivsbeskyttelse.</p></section>
-    <EditorialIntelligence rows={rows} />
+    <section className="panel latest-hero"><PanelHeader eyebrow="Seneste udsendelse" title={latest.title} meta={latest.date} /><p className="subject-line"><span>Emnefelt</span>{latest.subject}</p><div className="kpi-grid compact"><Kpi icon={<Mail />} label="Leverede" value={num(latest.delivered)} note={previous ? `${signed(latest.delivered - previous.delivered)} mod forrige` : "Første udsendelse i perioden"} /><Kpi icon={<Activity />} label="Åbningsrate" value={pct(latest.openRate)} note="Registreret i Ungapped" /><Kpi icon={<MousePointerClick />} label="Klikrate" value={pct(latest.clickRate)} note="Normalniveau vises nedenfor" /><Kpi icon={<Users />} label="CTOR" value={pct(ctor)} note="Klikrate delt med åbningsrate" /></div><button className="primary-action" onClick={() => onOpen(latest.id)}>Se hele udsendelsen <ChevronRight /></button></section>
+    <DecisionWorkbench rows={rows} selected={latest} asOf={asOf} onOpen={onOpen} />
+    <details className="panel"><summary>Uddybning: emner i hele perioden</summary><EditorialIntelligence rows={rows} /></details>
     <section className="panel table-panel"><PanelHeader eyebrow="Seneste udsendelse" title="Mest klikkede nyheder" meta="Registrerede linkklik · mindst 5" /><div className="table-scroll"><table><thead><tr><th>Nyhed eller link</th><th>Registrerede linkklik</th><th>Klik pr. 100 leverede</th></tr></thead><tbody>{topLinks.length ? topLinks.map((item) => <tr key={item.destination}><td><ContentCell item={item} /></td><td><LinkClicks item={item} /></td><td><LinkRate item={item} /></td></tr>) : <EmptyRow columns={3} text="Ungapped leverede ikke brugbare klik pr. link for denne udsendelse." />}</tbody></table></div></section>
-    <section className="panel trend-panel"><PanelHeader eyebrow="Udvikling" title="Klik og åbninger over tid" meta="Ét punkt pr. udsendelse" /><Trend rows={rows} /></section>
     <section className="panel table-panel"><PanelHeader eyebrow="Seneste udsendelser" title="Hvad skal redaktionen følge?" meta="Klik er prioriteret" /><div className="table-scroll"><table><thead><tr><th>Udsendelse</th><th>Dato</th><th>Leverede</th><th>Åbnet</th><th>Klikket</th><th></th></tr></thead><tbody>{rows.slice(0, 8).map((row) => <tr key={row.id}><td><strong>{row.title}</strong><span>{row.subject}</span></td><td>{row.date}</td><td>{num(row.delivered)}</td><td>{pct(row.openRate)}</td><td><b>{pct(row.clickRate)}</b></td><td><button className="row-link" onClick={() => onOpen(row.id)}>Åbn</button></td></tr>)}</tbody></table></div></section>
   </div>;
 }
 
-function AudienceView({ rows, onOpen, contentKind }: { rows: Mailing[]; onOpen: (id: string) => void; contentKind: string }) {
+function AudienceView({ rows, onOpen, contentKind, asOf }: { rows: Mailing[]; onOpen: (id: string) => void; contentKind: string; asOf: string }) {
   const [audience, setAudience] = useState(segments[0]);
   const [historyExpanded, setHistoryExpanded] = useState(false);
   const [linksExpanded, setLinksExpanded] = useState(false);
@@ -105,11 +101,6 @@ function AudienceView({ rows, onOpen, contentKind }: { rows: Mailing[]; onOpen: 
   const links = rows.flatMap((mailing) => segmentLinkRows(mailing).filter((item) => item.audience === selectedAudience && matchesContent(item, contentKind)).map((item) => ({ ...item, mailing }))).sort((a, b) => b.clicks - a.clicks);
   const linkCoverage = new Set(links.map((item) => item.mailing.id)).size;
   const latest = series[0];
-  const normalSeries = series.slice(1, 6);
-  const normal = summarizeSegmentRates(normalSeries.map(item => item.data));
-  const normalOpen = normal.open ?? 0;
-  const normalClick = normal.click ?? 0;
-  const normalNote = `${normal.count} foregående udgaver · ${normal.method === "delivered" ? "vægtet efter leveringer" : "uvægtet gennemsnit"}`;
   const visibleHistory = historyExpanded ? series : series.slice(0, 6);
   const visibleLinks = linksExpanded ? links : links.slice(0, 8);
   function selectAudience(name: string) {
@@ -121,14 +112,13 @@ function AudienceView({ rows, onOpen, contentKind }: { rows: Mailing[]; onOpen: 
     <section className="newsletter-intro"><div><p className="eyebrow">Psykologernes Nyhedsbrev</p><h2>Følg én målgruppe ad gangen</h2><p>Resultater fra Ungapped med målgruppefilter. Målgrupper kan overlappe.</p></div><div className="segment-coverage"><strong>{series.length} udgaver</strong><span>har brugbare data for den valgte målgruppe</span></div></section>
     <section className="panel audience-picker"><PanelHeader eyebrow="Vælg målgruppe" title="Hvem vil du følge?" meta="Aggregerede medlemsdata" /><div className="audience-tabs" role="tablist" aria-label="Medlemssegmenter">{segments.map((name) => { const available = availableSegments.includes(name); return <button key={name} role="tab" aria-selected={selectedAudience === name} disabled={!available} title={available ? undefined : "Ingen dokumenterede data i den valgte periode"} className={selectedAudience === name ? "audience-tab selected" : "audience-tab"} onClick={() => selectAudience(name)}><span>{name}</span>{!available ? <small>Ingen data</small> : null}</button>; })}</div></section>
     <section className="kpi-grid audience-kpis"><Kpi icon={<Mail />} label="Udgaver med data" value={num(series.length)} note={`${num(rows.length)} udgaver valgt`} /><Kpi icon={<Users />} label="Modtagere summeret" value={num(recipients)} note="Ikke unikke personer" /><Kpi icon={<Activity />} label="Åbningsrate" value={open !== null ? pct(open) : "—"} note={aggregateNote} /><Kpi icon={<MousePointerClick />} label="Klikrate" value={click !== null ? pct(click) : "—"} note={aggregateNote} /></section>
-    <section className="panel audience-benchmark"><PanelHeader eyebrow="Målgruppens normale niveau" title={`Hvordan klarer seneste udgave sig hos ${selectedAudience}?`} meta={normalNote} />{latest && normalSeries.length ? <div className="readout-grid"><Readout label="Klik" current={latest.data.clickRate} baseline={normalClick} /><Readout label="Åbninger" current={latest.data.openRate} baseline={normalOpen} /></div> : <DataGap title="For lidt historik" text="Sammenligningen kræver den seneste og mindst én tidligere udgave med data for målgruppen." />}<p className="method-note">Sammenligningen er kun med målgruppens egne tidligere resultater – ikke med andre målgrupper.</p></section>
-    <section className="panel trend-panel audience-trend"><PanelHeader eyebrow={selectedAudience} title="Udvikling i klik og åbninger" meta="Stiplede linjer viser målgruppens normale niveau" /><AudienceTrend series={series} normalOpen={normalOpen} normalClick={normalClick} /></section>
+    {latest ? <DecisionWorkbench rows={rows} selected={latest.mailing} audience={selectedAudience} asOf={asOf} onOpen={onOpen} /> : null}
     <section className="panel table-panel audience-history-table"><PanelHeader eyebrow={selectedAudience} title="Seneste resultater" meta={`${visibleHistory.length} af ${series.length} udgaver vist`} /><div className="table-scroll"><table><thead><tr><th>Udsendelse</th><th>Dato</th><th>Modtagere</th><th>Åbnet</th><th>Klikket</th><th>CTOR</th><th></th></tr></thead><tbody>{series.length ? visibleHistory.map(({ mailing, data }) => <tr key={mailing.id}><td><strong>{mailing.title}</strong></td><td>{mailing.date}</td><td>{data.recipientsLabel}</td><td>{pct(data.openRate)}</td><td><b>{pct(data.clickRate)}</b></td><td>{pct(data.ctor)}</td><td><button className="row-link" onClick={() => onOpen(mailing.id)}>Åbn</button></td></tr>) : <EmptyRow columns={7} text={`Der er endnu ingen offentliggørelsesklare resultater for ${selectedAudience}.`} />}</tbody></table></div>{series.length > 6 ? <ExpandButton expanded={historyExpanded} total={series.length} onClick={() => setHistoryExpanded((value) => !value)} /> : null}</section>
     <section className="panel table-panel"><PanelHeader eyebrow="Målgruppefordelt indholdsresultat" title={`Hvad klikkede ${selectedAudience} på?`} meta={`${linkCoverage} af ${series.length} udgaver har målgruppefordelte linkklik`} /><p className="content-scope-note">Visningen dokumenterer målgruppens klik. Den dokumenterer ikke, at indholdet udelukkende blev sendt til denne målgruppe.</p><div className="table-scroll"><table><thead><tr><th>Nyhed eller link</th><th>Emne</th><th>Udsendelse</th><th>Registrerede linkklik</th><th>Klik pr. 100 modtagere</th></tr></thead><tbody>{links.length ? visibleLinks.map((item) => <tr key={`${item.mailing.id}-${item.destination}`}><td><ContentCell item={item} /></td><td><TopicBadge item={item} /></td><td>{item.mailing.date}</td><td><LinkClicks item={item} /></td><td><LinkRate item={item} /></td></tr>) : <EmptyRow columns={5} text="Ingen linkresultater for denne målgruppe og indholdstype. Prøv Alt indhold eller en længere periode." />}</tbody></table></div>{links.length > 8 ? <ExpandButton expanded={linksExpanded} total={links.length} onClick={() => setLinksExpanded((value) => !value)} /> : null}</section>
   </div>;
 }
 
-function MailingView({ rows, selected, onChange, contentKind }: { rows: Mailing[]; selected?: Mailing; onChange: (id: string) => void; contentKind: string }) {
+function MailingView({ rows, selected, onChange, contentKind, asOf }: { rows: Mailing[]; selected?: Mailing; onChange: (id: string) => void; contentKind: string; asOf: string }) {
   const [expanded, setExpanded] = useState(false);
   if (!selected) return <Empty title="Ingen udsendelser i perioden" text="Vælg en længere periode." />;
   const content = selected.content.filter(item => matchesContent(item, contentKind)).sort((a, b) => b.clicks - a.clicks);
@@ -137,6 +127,7 @@ function MailingView({ rows, selected, onChange, contentKind }: { rows: Mailing[
   const ctor = selected.openRate ? selected.clickRate / selected.openRate * 100 : 0;
   return <div className="stack">
     <Selection selected={selected} rows={rows} onChange={id => { setExpanded(false); onChange(id); }} />
+    <DecisionWorkbench rows={rows} selected={selected} asOf={asOf} onOpen={onChange} />
     <ContentCoverage mailing={selected} />
     <section className="panel"><PanelHeader eyebrow="Denne udsendelse" title={selected.title} meta={selected.date} /><p className="subject-line"><span>Standardemnefelt</span>{selected.subject}</p><div className="kpi-grid compact"><Kpi icon={<Mail />} label="Leverede" value={num(selected.delivered)} note="" /><Kpi icon={<Activity />} label="Åbningsrate" value={pct(selected.openRate)} note="Registrerede åbninger" /><Kpi icon={<MousePointerClick />} label="Klikrate" value={pct(selected.clickRate)} note="API’ets klikrate pr. leveret mail" /><Kpi icon={<Users />} label="CTOR" value={pct(ctor)} note="Klikrate delt med åbningsrate" /></div></section>
     {Math.max(content.length, segmentLinks.length) > 8 ? <ExpandButton expanded={expanded} total={Math.max(content.length, segmentLinks.length)} onClick={() => setExpanded(!expanded)} /> : null}
@@ -149,18 +140,6 @@ function MailingView({ rows, selected, onChange, contentKind }: { rows: Mailing[
 
 function Selection({ selected, rows, onChange }: { selected: Mailing; rows: Mailing[]; onChange: (id: string) => void }) {
   return <section className="panel selection-panel"><label><span>Vælg udsendelse</span><select value={selected.id} onChange={(event) => onChange(event.target.value)}>{rows.map((mailing) => <option key={mailing.id} value={mailing.id}>{mailing.date} · {mailing.title}</option>)}</select></label><div><strong>Psykologernes Nyhedsbrev</strong><span>{num(selected.delivered)} leverede · {pct(selected.clickRate)} klikrate</span></div></section>;
-}
-
-function Trend({ rows }: { rows: Mailing[] }) {
-  const data = buildTrend(rows);
-  if (data.length < 2) return <DataGap title="For lidt historik" text="Udviklingskurven vises, når der er mindst to udsendelser i perioden." />;
-  return <div className="chart-wrap"><ResponsiveContainer width="100%" height="100%"><LineChart data={data}><CartesianGrid stroke="#dce5e8" vertical={false} /><XAxis dataKey="label" tickLine={false} axisLine={false} /><YAxis tickFormatter={(value) => `${value} %`} tickLine={false} axisLine={false} /><Tooltip formatter={(value) => pct(Number(value))} /><Legend /><Line name="Åbningsrate" type="monotone" dataKey="open" stroke="#2b718f" strokeWidth={3} dot={{ r: 3 }} /><Line name="Klikrate" type="monotone" dataKey="click" stroke="#c05a45" strokeWidth={3} dot={{ r: 3 }} /></LineChart></ResponsiveContainer></div>;
-}
-
-function AudienceTrend({ series, normalOpen, normalClick }: { series: Array<{ mailing: Mailing; data: NonNullable<LiveMailing["segmentPerformance"]>[number] }>; normalOpen: number; normalClick: number }) {
-  const data = [...series].reverse().map(({ mailing, data: item }) => ({ label: shortDate(mailing), open: item.openRate, click: item.clickRate }));
-  if (data.length < 2) return <DataGap title="For lidt historik" text="Udviklingskurven vises, når målgruppen har data for mindst to udsendelser." />;
-  return <div className="chart-wrap"><ResponsiveContainer width="100%" height="100%"><LineChart data={data} margin={{ top: 8, right: 12, left: 0, bottom: 0 }}><CartesianGrid stroke="#dce5e8" vertical={false} /><XAxis dataKey="label" tickLine={false} axisLine={false} minTickGap={24} /><YAxis tickFormatter={(value) => `${value} %`} tickLine={false} axisLine={false} width={48} /><Tooltip formatter={(value, name) => [pct(Number(value)), name]} /><Legend /><ReferenceLine y={normalOpen} stroke="#2b718f" strokeDasharray="6 5" ifOverflow="extendDomain" /><ReferenceLine y={normalClick} stroke="#c05a45" strokeDasharray="6 5" ifOverflow="extendDomain" /><Line name="Åbningsrate" type="monotone" dataKey="open" stroke="#2b718f" strokeWidth={3} dot={{ r: 3 }} activeDot={{ r: 5 }} /><Line name="Klikrate" type="monotone" dataKey="click" stroke="#c05a45" strokeWidth={3} dot={{ r: 3 }} activeDot={{ r: 5 }} /></LineChart></ResponsiveContainer></div>;
 }
 
 function EditorialIntelligence({ rows }: { rows: Mailing[] }) {
@@ -208,7 +187,6 @@ function LinkRate({ item }: { item: { rate: number; clickMeasurement?: ClickMeas
   return <>{item.clickMeasurement?.aggregation === "max-per-destination" ? "≥ " : ""}{pct(item.rate)}{!item.clickMeasurement ? <span>Tidligere beregning</span> : null}</>;
 }
 function ContentCell({ item }: { item: { title?: string; destination: string; editorial?: EditorialMetadata } }) { return <><strong><a href={item.destination} target="_blank" rel="noreferrer">{displayTitle(item)}</a></strong><span>{shortLink(item.destination)}</span><span className="title-source">{item.editorial?.source === "editor" ? "Redaktionelt rettet" : ["heading", "styled-heading"].includes(item.editorial?.source || "") ? "Overskrift fra nyhedsbrevet · automatisk emneforslag" : "Linktekst · overskrift ikke sikkert fundet"}{item.editorial?.ambiguous ? " · Flere titler til samme adresse" : ""}</span><ContentEditor destination={item.destination} editorial={item.editorial} /></>; }
-function Readout({ label, current, baseline }: { label: string; current: number; baseline: number }) { const delta = current - baseline; const direction = Math.abs(delta) < .3 ? "på niveau med" : delta > 0 ? "over" : "under"; return <div><span>{label}</span><strong>{pct(current)}</strong><p>{Math.abs(delta).toLocaleString("da-DK", { maximumFractionDigits: 1 })} pct.point {direction} de foregående udgaver</p></div>; }
 function PanelHeader({ eyebrow, title, meta }: { eyebrow: string; title: string; meta: string }) { return <div className="panel-header"><div><p className="eyebrow">{eyebrow}</p><h2>{title}</h2></div><span>{meta}</span></div>; }
 function DataGap({ title, text }: { title: string; text: string }) { return <div className="insight neutral data-gap"><Activity /><div><strong>{title}</strong><p>{text}</p></div></div>; }
 function Empty({ title, text }: { title: string; text: string }) { return <section className="panel"><DataGap title={title} text={text} /></section>; }
@@ -223,9 +201,5 @@ function ContentCoverage({ mailing }: { mailing: Mailing }) { return <section cl
 function sentTime(mailing: Mailing) { return mailing.sentAt ? new Date(mailing.sentAt).getTime() : 0; }
 function parseNumber(value: string) { return Number(value.replaceAll(".", "").replaceAll(",", ".")) || 0; }
 function inPeriod(mailing: Mailing, period: string) { if (period === "Alle år" || !mailing.sentAt) return true; const cutoff = new Date(); cutoff.setUTCMonth(cutoff.getUTCMonth() - (period.includes("6") ? 6 : 12)); return new Date(mailing.sentAt) >= cutoff; }
-function buildTrend(rows: Mailing[]) { return [...rows].sort((a, b) => sentTime(a) - sentTime(b)).map((row) => ({ label: new Intl.DateTimeFormat("da-DK", { day: "numeric", month: "short", timeZone: "Europe/Copenhagen" }).format(new Date(row.sentAt || 0)), open: row.openRate, click: row.clickRate })); }
-function shortDate(mailing: Mailing) { return new Intl.DateTimeFormat("da-DK", { day: "numeric", month: "short", timeZone: "Europe/Copenhagen" }).format(new Date(mailing.sentAt || 0)); }
-function weightedRate(rows: Mailing[], field: "openRate" | "clickRate") { const delivered = rows.reduce((sum, row) => sum + row.delivered, 0); return delivered ? rows.reduce((sum, row) => sum + row[field] * row.delivered, 0) / delivered : 0; }
-function compare(current: number, baseline: number) { const value = current - baseline; return `${value >= 0 ? "+" : ""}${value.toLocaleString("da-DK", { maximumFractionDigits: 1 })} pct.point mod seneste 5`; }
 function signed(value: number) { return `${value >= 0 ? "+" : ""}${num(value)}`; }
 function shortLink(destination: string) { try { const url = new URL(destination); return `${url.hostname.replace(/^www\./, "")}${url.pathname === "/" ? "" : url.pathname}`; } catch { return destination; } }
