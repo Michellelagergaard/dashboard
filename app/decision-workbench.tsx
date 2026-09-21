@@ -3,9 +3,9 @@ import { useState } from "react";
 import { CartesianGrid, Line, LineChart, ReferenceArea, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { checkpointPolicy, checkpointStatus, comparisonPoint, normalLevel } from "../config/decision-methods.mjs";
 import type { LiveMailing } from "./live-data";
-import { EditorialNotes } from "./editorial-notes";
 const format=(value:number)=>value.toLocaleString("da-DK",{maximumFractionDigits:1});
 const time=(value:string)=>new Intl.DateTimeFormat("da-DK",{dateStyle:"short",timeStyle:"short",timeZone:"Europe/Copenhagen"}).format(new Date(value));
+
 
 export function DecisionWorkbench({rows,selected,audience="",asOf,onOpen}:{rows:LiveMailing[];selected:LiveMailing;audience?:string;asOf:string;onOpen?:(id:string)=>void}){
   const [mode,setMode]=useState("history");
@@ -41,9 +41,34 @@ export function DecisionWorkbench({rows,selected,audience="",asOf,onOpen}:{rows:
       {unknown>0?<li>{unknown} indholdsresultater i udsendelsen står til redaktionel gennemgang og indgår ikke i automatiske emneobservationer.<span>Grundlag: Vælg “Til gennemgang” i indholdsfilteret.</span></li>:null}
     </ul><p className="method-note">Observationerne beskriver de gemte målinger. De dokumenterer ikke årsager, menneskelige klik eller effekten af en bestemt overskrift. Linkresultaterne er løbende/historiske værdier, også når grafen viser et fast målepunkt.</p></section>
     <CheckpointSummary mailing={selected} asOf={asOf}/>
-    <EditorialNotes key={`${selected.id}-${audience}`} mailingId={selected.id} audience={audience} title={`${selected.date} · ${selected.title}`}/>
+    <AutomaticTakeaways selected={selected} audience={audience} normal={normal}/>
   </>;
+}
+
+function AutomaticTakeaways({selected,audience,normal}:{selected:LiveMailing;audience:string;normal:ReturnType<typeof normalLevel>}){
+  const candidates=selected.content.filter(item=>item.editorial?.kind==="news"&&item.clickMeasurement?.metric==="unique-contacts"&&item.clickMeasurement.aggregation==="single-link").sort((a,b)=>b.clicks-a.clicks);
+  const top=candidates[0];
+  const segmentPerformance=(selected.segmentPerformance||[]).filter(row=>Number.isFinite(row.clickRate)).sort((a,b)=>b.clickRate-a.clickRate);
+  const currentSegment=audience?segmentPerformance.find(row=>row.name===audience):undefined;
+  const weakest=segmentPerformance.at(-1);
+  const missingSubjects=(selected.segmentPerformance||[]).filter(row=>!row.subject?.trim()).length;
+  const result=normal.delta===null
+    ? "Resultatet kan endnu ikke sammenlignes sikkert med et normalt niveau."
+    : `${audience||"Udsendelsen"} ligger ${format(Math.abs(normal.delta))} procentpoint ${normal.delta>=0?"over":"under"} sit normale niveau.`;
+  const works=audience&&currentSegment
+    ? `${audience} har en klikrate på ${format(currentSegment.clickRate)} %. ${result}`
+    : top
+      ? `“${top.editorial?.title||top.title}” fik flest dokumenterede unikke kontakter blandt de sammenlignelige nyhedslinks: ${format(top.clicks)}.`
+      : result;
+  const watch=audience
+    ? normal.count<3?`Der er kun ${normal.count} sammenlignelige tidligere udgaver. Vurderingen er derfor foreløbig.`:`Følg, om ${audience} fastholder niveauet i de næste udsendelser.`
+    : weakest?`${weakest.name} havde udsendelsens laveste klikrate: ${format(weakest.clickRate)} %.${missingSubjects?` ${missingSubjects} målgrupper mangler samtidig et dokumenteret emnefelt.`:""}`:`${missingSubjects} målgrupper mangler et dokumenteret emnefelt, så sammenligningen er ikke fuldstændig.`;
+  const suggestion=top
+    ? `Afprøv igen en tydelig, konkret servicehistorie med samme emne som “${top.editorial?.title||top.title}”, og sammenlign resultatet med målgruppens normale niveau.`
+    : "Afprøv én tydelig servicehistorie højt i næste udsendelse, og sammenlign resultatet med målgruppens normale niveau.";
+  return <section className="panel automatic-takeaways"><div className="panel-header"><div><p className="eyebrow">Automatisk redaktionel vurdering</p><h2>Hvad tager vi med videre?</h2></div><span>Baseret på dokumenterede resultater</span></div><div className="takeaway-grid"><article><span>Det ser ud til at virke</span><h3>{audience?`Reaktionen hos ${audience}`:"Den mest klikkede historie"}</h3><p>{works}</p></article><article><span>Hold øje med</span><h3>{audience?"Begrænset historik":"Den laveste reaktion"}</h3><p>{watch}</p></article><article><span>Redaktionelt forslag</span><h3>Afprøv og sammenlign</h3><p>{suggestion}</p></article></div><p className="method-note">Vurderingen genereres automatisk. Den beskriver mønstre i tallene, men dokumenterer ikke årsagen til medlemmernes adfærd.</p></section>;
 }
 export function CheckpointSummary({mailing,asOf}:{mailing:LiveMailing;asOf:string}){
   return <details className="panel checkpoint-summary"><summary>Faste målepunkter · 1 og 7 døgn</summary><p>Opsamlingen gælder udsendelser fra 17. september 2026. Målinger gemmes én gang og bevares i versionshistorikken. Tabellen bruger tidspunktet for dashboardets seneste dataopdatering.</p><ul>{checkpointPolicy.days.map(day=>{const result=checkpointStatus(mailing,day,asOf);return <li key={day}><strong>Efter {day} døgn:</strong> {result.point?`${time(result.point.capturedAt)} · faktisk alder ${format(result.point.ageHours)} timer · ${result.point.segmentPerformance.length} målgrupper`:result.status==="historical"?"Ikke opsamlet for historiske udsendelser":result.status==="missed"?"Mistet målepunkt — tidsvinduet er overskredet":result.status==="due"?"Tidspunkt nået; endnu ikke opsamlet":"Afventer måletidspunkt"}</li>;})}</ul></details>;
 }
+
