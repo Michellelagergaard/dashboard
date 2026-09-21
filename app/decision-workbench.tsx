@@ -6,7 +6,6 @@ import type { LiveMailing } from "./live-data";
 const format=(value:number)=>value.toLocaleString("da-DK",{maximumFractionDigits:1});
 const time=(value:string)=>new Intl.DateTimeFormat("da-DK",{dateStyle:"short",timeStyle:"short",timeZone:"Europe/Copenhagen"}).format(new Date(value));
 
-
 export function DecisionWorkbench({rows,selected,audience="",asOf,onOpen}:{rows:LiveMailing[];selected:LiveMailing;audience?:string;asOf:string;onOpen?:(id:string)=>void}){
   const [mode,setMode]=useState("history");
   const [metric,setMetric]=useState("clickRate");
@@ -20,7 +19,6 @@ export function DecisionWorkbench({rows,selected,audience="",asOf,onOpen}:{rows:
   const missing=mode!=="history"?checkpointStatus(selected,Number(mode),asOf):null;
   const candidates=selected.content.filter(item=>item.editorial?.kind==="news"&&item.clickMeasurement?.metric==="unique-contacts"&&item.clickMeasurement.aggregation==="single-link");
   const top=[...candidates].sort((a,b)=>b.clicks-a.clicks)[0];
-  const unknown=selected.content.filter(item=>item.editorial?.kind==="unknown").length;
   return <>
     <section className="panel decision-workbench">
       <div className="panel-header"><div><p className="eyebrow">Til redaktionsmødet · {audience||"hele nyhedsbrevet"}</p><h2>{audience?"Målgruppens normale niveau":"Hvordan klarer udsendelsen sig?"}</h2></div><span>{selected.date}</span></div>
@@ -37,8 +35,7 @@ export function DecisionWorkbench({rows,selected,audience="",asOf,onOpen}:{rows:
     </section>
     <section className="panel documented-observations"><p className="eyebrow">Dokumenterede observationer · {selected.date}</p><h2>Hvad kan vi sige ud fra tallene?</h2><ul>
       <li>{normal.delta===null?(!normal.mature?"Udsendelsen er endnu under 7 døgn. Resultatet er foreløbigt, så forskellen fra normalniveauet beregnes ikke endnu.":`Der er ikke tilstrækkeligt sammenligningsgrundlag for ${label.toLowerCase()} med det valgte målegrundlag.`):`${label} er ${format(Math.abs(normal.delta))} procentpoint ${normal.delta>=0?"over":"under"} medianen for ${normal.count} tidligere udgaver${audience?` hos ${audience}`:""}. ${mode==="history"?"Historisk sammenligning er vejledende.":"Udgaverne er målt ved samme faste målepunkt."}`} <span>Grundlag: Se sammenligningsgrundlaget ovenfor.</span></li>
-      {!audience&&top?<li>“{top.editorial?.title||top.title}” har flest registrerede kontakter blandt de {candidates.length} nyhedslinks med et dokumenteret kontaktmål for en enkelt linkplacering: {format(top.clicks)}. <span>Grundlag: Hele udsendelsens linktabel. Gentagne linkplaceringer og uafklarede klikmål indgår ikke i denne rangering.</span></li>:null}
-      {unknown>0?<li>{unknown} indholdsresultater i udsendelsen står til redaktionel gennemgang og indgår ikke i automatiske emneobservationer.<span>Grundlag: Vælg “Til gennemgang” i indholdsfilteret.</span></li>:null}
+      {!audience&&top?<li>“{top.editorial?.title||top.title}” har flest registrerede kontakter blandt de {candidates.length} historier med et dokumenteret kontaktmål for en enkelt linkplacering: {format(top.clicks)}. <span>Grundlag: Hele udsendelsens linktabel. Tekniske links, gentagne linkplaceringer og uafklarede klikmål indgår ikke i denne rangering.</span></li>:null}
     </ul><p className="method-note">Observationerne beskriver de gemte målinger. De dokumenterer ikke årsager, menneskelige klik eller effekten af en bestemt overskrift. Linkresultaterne er løbende/historiske værdier, også når grafen viser et fast målepunkt.</p></section>
     <CheckpointSummary mailing={selected} asOf={asOf}/>
     <AutomaticTakeaways selected={selected} audience={audience} normal={normal}/>
@@ -71,4 +68,3 @@ function AutomaticTakeaways({selected,audience,normal}:{selected:LiveMailing;aud
 export function CheckpointSummary({mailing,asOf}:{mailing:LiveMailing;asOf:string}){
   return <details className="panel checkpoint-summary"><summary>Faste målepunkter · 1 og 7 døgn</summary><p>Opsamlingen gælder udsendelser fra 17. september 2026. Målinger gemmes én gang og bevares i versionshistorikken. Tabellen bruger tidspunktet for dashboardets seneste dataopdatering.</p><ul>{checkpointPolicy.days.map(day=>{const result=checkpointStatus(mailing,day,asOf);return <li key={day}><strong>Efter {day} døgn:</strong> {result.point?`${time(result.point.capturedAt)} · faktisk alder ${format(result.point.ageHours)} timer · ${result.point.segmentPerformance.length} målgrupper`:result.status==="historical"?"Ikke opsamlet for historiske udsendelser":result.status==="missed"?"Mistet målepunkt — tidsvinduet er overskredet":result.status==="due"?"Tidspunkt nået; endnu ikke opsamlet":"Afventer måletidspunkt"}</li>;})}</ul></details>;
 }
-
