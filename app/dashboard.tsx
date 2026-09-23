@@ -86,7 +86,11 @@ function Overview({ rows, onOpen, asOf }: { rows: Mailing[]; onOpen: (id: string
   const strongestLink = [...segmentLinkRows(latest)].sort((a, b) => b.clicks - a.clicks)[0];
   return <div className="stack overview-page">
     <section className={`overview-verdict ${comparison.delta !== null && comparison.delta < 0 ? "below" : "above"}`}>
-      <div><p className="eyebrow">Seneste udsendelse · {latest.date}</p><h2>{verdict}</h2><p>{verdictNote}</p></div>
+      <div className="overview-verdict-content">
+        <p className="eyebrow">Seneste udsendelse · {latest.date}</p>
+        <h2>{latest.subject || latest.title}</h2>
+        <div className="overview-assessment"><span>Vurdering</span><h3>{verdict}</h3><p>{verdictNote}</p></div>
+      </div>
       <strong>{comparison.delta === null ? "Afventer grundlag" : comparison.delta >= 0 ? "↑ Over normalt niveau" : "↓ Under normalt niveau"}</strong>
     </section>
     <section className="kpi-grid overview-kpis" aria-label="Nøgletal for seneste udsendelse">
