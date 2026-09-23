@@ -55,7 +55,7 @@ export function enrichMailings(mailings, correctionFile) {
       const correction = overrides.get(correctionKey(mailing.id, item.destination));
       const title = correction?.title || metadata?.title || item.title || item.destination;
       const kind = correction?.kind || classifyContent({ ...item, ...metadata });
-      return { ...item, editorial: { mailingId: mailing.id, title, kind, category: correction?.category || editorialCategory({ title, destination: item.destination }), source: correction ? "editor" : metadata?.titleSource || "original", ambiguous: !correction && Boolean(metadata?.ambiguous) } };
+      return { ...item, editorial: { mailingId: mailing.id, title, kind, category: correction?.category || editorialCategory({ title, destination: item.destination }), source: correction ? "editor" : metadata?.titleSource || "original", ambiguous: !correction && Boolean(metadata?.ambiguous), audienceScope: metadata?.audienceScope || "unknown", audiences: metadata?.audiences || [] } };
     };
     return { ...mailing, content: mailing.content.map(decorate), links: mailing.links.map(decorate), segmentLinkPerformance: (mailing.segmentLinkPerformance || []).map(decorate) };
   });
