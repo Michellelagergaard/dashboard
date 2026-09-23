@@ -1,6 +1,7 @@
 import { load } from "cheerio";
+import { memberSegments } from "../config/member-segments.mjs";
 
-export const editorialCatalogVersion = 1;
+export const editorialCatalogVersion = 2;
 const generic = /^(læs(?: mere| her| artiklen)?|se(?: mere| her)?|klik her|tilmeld(?: dig)?|gå til.*|åbn|her|read more)[.!… »›→]*$/i;
 const clean = value => String(value || "").replace(/\s+/g, " ").trim();
 const usable = value => value.length >= 8 && value.length <= 220 && !generic.test(value) && !/https?:|\{\{|[\w.+-]+@[\w.-]+\.[a-z]{2,}/i.test(value);
@@ -14,6 +15,7 @@ export function extractEditorialCatalog(html, safeDestination) {
   $("a[href]").each((_, anchor) => {
     const destination = safeDestination($(anchor).attr("href"));
     if (!destination) return;
+    const exposure = targetAudienceFor($(anchor), $);
     const candidates = [];
     const add = (value, source, score) => { value = clean(value); if (usable(value)) candidates.push({ title: value, titleSource: source, score }); };
     // A linked heading is direct evidence, even inside a large layout table.
@@ -41,8 +43,41 @@ export function extractEditorialCatalog(html, safeDestination) {
     const candidate = candidates.sort((a,b) => b.score - a.score)[0];
     if (!candidate) return;
     const existing = records.get(destination);
-    if (!existing || candidate.score > existing.score) records.set(destination, { destination, ...candidate });
-    else if (candidate.score === existing.score && candidate.title !== existing.title) existing.ambiguous = true;
+    if (!existing) records.set(destination, { destination, ...candidate, exposures: [exposure] });
+    else {
+      existing.exposures.push(exposure);
+      if (candidate.score > existing.score) Object.assign(existing, candidate);
+      else if (candidate.score === existing.score && candidate.title !== existing.title) existing.ambiguous = true;
+    }
   });
-  return [...records.values()].map(record => { const item = { ...record }; delete item.score; return item; });
+  return [...records.values()].map(record => {
+    const item = { ...record, ...mergeExposures(record.exposures) };
+    delete item.score;
+    delete item.exposures;
+    return item;
+  });
+}
+
+function targetAudienceFor(anchor, $) {
+  const conditions = anchor.parents().addBack().filter((_, el) => Object.keys(el.attribs || {}).some(name => name.startsWith("ug-targetaudience-")));
+  if (!conditions.length) return { audienceScope: "all", audiences: [] };
+  const audiences = new Set();
+  let hasUnmappedCondition = false;
+  conditions.each((_, el) => {
+    const attrs = el.attribs || {};
+    const serialized = Object.entries(attrs).filter(([name]) => name.startsWith("ug-targetaudience-")).map(([, value]) => String(value)).join(" ").toLowerCase();
+    const matches = memberSegments.filter(segment => serialized.includes(segment.value.toLowerCase()));
+    if (matches.length) matches.forEach(segment => audiences.add(segment.label));
+    else hasUnmappedCondition = true;
+  });
+  return hasUnmappedCondition || !audiences.size
+    ? { audienceScope: "unknown", audiences: [...audiences] }
+    : { audienceScope: "targeted", audiences: [...audiences] };
+}
+
+function mergeExposures(exposures) {
+  if (exposures.some(item => item.audienceScope === "all")) return { audienceScope: "all", audiences: [] };
+  const audiences = [...new Set(exposures.flatMap(item => item.audiences || []))];
+  if (exposures.some(item => item.audienceScope === "unknown") || !audiences.length) return { audienceScope: "unknown", audiences };
+  return { audienceScope: "targeted", audiences };
 }
