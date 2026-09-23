@@ -45,15 +45,17 @@ function DashboardContent({ liveData }: { liveData: LiveDashboardData }) {
       <div className="brand"><div className="brand-mark" aria-hidden="true">dp</div><div><strong>Dansk Psykolog<br />Forening</strong><span>Psykologernes Nyhedsbrev</span></div></div>
       <nav aria-label="Primær navigation">
         <p className="nav-kicker">Redaktionelt dashboard</p>
-        <Nav active={view === "overview"} onClick={() => setView("overview")} icon={<Send />} label="Overblik" />
-        <Nav active={view === "mailing"} onClick={() => setView("mailing")} icon={<ClipboardList />} label="Redaktionel analyse" />
-        <Nav active={view === "audiences"} onClick={() => setView("audiences")} icon={<Users />} label="Målgrupper" />
-        <Nav active={view === "about"} onClick={() => setView("about")} icon={<CircleHelp />} label="Om tallene" />
+        <Nav active={view === "overview"} onClick={() => setView("overview")} icon={<Send />} label="Psykologernes Nyhedsbrev" />
+        <div className="nav-subpages" aria-label="Undersider til Psykologernes Nyhedsbrev">
+          <Nav nested active={view === "mailing"} onClick={() => setView("mailing")} icon={<ClipboardList />} label="Redaktionel analyse" />
+          <Nav nested active={view === "audiences"} onClick={() => setView("audiences")} icon={<Users />} label="Målgrupper" />
+          <Nav nested active={view === "about"} onClick={() => setView("about")} icon={<CircleHelp />} label="Om tallene" />
+        </div>
       </nav>
       <div className="sidebar-footer"><div className="sidebar-note"><span className="status-dot" />{liveData.status === "live" ? "Opdateres fra Ungapped" : "Seneste tilgængelige data"}<span className="sidebar-updated">{updated}</span></div></div>
     </aside>
     <main id="main" className="main">
-      <header className="topbar"><div><p className="eyebrow">Analyse af medlemskommunikation</p><h1>{view === "overview" ? "Overblik" : view === "audiences" ? "Målgrupper" : view === "mailing" ? "Redaktionel analyse" : "Om tallene"}</h1></div><div className="sync-box"><div><span>Senest opdateret</span><strong>{updated}</strong></div></div></header>
+      <header className="topbar"><div><p className="eyebrow">Analyse af medlemskommunikation</p><h1>{view === "overview" ? "Psykologernes Nyhedsbrev" : view === "audiences" ? "Målgrupper" : view === "mailing" ? "Redaktionel analyse" : "Om tallene"}</h1></div><div className="sync-box"><div><span>Senest opdateret</span><strong>{updated}</strong></div></div></header>
       <section className="filters simple-filters" aria-label="Filtre"><div className="filter-main"><label><span>Periode</span><select value={period} onChange={(event) => setPeriod(event.target.value)}><option>Seneste 12 måneder</option><option>Seneste 6 måneder</option><option>Alle år</option></select></label></div><p className="filter-result"><strong>{num(mailings.length)}</strong> udsendelser med tagget Psykologernes Nyhedsbrev</p></section>
       {view === "audiences" ? <MeasurementGuide /> : null}
       {liveData.status === "unavailable" ? <Empty title="Data er ikke tilgængelige" text="Den seneste dataopdatering kunne ikke læses. Prøv igen senere." /> : null}
@@ -65,8 +67,8 @@ function DashboardContent({ liveData }: { liveData: LiveDashboardData }) {
   </div>;
 }
 
-function Nav({ active, onClick, icon, label }: { active: boolean; onClick: () => void; icon: ReactNode; label: string }) {
-  return <button className={active ? "nav-item active" : "nav-item"} onClick={onClick}>{icon}<span>{label}</span><ChevronRight /></button>;
+function Nav({ active, onClick, icon, label, nested = false }: { active: boolean; onClick: () => void; icon: ReactNode; label: string; nested?: boolean }) {
+  return <button className={`nav-item${nested ? " nav-item-nested" : ""}${active ? " active" : ""}`} onClick={onClick}>{icon}<span>{label}</span><ChevronRight /></button>;
 }
 
 function Overview({ rows, onOpen, asOf }: { rows: Mailing[]; onOpen: (id: string) => void; asOf: string }) {
