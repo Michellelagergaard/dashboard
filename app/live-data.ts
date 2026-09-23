@@ -7,13 +7,13 @@ export type ClickMeasurement = {
   aggregation: "single-link" | "max-per-destination";
   sourceRows: number;
 };
-export type EditorialMetadata = { mailingId: string; title: string; kind: string; category: string; source: string; ambiguous?: boolean };
+export type EditorialMetadata = { mailingId: string; title: string; kind: string; category: string; source: string; ambiguous?: boolean; audienceScope?: "all" | "targeted" | "unknown"; audiences?: string[] };
 export type Checkpoint = { mailingId: string; day: number; capturedAt: string; ageHours: number; sentAt: string; delivered: number; openRate: number; clickRate: number; unsubscribes: number; measurementVersion: number; measurement?: LiveMailing["measurement"]; segmentPerformance: NonNullable<LiveMailing["segmentPerformance"]>; segmentsObservedAt: string | null };
 export type LiveMailing = {
   checkpoints?: Checkpoint[];
   observedAt?: string;
   editorialCatalogVersion?: number;
-  editorialCatalog?: Array<{ destination: string; title: string; titleSource: string; ambiguous?: boolean }>;
+  editorialCatalog?: Array<{ destination: string; title: string; titleSource: string; ambiguous?: boolean; audienceScope?: "all" | "targeted" | "unknown"; audiences?: string[] }>;
   id: string;
   title: string;
   subject: string;
