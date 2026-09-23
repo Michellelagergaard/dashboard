@@ -39,6 +39,16 @@ test("heading extraction reads only sent HTML and excludes private links", async
   await assert.rejects(fetchIssueEditorialCatalog("test","x",async()=>({ok:true,json:async()=>({AutosavedHtml:"draft"})})));
 });
 
+test("sent targeting rules distinguish common and targeted stories", () => {
+  const html = `<div><h2>Fælles historie</h2><a href="https://dp.dk/faelles">Læs mere</a></div>
+    <div ug-targetaudience-property="Custom3" ug-targetaudience-operator="contains" ug-targetaudience-value="Hospitalssektionen"><h2>Regional historie</h2><a href="https://dp.dk/regional">Læs mere</a></div>
+    <div ug-targetaudience-property="Custom99" ug-targetaudience-value="Ukendt regel"><h2>Ukendt historie</h2><a href="https://dp.dk/ukendt">Læs mere</a></div>`;
+  const rows = extractEditorialCatalog(html, value => value);
+  assert.deepEqual(rows.find(row => row.destination.endsWith("/faelles")).audienceScope, "all");
+  assert.deepEqual(rows.find(row => row.destination.endsWith("/regional")).audiences, ["Regionalt ansatte"]);
+  assert.deepEqual(rows.find(row => row.destination.endsWith("/ukendt")).audienceScope, "unknown");
+});
+
 test("utility links are separate, social posts are not confused with profiles", () => {
   assert.equal(classifyContent({destination:"https://mitdp.dk/Home/MyProfile/",titleSource:"heading"}),"service");
   assert.equal(classifyContent({destination:"https://dp.dk/uddannelse-og-karriere/kurser-og-arrangementer/"}),"service");
