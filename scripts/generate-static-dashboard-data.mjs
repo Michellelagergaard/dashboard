@@ -12,7 +12,7 @@ let checkpoints;
 try { checkpoints = validateCheckpointLedger(JSON.parse(await readFile(checkpointUrl, "utf8"))); }
 catch (error) { if (error.code !== "ENOENT") throw error; checkpoints = { version: 1, records: [] }; }
 
-const newsletterTags = ["Psykologernes Nyhedsbrev", "Kompetencenyt"];
+const newsletterTags = ["Psykologernes Nyhedsbrev", "Kompetencenyt", "Magasinet P"];
 const historyCacheUrl = new URL("../.cache/dashboard-history.json", import.meta.url);
 const baselineUrl = new URL("../data/dashboard-history-baseline.json", import.meta.url);
 const historyCutoff = new Date();
@@ -54,7 +54,7 @@ const mailings = await mapConcurrent(sorted, 1, async (issue) => {
     ? mergeHistoricalMailing(historyById.get(issue.id), baselineById.get(issue.id))
     : baselineById.has(issue.id) ? mergeHistoricalMailing(emptyMailing(issue), baselineById.get(issue.id)) : undefined;
   if (isOlderThan(issue.sentAt, historyCutoff) && historicalMailing) {
-    if (issue.dashboardType === "Kompetencenyt") return historicalMailing;
+    if (issue.dashboardType !== "Psykologernes Nyhedsbrev") return historicalMailing;
     return supplementHistoricalSegments(historicalMailing, {
       performance: segments => safe(() => fetchIssueSegmentPerformance(apiKey, issue.id, fetch, segments), { available: false, results: [] }),
       subjects: () => safe(() => fetchIssueSegmentSubjects(apiKey, issue.id), []),
