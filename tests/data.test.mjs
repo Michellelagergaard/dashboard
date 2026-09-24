@@ -52,6 +52,12 @@ test("overblikssiden viser en visuel kategorifordeling med både volumen og klik
   assert.match(dashboardSource, /Grafen viser registrerede klik på redaktionelle historier/);
 });
 
+test("historiske nyhedsbreve i den valgte 12-månedersperiode får aktuelle linkmålinger", () => {
+  assert.match(generatorSource, /dashboardType === "Psykologernes Nyhedsbrev" && issue\.sentAt && new Date\(issue\.sentAt\) >= segmentCutoff/);
+  assert.match(generatorSource, /historicalMailing\.linkMeasurementVersion !== 2/);
+  assert.match(generatorSource, /replaceHistoricalLinkPerformance/);
+});
+
 test("dashboardet forklarer grænsen mellem fælles og målgruppefordelte resultater", () => {
   assert.match(dashboardSource, /Samlede klik i hele udsendelsen uden målgruppefilter/);
   assert.match(dashboardSource, /dokumenterer, hvem der klikkede/);
