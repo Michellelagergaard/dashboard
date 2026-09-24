@@ -5,6 +5,7 @@ import { editorialCategory, editorialTopicNames, summarizeEditorialTopics } from
 
 const source = fs.readFileSync(new URL("../app/mock-data.ts", import.meta.url), "utf8");
 const dashboardSource = fs.readFileSync(new URL("../app/dashboard.tsx", import.meta.url), "utf8");
+const generatorSource = fs.readFileSync(new URL("../scripts/generate-static-dashboard-data.mjs", import.meta.url), "utf8");
 
 test("testdatasættet er tydeligt afgrænset og uden personfelter", () => {
   assert.match(source, /newsletterTypes/);
@@ -45,4 +46,12 @@ test("dashboardet forklarer grænsen mellem fælles og målgruppefordelte result
   assert.match(dashboardSource, /dokumenterer, hvem der klikkede/);
   assert.match(dashboardSource, /dokumenterer ikke, hvorfor medlemmerne klikkede/);
   assert.match(dashboardSource, /kunne ikke kategoriseres sikkert og står som Andet/);
+});
+
+test("Kompetencenyt er en selvstændig, ikke-segmenteret tagvisning", () => {
+  assert.match(dashboardSource, /label="Kompetencenyt"/);
+  assert.match(dashboardSource, /function CompetenceOverview/);
+  assert.match(dashboardSource, /Nyhedsbrevet segmenteres ikke/);
+  assert.match(generatorSource, /newsletterTags = \["Psykologernes Nyhedsbrev", "Kompetencenyt"\]/);
+  assert.match(generatorSource, /issue\.dashboardType === "Psykologernes Nyhedsbrev" && issue\.delivered/);
 });
