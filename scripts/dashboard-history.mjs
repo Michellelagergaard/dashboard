@@ -80,9 +80,9 @@ export function replaceHistoricalLinkPerformance(mailing, { available, results }
 
 // Historical totals and existing audiences stay frozen. Only missing audiences
 // are supplemented; failed lookups remain retryable on the next hourly run.
-export async function supplementHistoricalSegments(mailing, { performance, subjects, links }, includeLinks) {
+export async function supplementHistoricalSegments(mailing, { performance, subjects, links }, includeLinks, segments = correctedMemberSegments) {
   let result = mailing;
-  const missing = correctedMemberSegments.filter(segment => !mailing.segmentPerformance.some(row => row.name === segment.label));
+  const missing = segments.filter(segment => !mailing.segmentPerformance.some(row => row.name === segment.label));
   if (mailing.segmentMappingVersion !== segmentMappingVersion) {
     const data = missing.length ? await performance(missing) : { available: true, results: [] };
     const newSubjects = await subjects();
