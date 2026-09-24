@@ -105,13 +105,13 @@ function CompetenceOverview({ rows, asOf }: { rows: Mailing[]; asOf: string }) {
   </div>;
 }
 
-function PeriodAverageChart({ openRate, clickRate, count, tag = "Kompetencenyt", period, onPeriodChange }: { openRate: number; clickRate: number; count: number; tag?: string; period?: string; onPeriodChange?: (period: string) => void }) {
+function PeriodAverageChart({ openRate, clickRate, count, tag = "Kompetencenyt", description, period, onPeriodChange }: { openRate: number; clickRate: number; count: number; tag?: string; description?: string; period?: string; onPeriodChange?: (period: string) => void }) {
   const metrics = [
     { label: "Gennemsnitlig åbningsrate", value: openRate, className: "open" },
     { label: "Gennemsnitlig klikrate", value: clickRate, className: "click" },
   ];
   return <section className="panel period-average" aria-labelledby="period-average-title">
-    <div className="overview-section-header"><div><h2 id="period-average-title">Gennemsnit i den valgte periode</h2><p>Beregnet på tværs af {num(count)} udsendelser med tagget {tag}.</p></div>{period && onPeriodChange ? <label className="average-period"><span>Periode</span><select value={period} onChange={(event) => onPeriodChange(event.target.value)}><option>Seneste 12 måneder</option><option>Seneste 6 måneder</option><option>Alle år</option></select></label> : null}</div>
+    <div className="overview-section-header"><div><h2 id="period-average-title">Gennemsnit i den valgte periode</h2><p>{description || `Beregnet på tværs af ${num(count)} udsendelser med tagget ${tag}.`}</p></div>{period && onPeriodChange ? <label className="average-period"><span>Periode</span><select value={period} onChange={(event) => onPeriodChange(event.target.value)}><option>Seneste 12 måneder</option><option>Seneste 6 måneder</option><option>Alle år</option></select></label> : null}</div>
     <div className="period-average-chart">{metrics.map(metric => <article key={metric.label} className={metric.className}>
       <div><span>{metric.label}</span><strong>{pct(metric.value)}</strong></div>
       <div className="average-track" aria-hidden="true"><span style={{ width: `${Math.max(0, Math.min(100, metric.value))}%` }} /></div>
@@ -191,6 +191,8 @@ function AudienceView({ rows, onOpen, asOf }: { rows: Mailing[]; onOpen: (id: st
   const availableSegments = segments.filter((name) => rows.some((mailing) => segmentRows(mailing).some((item) => item.name === name)));
   const selectedAudience = availableSegments.includes(audience) ? audience : availableSegments[0] || audience;
   const series = rows.map((mailing) => ({ mailing, data: segmentRows(mailing).find((item) => item.name === selectedAudience) })).filter((item): item is { mailing: Mailing; data: NonNullable<LiveMailing["segmentPerformance"]>[number] } => Boolean(item.data));
+  const averageOpenRate = average(series.map(item => item.data.openRate));
+  const averageClickRate = average(series.map(item => item.data.clickRate));
   const links = rows.flatMap((mailing) => segmentLinkRows(mailing).filter((item) => item.audience === selectedAudience).map((item) => ({ ...item, mailing }))).sort((a, b) => b.clicks - a.clicks);
   const linkCoverage = new Set(links.map((item) => item.mailing.id)).size;
   const latest = series[0];
@@ -207,6 +209,7 @@ function AudienceView({ rows, onOpen, asOf }: { rows: Mailing[]; onOpen: (id: st
   return <div className="stack newsletter-workspace">
     <section className="newsletter-intro"><div><p className="eyebrow">Psykologernes Nyhedsbrev</p><h2>Følg én målgruppe ad gangen</h2><p>Se udviklingen, de stærkeste historier og de vigtigste redaktionelle signaler.</p></div><div className="segment-coverage"><strong>{series.length} udgaver</strong><span>har brugbare data for den valgte målgruppe</span></div></section>
     <section className="panel audience-picker"><div className="audience-tabs" role="tablist" aria-label="Medlemssegmenter">{segments.map((name) => { const available = availableSegments.includes(name); return <button key={name} role="tab" aria-selected={selectedAudience === name} disabled={!available} title={available ? undefined : "Ingen dokumenterede data i den valgte periode"} className={selectedAudience === name ? "audience-tab selected" : "audience-tab"} onClick={() => selectAudience(name)}><span>{name}</span>{!available ? <small>Ingen data</small> : null}</button>; })}</div></section>
+    {series.length ? <PeriodAverageChart openRate={averageOpenRate} clickRate={averageClickRate} count={series.length} description={`Beregnet på tværs af ${num(series.length)} udsendelser med brugbare data for ${selectedAudience}.`} /> : null}
     {latest ? <section className={`audience-verdict ${level?.delta !== null && level && level.delta < -1 ? "below" : "above"}`}><div><p className="eyebrow">{selectedAudience} · seneste udsendelse {latest.mailing.date}</p><h2>{verdict}</h2><p>{verdictNote}</p></div><strong>{!level || level.delta === null ? "Afventer grundlag" : level.delta >= 1 ? "↑ Over normalt niveau" : level.delta <= -1 ? "↓ Under normalt niveau" : "→ På normalt niveau"}</strong></section> : null}
     <section className="kpi-grid audience-kpis"><Kpi icon={<Mail />} label="Udgaver med data" value={num(series.length)} note={`${num(rows.length)} udgaver i perioden`} /><Kpi icon={<Users />} label="Seneste modtagerantal" value={latest ? latest.data.recipientsLabel : "—"} note="Målgruppen i seneste udsendelse" /><Kpi icon={<Activity />} label="Åbningsrate" value={latest ? pct(latest.data.openRate) : "—"} note="Seneste udsendelse" /><Kpi icon={<MousePointerClick />} label="Klikrate" value={latest ? pct(latest.data.clickRate) : "—"} note={levelText(level?.delta ?? null)} /></section>
     {latest ? <AudienceTrend series={series} baseline={level?.baseline ?? null} audience={selectedAudience} /> : null}
