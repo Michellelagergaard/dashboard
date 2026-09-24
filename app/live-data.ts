@@ -22,6 +22,7 @@ export type LiveMailing = {
   sentAt: string | null;
   delivered: number;
   measurementVersion?: number;
+  linkMeasurementVersion?: number;
   measurement?: { overviewSource: string; openSource: string; clickSource: string; denominator: string; deliverySource: string; uniqueness: string };
   openRate: number;
   clickRate: number;
