@@ -332,7 +332,25 @@ function segmentRows(mailing: Mailing) { return mailing.segmentPerformance || []
 function segmentLinkRows(mailing: Mailing) { return mailing.segmentLinkPerformance || []; }
 function subjectForAudience(mailing: Mailing, audience: string) { return mailing.segmentSubjects?.find((item) => item.audience === audience)?.subject; }
 function coverageFor(mailing: Mailing) { return mailing.dataCoverage || { linkPerformance: mailing.content.length > 0, segmentPerformance: segmentRows(mailing).length > 0, segmentSubjects: Boolean(mailing.segmentSubjects?.length), segmentLinkPerformance: segmentLinkRows(mailing).length > 0 }; }
-function displayTitle(item: { title?: string; destination: string; editorial?: EditorialMetadata }) { const title = item.editorial?.title || item.title; return title && title !== item.destination && !/^https?:\/\//i.test(title) ? title : shortLink(item.destination); }
+function displayTitle(item: { title?: string; destination: string; editorial?: EditorialMetadata }) {
+  const title = item.editorial?.title || item.title;
+  const genericCta = /^(tilmeld( dig)?|læs mere( og tilmeld dig)?|se mere|klik her)$/i;
+  if (title && title !== item.destination && !/^https?:\/\//i.test(title) && !genericCta.test(title.trim())) return title;
+  return readableDestinationTitle(item.destination) || shortLink(item.destination);
+}
+
+function readableDestinationTitle(destination: string) {
+  try {
+    const url = new URL(destination);
+    const slug = decodeURIComponent(url.pathname.split("/").filter(Boolean).at(-1) || "")
+      .replace(/-\d+$/, "")
+      .replaceAll("-", " ")
+      .replace(/\bboern\b/gi, "børn")
+      .replace(/\boevrige\b/gi, "øvrige")
+      .trim();
+    return slug ? slug.charAt(0).toLocaleUpperCase("da-DK") + slug.slice(1) : "";
+  } catch { return ""; }
+}
 function sentTime(mailing: Mailing) { return mailing.sentAt ? new Date(mailing.sentAt).getTime() : 0; }
 function inPeriod(mailing: Mailing, period: string) { if (period === "Alle år" || !mailing.sentAt) return true; const cutoff = new Date(); cutoff.setUTCMonth(cutoff.getUTCMonth() - (period.includes("6") ? 6 : 12)); return new Date(mailing.sentAt) >= cutoff; }
 function signed(value: number) { return `${value >= 0 ? "+" : ""}${num(value)}`; }
