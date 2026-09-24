@@ -16,6 +16,7 @@ type Mailing = LiveMailing;
 const segments = memberSegmentNames;
 const pct = (value: number) => `${value.toLocaleString("da-DK", { maximumFractionDigits: 1 })} %`;
 const num = (value: number) => value.toLocaleString("da-DK");
+const average = (values: number[]) => values.length ? values.reduce((sum, value) => sum + value, 0) / values.length : 0;
 
 export function Dashboard({ liveData }: { liveData: LiveDashboardData }) {
   return <EditorialProvider>{corrections => <DashboardContent liveData={{ ...liveData, mailings: enrichMailings(liveData.mailings, corrections) }} />}</EditorialProvider>;
@@ -74,6 +75,8 @@ function DashboardContent({ liveData }: { liveData: LiveDashboardData }) {
 function CompetenceOverview({ rows, asOf }: { rows: Mailing[]; asOf: string }) {
   const latest = rows[0];
   if (!latest) return <Empty title="Ingen udsendelser i perioden" text="Vælg en længere periode for at se Kompetencenyt." />;
+  const averageOpenRate = average(rows.map(row => row.openRate));
+  const averageClickRate = average(rows.map(row => row.clickRate));
   const comparison = normalLevel(rows, latest, { metric: "clickRate", asOf });
   const openComparison = normalLevel(rows, latest, { metric: "openRate", asOf });
   const topLinks = latest.content
@@ -83,6 +86,7 @@ function CompetenceOverview({ rows, asOf }: { rows: Mailing[]; asOf: string }) {
   const verdict = comparison.delta === null ? "Resultatet kan endnu ikke sammenlignes" : comparison.delta >= 1 ? "Klikraten er højere end det tidligere niveau" : comparison.delta <= -1 ? "Klikraten er lavere end det tidligere niveau" : "Klikraten er på niveau med tidligere udsendelser";
   const verdictNote = comparison.delta === null ? "Der er endnu ikke tilstrækkeligt sammenligningsgrundlag." : `Klikraten afviger med ${formatPoint(Math.abs(comparison.delta))} procentpoint fra medianen for ${comparison.count} tidligere udsendelser. Åbningsraten er ${comparisonPhrase(openComparison.delta)}.`;
   return <div className="stack overview-page competence-page">
+    <PeriodAverageChart openRate={averageOpenRate} clickRate={averageClickRate} count={rows.length} />
     <section className={`overview-verdict ${comparison.delta !== null && comparison.delta < -1 ? "below" : "above"}`}>
       <div className="overview-verdict-content"><p className="eyebrow">Seneste udsendelse · {latest.date}</p><h2>{latest.subject || latest.title}</h2><div className="overview-assessment"><span>Vurdering</span><h3>{verdict}</h3><p>{verdictNote}</p></div></div>
       <strong>{comparison.delta === null ? "Afventer grundlag" : comparison.delta >= 1 ? "↑ Klik højere" : comparison.delta <= -1 ? "↓ Klik lavere" : "→ Klik på niveau"}</strong>
@@ -99,6 +103,21 @@ function CompetenceOverview({ rows, asOf }: { rows: Mailing[]; asOf: string }) {
     <section className="panel table-panel overview-recent"><div className="overview-section-header"><div><h2>Seneste udsendelser</h2><p>Udviklingen i Kompetencenyt måned for måned. Sammenligningen viser hver måling i forhold til op til fem tidligere udsendelser.</p></div></div><div className="table-scroll"><table><thead><tr><th>Dato og emnefelt</th><th>Sammenligning med tidligere</th><th>Leverede</th><th>Åbnet</th><th>Klikket</th><th>CTOR</th></tr></thead><tbody>{rows.slice(0, 12).map((row) => { const clickLevel = normalLevel(rows, row, { metric: "clickRate", asOf }); const rowOpenLevel = normalLevel(rows, row, { metric: "openRate", asOf }); return <tr key={row.id}><td><strong>{row.date} · {row.subject || row.title}</strong></td><td><CompetenceComparison openDelta={rowOpenLevel.delta} clickDelta={clickLevel.delta} /></td><td>{num(row.delivered)}</td><td>{pct(row.openRate)}</td><td><b>{pct(row.clickRate)}</b></td><td>{row.openRate > 0 ? pct(row.clickRate / row.openRate * 100) : "—"}</td></tr>; })}</tbody></table></div></section>
     <details className="panel overview-method"><summary>Om tallene og datagrundlaget</summary><p>Visningen omfatter kun sendte udsendelser med Ungapped-tagget <strong>Kompetencenyt</strong>. Nyhedsbrevet segmenteres ikke, og derfor vises ingen målgruppeanalyse.</p><MeasurementGuideContent /></details>
   </div>;
+}
+
+function PeriodAverageChart({ openRate, clickRate, count }: { openRate: number; clickRate: number; count: number }) {
+  const metrics = [
+    { label: "Gennemsnitlig åbningsrate", value: openRate, className: "open" },
+    { label: "Gennemsnitlig klikrate", value: clickRate, className: "click" },
+  ];
+  return <section className="panel period-average" aria-labelledby="period-average-title">
+    <div className="overview-section-header"><div><h2 id="period-average-title">Gennemsnit i den valgte periode</h2><p>Beregnet på tværs af {num(count)} udsendelser med tagget Kompetencenyt.</p></div></div>
+    <div className="period-average-chart">{metrics.map(metric => <article key={metric.label} className={metric.className}>
+      <div><span>{metric.label}</span><strong>{pct(metric.value)}</strong></div>
+      <div className="average-track" aria-hidden="true"><span style={{ width: `${Math.max(0, Math.min(100, metric.value))}%` }} /></div>
+    </article>)}</div>
+    <p className="method-note">Gennemsnittet er beregnet som et almindeligt gennemsnit af udsendelsernes registrerede rater.</p>
+  </section>;
 }
 
 function comparisonPhrase(delta: number | null) {
