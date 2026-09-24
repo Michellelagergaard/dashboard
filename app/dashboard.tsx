@@ -10,7 +10,7 @@ import { editorialCategory, summarizeEditorialTopics } from "../config/editorial
 import { clickMeasurementLabel, isComparableLink } from "../config/measurement-methods.mjs";
 import { normalLevel } from "../config/decision-methods.mjs";
 
-type View = "overview" | "audiences" | "mailing" | "about" | "competence" | "magazine";
+type View = "overview" | "audiences" | "mailing" | "about" | "competence" | "magazine" | "tr-amr";
 type Mailing = LiveMailing;
 
 const segments = memberSegmentNames;
@@ -32,6 +32,7 @@ function DashboardContent({ liveData }: { liveData: LiveDashboardData }) {
   const newsletterMailings = useMemo(() => mailings.filter((mailing) => mailing.type === "Psykologernes Nyhedsbrev"), [mailings]);
   const competenceMailings = useMemo(() => mailings.filter((mailing) => mailing.type === "Kompetencenyt"), [mailings]);
   const magazineMailings = useMemo(() => mailings.filter((mailing) => mailing.type === "Magasinet P"), [mailings]);
+  const trAmrMailings = useMemo(() => mailings.filter((mailing) => mailing.type === "TR/AMR Nyt"), [mailings]);
   const [selectedId, setSelectedId] = useState("");
   const selected = newsletterMailings.find((mailing) => mailing.id === selectedId) || newsletterMailings[0];
   const updated = liveData.updatedAt
@@ -57,12 +58,13 @@ function DashboardContent({ liveData }: { liveData: LiveDashboardData }) {
         </div>
         <Nav active={view === "competence"} onClick={() => setView("competence")} icon={<Activity />} label="Kompetencenyt" />
         <Nav active={view === "magazine"} onClick={() => setView("magazine")} icon={<BookOpen />} label="Magasinet P" />
+        <Nav active={view === "tr-amr"} onClick={() => setView("tr-amr")} icon={<Users />} label="TR/AMR Nyt" />
       </nav>
       <div className="sidebar-footer"><div className="sidebar-note"><span className="status-dot" />{liveData.status === "live" ? "Opdateres fra Ungapped" : "Seneste tilgængelige data"}<span className="sidebar-updated">{updated}</span></div></div>
     </aside>
     <main id="main" className="main">
-      <header className="topbar"><div><p className="eyebrow">Analyse af medlemskommunikation</p><h1>{view === "overview" ? "Psykologernes Nyhedsbrev" : view === "audiences" ? "Målgrupper" : view === "mailing" ? "Redaktionel analyse" : view === "competence" ? "Kompetencenyt" : view === "magazine" ? "Magasinet P" : "Om tallene"}</h1></div><div className="sync-box"><div><span>Senest opdateret</span><strong>{updated}</strong></div></div></header>
-      {view !== "overview" ? <section className="filters simple-filters" aria-label="Filtre"><div className="filter-main"><label><span>Periode</span><select value={period} onChange={(event) => setPeriod(event.target.value)}><option>Seneste 12 måneder</option><option>Seneste 6 måneder</option><option>Alle år</option></select></label></div><p className="filter-result"><strong>{num(view === "competence" ? competenceMailings.length : view === "magazine" ? magazineMailings.length : newsletterMailings.length)}</strong> udsendelser med tagget {view === "competence" ? "Kompetencenyt" : view === "magazine" ? "Magasinet P" : "Psykologernes Nyhedsbrev"}</p></section> : null}
+      <header className="topbar"><div><p className="eyebrow">Analyse af medlemskommunikation</p><h1>{view === "overview" ? "Psykologernes Nyhedsbrev" : view === "audiences" ? "Målgrupper" : view === "mailing" ? "Redaktionel analyse" : view === "competence" ? "Kompetencenyt" : view === "magazine" ? "Magasinet P" : view === "tr-amr" ? "TR/AMR Nyt" : "Om tallene"}</h1></div><div className="sync-box"><div><span>Senest opdateret</span><strong>{updated}</strong></div></div></header>
+      {view !== "overview" ? <section className="filters simple-filters" aria-label="Filtre"><div className="filter-main"><label><span>Periode</span><select value={period} onChange={(event) => setPeriod(event.target.value)}><option>Seneste 12 måneder</option><option>Seneste 6 måneder</option><option>Alle år</option></select></label></div><p className="filter-result"><strong>{num(view === "competence" ? competenceMailings.length : view === "magazine" ? magazineMailings.length : view === "tr-amr" ? trAmrMailings.length : newsletterMailings.length)}</strong> udsendelser med tagget {view === "competence" ? "Kompetencenyt" : view === "magazine" ? "Magasinet P" : view === "tr-amr" ? "TR/AMR Nyt" : "Psykologernes Nyhedsbrev"}</p></section> : null}
       {view === "audiences" ? <MeasurementGuide /> : null}
       {liveData.status === "unavailable" ? <Empty title="Data er ikke tilgængelige" text="Den seneste dataopdatering kunne ikke læses. Prøv igen senere." /> : null}
       {liveData.status !== "unavailable" && view === "overview" ? <Overview rows={newsletterMailings} onOpen={openMailing} asOf={liveData.updatedAt || new Date().toISOString()} period={period} onPeriodChange={setPeriod} /> : null}
@@ -71,6 +73,7 @@ function DashboardContent({ liveData }: { liveData: LiveDashboardData }) {
       {liveData.status !== "unavailable" && view === "about" ? <AboutNumbers rows={newsletterMailings} /> : null}
       {liveData.status !== "unavailable" && view === "competence" ? <CompetenceOverview rows={competenceMailings} asOf={liveData.updatedAt || new Date().toISOString()} /> : null}
       {liveData.status !== "unavailable" && view === "magazine" ? <MagazineOverview rows={magazineMailings} asOf={liveData.updatedAt || new Date().toISOString()} /> : null}
+      {liveData.status !== "unavailable" && view === "tr-amr" ? <TrAmrOverview rows={trAmrMailings} asOf={liveData.updatedAt || new Date().toISOString()} /> : null}
     </main>
   </div>;
 }
@@ -83,7 +86,11 @@ function MagazineOverview({ rows, asOf }: { rows: Mailing[]; asOf: string }) {
   return <UnsegmentedNewsletterOverview rows={rows} asOf={asOf} name="Magasinet P" />;
 }
 
-function UnsegmentedNewsletterOverview({ rows, asOf, name }: { rows: Mailing[]; asOf: string; name: "Kompetencenyt" | "Magasinet P" }) {
+function TrAmrOverview({ rows, asOf }: { rows: Mailing[]; asOf: string }) {
+  return <UnsegmentedNewsletterOverview rows={rows} asOf={asOf} name="TR/AMR Nyt" />;
+}
+
+function UnsegmentedNewsletterOverview({ rows, asOf, name }: { rows: Mailing[]; asOf: string; name: "Kompetencenyt" | "Magasinet P" | "TR/AMR Nyt" }) {
   const latest = rows[0];
   if (!latest) return <Empty title="Ingen udsendelser i perioden" text={`Vælg en længere periode for at se ${name}.`} />;
   const averageOpenRate = average(rows.map(row => row.openRate));
