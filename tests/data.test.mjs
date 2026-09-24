@@ -72,7 +72,7 @@ test("Kompetencenyt er en selvstændig, ikke-segmenteret tagvisning", () => {
   assert.match(dashboardSource, /function CompetenceOverview/);
   assert.match(dashboardSource, /Nyhedsbrevet segmenteres ikke/);
   assert.match(generatorSource, /newsletterTags = \["Psykologernes Nyhedsbrev", "Kompetencenyt", "Magasinet P", "TR\/AMR Nyt"\]/);
-  assert.match(generatorSource, /issue\.dashboardType === "Psykologernes Nyhedsbrev" && issue\.delivered/);
+  assert.match(generatorSource, /audienceProfileTypes\.has\(issue\.dashboardType\) && issue\.delivered/);
 });
 
 test("Magasinet P er en selvstændig, ikke-segmenteret tagvisning", () => {
@@ -100,6 +100,15 @@ test("Kompetencenyt viser Ungappeds mest besøgte links uden redaktionelt servic
   assert.match(dashboardSource, /item\.clickMeasurement\?\.metric === "unique-contacts"/);
   assert.doesNotMatch(dashboardSource, /latest\.content\.filter\(item => item\.editorial\?\.kind !== "service"\)/);
   assert.match(dashboardSource, /De fem destinationslinks med flest unikke klik i Ungapped/);
+});
+
+test("Kompetencenyt og Magasinet P viser dokumenterede klikprofiler for overlappende medlemsgrupper", () => {
+  assert.match(dashboardSource, /function UnsegmentedAudienceClicks/);
+  assert.match(dashboardSource, /Hvilke medlemsgrupper klikkede\?/);
+  assert.match(dashboardSource, /Medlemsgrupperne er efterfølgende filtre på Ungappeds aggregerede klikstatistik og kan overlappe/);
+  assert.match(dashboardSource, /name !== "TR\/AMR Nyt"/);
+  assert.match(generatorSource, /audienceProfileTypes = new Set\(\["Psykologernes Nyhedsbrev", "Kompetencenyt", "Magasinet P"\]\)/);
+  assert.match(generatorSource, /false, memberSegments/);
 });
 
 test("generiske CTA-tekster erstattes af en læsbar destinationstitel", () => {
