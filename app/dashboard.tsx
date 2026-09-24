@@ -77,12 +77,12 @@ function CompetenceOverview({ rows, asOf }: { rows: Mailing[]; asOf: string }) {
   const comparison = normalLevel(rows, latest, { metric: "clickRate", asOf });
   const openComparison = normalLevel(rows, latest, { metric: "openRate", asOf });
   const topLinks = latest.content.filter(item => item.editorial?.kind !== "service").sort((a, b) => b.clicks - a.clicks).slice(0, 5);
-  const verdict = comparison.delta === null ? "Resultatet kan endnu ikke sammenlignes" : comparison.delta >= 1 ? "Udsendelsen klarede sig bedre end normalt" : comparison.delta <= -1 ? "Udsendelsen lå under det normale niveau" : "Udsendelsen lå på det normale niveau";
-  const verdictNote = comparison.delta === null ? "Der er endnu ikke tilstrækkeligt sammenligningsgrundlag." : `Klikraten var ${formatPoint(Math.abs(comparison.delta))} procentpoint ${comparison.delta >= 1 ? "over" : comparison.delta <= -1 ? "under" : "fra"} niveauet for ${comparison.count} tidligere udsendelser.`;
+  const verdict = comparison.delta === null ? "Resultatet kan endnu ikke sammenlignes" : comparison.delta >= 1 ? "Klikraten er højere end det tidligere niveau" : comparison.delta <= -1 ? "Klikraten er lavere end det tidligere niveau" : "Klikraten er på niveau med tidligere udsendelser";
+  const verdictNote = comparison.delta === null ? "Der er endnu ikke tilstrækkeligt sammenligningsgrundlag." : `Klikraten afviger med ${formatPoint(Math.abs(comparison.delta))} procentpoint fra medianen for ${comparison.count} tidligere udsendelser. Åbningsraten er ${comparisonPhrase(openComparison.delta)}.`;
   return <div className="stack overview-page competence-page">
     <section className={`overview-verdict ${comparison.delta !== null && comparison.delta < -1 ? "below" : "above"}`}>
       <div className="overview-verdict-content"><p className="eyebrow">Seneste udsendelse · {latest.date}</p><h2>{latest.subject || latest.title}</h2><div className="overview-assessment"><span>Vurdering</span><h3>{verdict}</h3><p>{verdictNote}</p></div></div>
-      <strong>{comparison.delta === null ? "Afventer grundlag" : comparison.delta >= 1 ? "↑ Over normalt niveau" : comparison.delta <= -1 ? "↓ Under normalt niveau" : "→ På normalt niveau"}</strong>
+      <strong>{comparison.delta === null ? "Afventer grundlag" : comparison.delta >= 1 ? "↑ Klik højere" : comparison.delta <= -1 ? "↓ Klik lavere" : "→ Klik på niveau"}</strong>
     </section>
     <section className="kpi-grid competence-kpis" aria-label="Nøgletal for seneste Kompetencenyt">
       <Kpi icon={<Mail />} label="Leverede" value={num(latest.delivered)} note="Registreret som leveret" />
@@ -93,9 +93,26 @@ function CompetenceOverview({ rows, asOf }: { rows: Mailing[]; asOf: string }) {
     </section>
     <section className="overview-section"><div className="overview-section-header"><div><h2>Hvad blev der klikket på?</h2><p>De mest klikkede faglige tilbud og links i den seneste udsendelse.</p></div></div><div className="overview-stories">{topLinks.length ? topLinks.map((item, index) => <article key={`${item.destination}-${index}`}><span className="overview-rank">{index + 1}</span><div><strong>{displayTitle(item)}</strong><span>{String(editorialCategory(item))}</span></div><div><strong>{num(item.clicks)} klik</strong><span>{formatPoint(item.rate)} pr. 100 leverede</span></div></article>) : <DataGap title="Ingen dokumenterede linkresultater" text="Ungapped leverede ikke brugbare klik pr. link for denne udsendelse." />}</div></section>
     <OverviewTrend rows={rows} latest={latest} baseline={comparison.baseline} />
-    <section className="panel table-panel overview-recent"><div className="overview-section-header"><div><h2>Seneste udsendelser</h2><p>Udviklingen i Kompetencenyt måned for måned.</p></div></div><div className="table-scroll"><table><thead><tr><th>Dato og emnefelt</th><th>Vurdering</th><th>Leverede</th><th>Åbnet</th><th>Klikket</th><th>CTOR</th></tr></thead><tbody>{rows.slice(0, 12).map((row) => { const level = normalLevel(rows, row, { metric: "clickRate", asOf }); return <tr key={row.id}><td><strong>{row.date} · {row.subject || row.title}</strong></td><td><PerformanceBadge delta={level.delta} /></td><td>{num(row.delivered)}</td><td>{pct(row.openRate)}</td><td><b>{pct(row.clickRate)}</b></td><td>{row.openRate > 0 ? pct(row.clickRate / row.openRate * 100) : "—"}</td></tr>; })}</tbody></table></div></section>
+    <section className="panel table-panel overview-recent"><div className="overview-section-header"><div><h2>Seneste udsendelser</h2><p>Udviklingen i Kompetencenyt måned for måned. Sammenligningen viser hver måling i forhold til op til fem tidligere udsendelser.</p></div></div><div className="table-scroll"><table><thead><tr><th>Dato og emnefelt</th><th>Sammenligning med tidligere</th><th>Leverede</th><th>Åbnet</th><th>Klikket</th><th>CTOR</th></tr></thead><tbody>{rows.slice(0, 12).map((row) => { const clickLevel = normalLevel(rows, row, { metric: "clickRate", asOf }); const rowOpenLevel = normalLevel(rows, row, { metric: "openRate", asOf }); return <tr key={row.id}><td><strong>{row.date} · {row.subject || row.title}</strong></td><td><CompetenceComparison openDelta={rowOpenLevel.delta} clickDelta={clickLevel.delta} /></td><td>{num(row.delivered)}</td><td>{pct(row.openRate)}</td><td><b>{pct(row.clickRate)}</b></td><td>{row.openRate > 0 ? pct(row.clickRate / row.openRate * 100) : "—"}</td></tr>; })}</tbody></table></div></section>
     <details className="panel overview-method"><summary>Om tallene og datagrundlaget</summary><p>Visningen omfatter kun sendte udsendelser med Ungapped-tagget <strong>Kompetencenyt</strong>. Nyhedsbrevet segmenteres ikke, og derfor vises ingen målgruppeanalyse.</p><MeasurementGuideContent /></details>
   </div>;
+}
+
+function comparisonPhrase(delta: number | null) {
+  if (delta === null) return "ikke sammenlignelig endnu";
+  if (delta >= 1) return "højere end det tidligere niveau";
+  if (delta <= -1) return "lavere end det tidligere niveau";
+  return "på niveau med tidligere udsendelser";
+}
+
+function CompetenceComparison({ openDelta, clickDelta }: { openDelta: number | null; clickDelta: number | null }) {
+  return <div className="competence-comparison"><MetricComparison label="Åbning" delta={openDelta} /><MetricComparison label="Klik" delta={clickDelta} /></div>;
+}
+
+function MetricComparison({ label, delta }: { label: string; delta: number | null }) {
+  const state = delta === null ? "unknown" : delta >= 1 ? "positive" : delta <= -1 ? "negative" : "neutral";
+  const text = delta === null ? "Afventer grundlag" : delta >= 1 ? "Højere" : delta <= -1 ? "Lavere" : "På niveau";
+  return <span className={`metric-comparison ${state}`}><b>{label}</b>{text}</span>;
 }
 
 function Nav({ active, onClick, icon, label, nested = false }: { active: boolean; onClick: () => void; icon: ReactNode; label: string; nested?: boolean }) {
