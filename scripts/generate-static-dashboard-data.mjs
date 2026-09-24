@@ -12,7 +12,7 @@ let checkpoints;
 try { checkpoints = validateCheckpointLedger(JSON.parse(await readFile(checkpointUrl, "utf8"))); }
 catch (error) { if (error.code !== "ENOENT") throw error; checkpoints = { version: 1, records: [] }; }
 
-const newsletterTags = ["Psykologernes Nyhedsbrev", "Kompetencenyt", "Magasinet P"];
+const newsletterTags = ["Psykologernes Nyhedsbrev", "Kompetencenyt", "Magasinet P", "TR/AMR Nyt"];
 const historyCacheUrl = new URL("../.cache/dashboard-history.json", import.meta.url);
 const baselineUrl = new URL("../data/dashboard-history-baseline.json", import.meta.url);
 const historyCutoff = new Date();
