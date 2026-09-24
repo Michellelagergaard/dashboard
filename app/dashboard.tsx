@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState, type ReactNode } from "react";
-import { Activity, AlertCircle, ChevronDown, ChevronRight, ChevronUp, CircleHelp, ClipboardList, Mail, MousePointerClick, Send, TrendingUp, Users } from "lucide-react";
+import { Activity, AlertCircle, BookOpen, ChevronDown, ChevronRight, ChevronUp, CircleHelp, ClipboardList, Mail, MousePointerClick, Send, TrendingUp, Users } from "lucide-react";
 import type { ClickMeasurement, EditorialMetadata, LiveDashboardData, LiveMailing } from "./live-data";
 import { EditorialProvider } from "./editorial-editor";
 import { enrichMailings } from "../config/editorial-content.mjs";
@@ -10,7 +10,7 @@ import { editorialCategory, summarizeEditorialTopics } from "../config/editorial
 import { clickMeasurementLabel, isComparableLink } from "../config/measurement-methods.mjs";
 import { normalLevel } from "../config/decision-methods.mjs";
 
-type View = "overview" | "audiences" | "mailing" | "about" | "competence";
+type View = "overview" | "audiences" | "mailing" | "about" | "competence" | "magazine";
 type Mailing = LiveMailing;
 
 const segments = memberSegmentNames;
@@ -31,6 +31,7 @@ function DashboardContent({ liveData }: { liveData: LiveDashboardData }) {
   );
   const newsletterMailings = useMemo(() => mailings.filter((mailing) => mailing.type === "Psykologernes Nyhedsbrev"), [mailings]);
   const competenceMailings = useMemo(() => mailings.filter((mailing) => mailing.type === "Kompetencenyt"), [mailings]);
+  const magazineMailings = useMemo(() => mailings.filter((mailing) => mailing.type === "Magasinet P"), [mailings]);
   const [selectedId, setSelectedId] = useState("");
   const selected = newsletterMailings.find((mailing) => mailing.id === selectedId) || newsletterMailings[0];
   const updated = liveData.updatedAt
@@ -55,12 +56,13 @@ function DashboardContent({ liveData }: { liveData: LiveDashboardData }) {
           <Nav nested active={view === "about"} onClick={() => setView("about")} icon={<CircleHelp />} label="Om tallene" />
         </div>
         <Nav active={view === "competence"} onClick={() => setView("competence")} icon={<Activity />} label="Kompetencenyt" />
+        <Nav active={view === "magazine"} onClick={() => setView("magazine")} icon={<BookOpen />} label="Magasinet P" />
       </nav>
       <div className="sidebar-footer"><div className="sidebar-note"><span className="status-dot" />{liveData.status === "live" ? "Opdateres fra Ungapped" : "Seneste tilgængelige data"}<span className="sidebar-updated">{updated}</span></div></div>
     </aside>
     <main id="main" className="main">
-      <header className="topbar"><div><p className="eyebrow">Analyse af medlemskommunikation</p><h1>{view === "overview" ? "Psykologernes Nyhedsbrev" : view === "audiences" ? "Målgrupper" : view === "mailing" ? "Redaktionel analyse" : view === "competence" ? "Kompetencenyt" : "Om tallene"}</h1></div><div className="sync-box"><div><span>Senest opdateret</span><strong>{updated}</strong></div></div></header>
-      {view !== "overview" ? <section className="filters simple-filters" aria-label="Filtre"><div className="filter-main"><label><span>Periode</span><select value={period} onChange={(event) => setPeriod(event.target.value)}><option>Seneste 12 måneder</option><option>Seneste 6 måneder</option><option>Alle år</option></select></label></div><p className="filter-result"><strong>{num(view === "competence" ? competenceMailings.length : newsletterMailings.length)}</strong> udsendelser med tagget {view === "competence" ? "Kompetencenyt" : "Psykologernes Nyhedsbrev"}</p></section> : null}
+      <header className="topbar"><div><p className="eyebrow">Analyse af medlemskommunikation</p><h1>{view === "overview" ? "Psykologernes Nyhedsbrev" : view === "audiences" ? "Målgrupper" : view === "mailing" ? "Redaktionel analyse" : view === "competence" ? "Kompetencenyt" : view === "magazine" ? "Magasinet P" : "Om tallene"}</h1></div><div className="sync-box"><div><span>Senest opdateret</span><strong>{updated}</strong></div></div></header>
+      {view !== "overview" ? <section className="filters simple-filters" aria-label="Filtre"><div className="filter-main"><label><span>Periode</span><select value={period} onChange={(event) => setPeriod(event.target.value)}><option>Seneste 12 måneder</option><option>Seneste 6 måneder</option><option>Alle år</option></select></label></div><p className="filter-result"><strong>{num(view === "competence" ? competenceMailings.length : view === "magazine" ? magazineMailings.length : newsletterMailings.length)}</strong> udsendelser med tagget {view === "competence" ? "Kompetencenyt" : view === "magazine" ? "Magasinet P" : "Psykologernes Nyhedsbrev"}</p></section> : null}
       {view === "audiences" ? <MeasurementGuide /> : null}
       {liveData.status === "unavailable" ? <Empty title="Data er ikke tilgængelige" text="Den seneste dataopdatering kunne ikke læses. Prøv igen senere." /> : null}
       {liveData.status !== "unavailable" && view === "overview" ? <Overview rows={newsletterMailings} onOpen={openMailing} asOf={liveData.updatedAt || new Date().toISOString()} period={period} onPeriodChange={setPeriod} /> : null}
@@ -68,13 +70,22 @@ function DashboardContent({ liveData }: { liveData: LiveDashboardData }) {
       {liveData.status !== "unavailable" && view === "mailing" ? <MailingView rows={newsletterMailings} selected={selected} onChange={setSelectedId} asOf={liveData.updatedAt || new Date().toISOString()} /> : null}
       {liveData.status !== "unavailable" && view === "about" ? <AboutNumbers rows={newsletterMailings} /> : null}
       {liveData.status !== "unavailable" && view === "competence" ? <CompetenceOverview rows={competenceMailings} asOf={liveData.updatedAt || new Date().toISOString()} /> : null}
+      {liveData.status !== "unavailable" && view === "magazine" ? <MagazineOverview rows={magazineMailings} asOf={liveData.updatedAt || new Date().toISOString()} /> : null}
     </main>
   </div>;
 }
 
 function CompetenceOverview({ rows, asOf }: { rows: Mailing[]; asOf: string }) {
+  return <UnsegmentedNewsletterOverview rows={rows} asOf={asOf} name="Kompetencenyt" />;
+}
+
+function MagazineOverview({ rows, asOf }: { rows: Mailing[]; asOf: string }) {
+  return <UnsegmentedNewsletterOverview rows={rows} asOf={asOf} name="Magasinet P" />;
+}
+
+function UnsegmentedNewsletterOverview({ rows, asOf, name }: { rows: Mailing[]; asOf: string; name: "Kompetencenyt" | "Magasinet P" }) {
   const latest = rows[0];
-  if (!latest) return <Empty title="Ingen udsendelser i perioden" text="Vælg en længere periode for at se Kompetencenyt." />;
+  if (!latest) return <Empty title="Ingen udsendelser i perioden" text={`Vælg en længere periode for at se ${name}.`} />;
   const averageOpenRate = average(rows.map(row => row.openRate));
   const averageClickRate = average(rows.map(row => row.clickRate));
   const comparison = normalLevel(rows, latest, { metric: "clickRate", asOf });
@@ -86,12 +97,12 @@ function CompetenceOverview({ rows, asOf }: { rows: Mailing[]; asOf: string }) {
   const verdict = comparison.delta === null ? "Resultatet kan endnu ikke sammenlignes" : comparison.delta >= 1 ? "Klikraten er højere end det tidligere niveau" : comparison.delta <= -1 ? "Klikraten er lavere end det tidligere niveau" : "Klikraten er på niveau med tidligere udsendelser";
   const verdictNote = comparison.delta === null ? "Der er endnu ikke tilstrækkeligt sammenligningsgrundlag." : `Klikraten afviger med ${formatPoint(Math.abs(comparison.delta))} procentpoint fra medianen for ${comparison.count} tidligere udsendelser. Åbningsraten er ${comparisonPhrase(openComparison.delta)}.`;
   return <div className="stack overview-page competence-page">
-    <PeriodAverageChart openRate={averageOpenRate} clickRate={averageClickRate} count={rows.length} />
+    <PeriodAverageChart openRate={averageOpenRate} clickRate={averageClickRate} count={rows.length} tag={name} />
     <section className={`overview-verdict ${comparison.delta !== null && comparison.delta < -1 ? "below" : "above"}`}>
       <div className="overview-verdict-content"><p className="eyebrow">Seneste udsendelse · {latest.date}</p><h2>{latest.subject || latest.title}</h2><div className="overview-assessment"><span>Vurdering</span><h3>{verdict}</h3><p>{verdictNote}</p></div></div>
       <strong>{comparison.delta === null ? "Afventer grundlag" : comparison.delta >= 1 ? "↑ Klik højere" : comparison.delta <= -1 ? "↓ Klik lavere" : "→ Klik på niveau"}</strong>
     </section>
-    <section className="kpi-grid competence-kpis" aria-label="Nøgletal for seneste Kompetencenyt">
+    <section className="kpi-grid competence-kpis" aria-label={`Nøgletal for seneste ${name}`}>
       <Kpi icon={<Mail />} label="Leverede" value={num(latest.delivered)} note="Registreret som leveret" />
       <Kpi icon={<Activity />} label="Åbningsrate" value={pct(latest.openRate)} note={levelText(openComparison.delta)} />
       <Kpi icon={<MousePointerClick />} label="Klikrate" value={pct(latest.clickRate)} note={levelText(comparison.delta)} />
@@ -100,8 +111,8 @@ function CompetenceOverview({ rows, asOf }: { rows: Mailing[]; asOf: string }) {
     </section>
     <section className="overview-section"><div className="overview-section-header"><div><h2>Mest besøgte links</h2><p>De fem destinationslinks med flest unikke klik i Ungapped.</p></div></div><div className="overview-stories">{topLinks.length ? topLinks.map((item, index) => <article key={`${item.destination}-${index}`}><span className="overview-rank">{index + 1}</span><div><strong>{displayTitle(item)}</strong><span>{String(editorialCategory(item))}</span></div><div><strong>{num(item.clicks)} unikke klik</strong><span>{formatPoint(item.rate)} pr. 100 leverede</span></div></article>) : <DataGap title="Ingen dokumenterede linkresultater" text="Ungapped leverede ikke brugbare unikke klik pr. link for denne udsendelse." />}</div></section>
     <OverviewTrend rows={rows} latest={latest} baseline={comparison.baseline} />
-    <section className="panel table-panel overview-recent"><div className="overview-section-header"><div><h2>Seneste udsendelser</h2><p>Udviklingen i Kompetencenyt måned for måned. Sammenligningen viser hver måling i forhold til op til fem tidligere udsendelser.</p></div></div><div className="table-scroll"><table><thead><tr><th>Dato og emnefelt</th><th>Sammenligning med tidligere</th><th>Leverede</th><th>Åbnet</th><th>Klikket</th><th>CTOR</th></tr></thead><tbody>{rows.slice(0, 12).map((row) => { const clickLevel = normalLevel(rows, row, { metric: "clickRate", asOf }); const rowOpenLevel = normalLevel(rows, row, { metric: "openRate", asOf }); return <tr key={row.id}><td><strong>{row.date} · {row.subject || row.title}</strong></td><td><CompetenceComparison openDelta={rowOpenLevel.delta} clickDelta={clickLevel.delta} /></td><td>{num(row.delivered)}</td><td>{pct(row.openRate)}</td><td><b>{pct(row.clickRate)}</b></td><td>{row.openRate > 0 ? pct(row.clickRate / row.openRate * 100) : "—"}</td></tr>; })}</tbody></table></div></section>
-    <details className="panel overview-method"><summary>Om tallene og datagrundlaget</summary><p>Visningen omfatter kun sendte udsendelser med Ungapped-tagget <strong>Kompetencenyt</strong>. Nyhedsbrevet segmenteres ikke, og derfor vises ingen målgruppeanalyse.</p><MeasurementGuideContent /></details>
+    <section className="panel table-panel overview-recent"><div className="overview-section-header"><div><h2>Seneste udsendelser</h2><p>Udviklingen i {name} måned for måned. Sammenligningen viser hver måling i forhold til op til fem tidligere udsendelser.</p></div></div><div className="table-scroll"><table><thead><tr><th>Dato og emnefelt</th><th>Sammenligning med tidligere</th><th>Leverede</th><th>Åbnet</th><th>Klikket</th><th>CTOR</th></tr></thead><tbody>{rows.slice(0, 12).map((row) => { const clickLevel = normalLevel(rows, row, { metric: "clickRate", asOf }); const rowOpenLevel = normalLevel(rows, row, { metric: "openRate", asOf }); return <tr key={row.id}><td><strong>{row.date} · {row.subject || row.title}</strong></td><td><CompetenceComparison openDelta={rowOpenLevel.delta} clickDelta={clickLevel.delta} /></td><td>{num(row.delivered)}</td><td>{pct(row.openRate)}</td><td><b>{pct(row.clickRate)}</b></td><td>{row.openRate > 0 ? pct(row.clickRate / row.openRate * 100) : "—"}</td></tr>; })}</tbody></table></div></section>
+    <details className="panel overview-method"><summary>Om tallene og datagrundlaget</summary><p>Visningen omfatter kun sendte udsendelser med Ungapped-tagget <strong>{name}</strong>. Nyhedsbrevet segmenteres ikke, og derfor vises ingen målgruppeanalyse.</p><MeasurementGuideContent /></details>
   </div>;
 }
 
