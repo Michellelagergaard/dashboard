@@ -2,7 +2,7 @@ import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { fetchIssueEditorialCatalog, fetchIssueLinkCatalog, fetchIssueLinkPerformance, fetchIssueSegmentLinkData, fetchIssueSegmentPerformance, fetchIssueSegmentSubjects, fetchSentIssues } from "./ungapped-client.mjs";
 import { editorialCatalogVersion } from "./editorial-catalog.mjs";
 import { mergeHistoricalMailing, replaceHistoricalLinkPerformance, supplementHistoricalSegments, publicSegmentRows } from "./dashboard-history.mjs";
-import { segmentMappingVersion } from "../config/member-segments.mjs";
+import { memberSegments, segmentMappingVersion } from "../config/member-segments.mjs";
 import { mergeCheckpointLedgers, recordCheckpoints, validateCheckpointLedger } from "../config/decision-methods.mjs";
 
 const apiKey = process.env.UG_API;
@@ -38,15 +38,16 @@ if (sorted.length === 0) {
   throw new Error(`Ingen sendte udsendelser havde taggene ${newsletterTags.map(tag => `"${tag}"`).join(" eller ")}. Seneste gyldige dashboard bevares.`);
 }
 
-// Dashboardet er afgrænset til det redaktionelle nyhedsbrev via det dokumenterede tag.
-// Målgruppetal og dynamiske emnefelter hentes for alle udgaver fra de seneste
-// 12 måneder. De langsommere målgruppefordelte linkopslag begrænses til fem.
+// Målgruppetal hentes for de tre medlemsrettede nyhedsbreve i de seneste
+// 12 måneder. Dynamiske emnefelter og de langsommere målgruppefordelte
+// linkopslag er fortsat afgrænset til Psykologernes Nyhedsbrev.
 const segmentCutoff = new Date();
 segmentCutoff.setUTCFullYear(segmentCutoff.getUTCFullYear() - 1);
+const audienceProfileTypes = new Set(["Psykologernes Nyhedsbrev", "Kompetencenyt", "Magasinet P"]);
 const segmentIssueIds = new Set(sorted
-  .filter((issue) => issue.dashboardType === "Psykologernes Nyhedsbrev" && issue.delivered >= 500 && issue.sentAt && new Date(issue.sentAt) >= segmentCutoff)
+  .filter((issue) => audienceProfileTypes.has(issue.dashboardType) && issue.delivered >= 500 && issue.sentAt && new Date(issue.sentAt) >= segmentCutoff)
   .map((issue) => issue.id));
-const segmentLinkIssueIds = new Set(sorted.filter((issue) => segmentIssueIds.has(issue.id)).slice(0, 5).map((issue) => issue.id));
+const segmentLinkIssueIds = new Set(sorted.filter((issue) => issue.dashboardType === "Psykologernes Nyhedsbrev" && segmentIssueIds.has(issue.id)).slice(0, 5).map((issue) => issue.id));
 const linkIssueIds = new Set([
   ...sorted.filter((issue) => issue.dashboardType === "Psykologernes Nyhedsbrev" && issue.sentAt && new Date(issue.sentAt) >= segmentCutoff).map((issue) => issue.id),
   ...newsletterTags.filter(type => type !== "Psykologernes Nyhedsbrev").flatMap((type) => sorted.filter((issue) => issue.dashboardType === type).slice(0, 12).map((issue) => issue.id)),
@@ -57,7 +58,14 @@ const mailings = await mapConcurrent(sorted, 1, async (issue) => {
     ? mergeHistoricalMailing(historyById.get(issue.id), baselineById.get(issue.id))
     : baselineById.has(issue.id) ? mergeHistoricalMailing(emptyMailing(issue), baselineById.get(issue.id)) : undefined;
   if (isOlderThan(issue.sentAt, historyCutoff) && historicalMailing) {
-    if (issue.dashboardType !== "Psykologernes Nyhedsbrev") return historicalMailing;
+    if (issue.dashboardType !== "Psykologernes Nyhedsbrev") {
+      if (!segmentIssueIds.has(issue.id)) return historicalMailing;
+      return supplementHistoricalSegments(historicalMailing, {
+        performance: segments => safe(() => fetchIssueSegmentPerformance(apiKey, issue.id, fetch, segments), { available: false, results: [] }),
+        subjects: async () => [],
+        links: async () => ({ available: false, results: [] }),
+      }, false, memberSegments);
+    }
     let refreshedHistory = historicalMailing;
     if (linkIssueIds.has(issue.id) && historicalMailing.linkMeasurementVersion !== 2) {
       let links = [];
@@ -85,7 +93,7 @@ const mailings = await mapConcurrent(sorted, 1, async (issue) => {
   checkpoints = recordCheckpoints(checkpoints, issue, segmentData.available ? publicSegmentRows(segmentData.results) : [], segmentsObservedAt);
   const segmentLinkData = includeSegmentLinks ? await safe(() => fetchIssueSegmentLinkData(apiKey, issue.id), { available: false, results: [] }) : { available: false, results: [] };
   const segmentLinkPerformance = segmentLinkData.results;
-  const segmentSubjects = includeSegments ? await safe(() => fetchIssueSegmentSubjects(apiKey, issue.id), []) : [];
+  const segmentSubjects = includeSegments && issue.dashboardType === "Psykologernes Nyhedsbrev" ? await safe(() => fetchIssueSegmentSubjects(apiKey, issue.id), []) : [];
   const segmentRecipientCounts = new Map(segmentData.results.map((item) => [item.name, item.recipients]));
   const linkTitles = new Map(links.map((item) => [item.destination, item.title]).filter(([, title]) => title));
   const mailing = {
