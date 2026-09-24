@@ -63,7 +63,7 @@ function DashboardContent({ liveData }: { liveData: LiveDashboardData }) {
       {view !== "overview" ? <section className="filters simple-filters" aria-label="Filtre"><div className="filter-main"><label><span>Periode</span><select value={period} onChange={(event) => setPeriod(event.target.value)}><option>Seneste 12 måneder</option><option>Seneste 6 måneder</option><option>Alle år</option></select></label></div><p className="filter-result"><strong>{num(view === "competence" ? competenceMailings.length : newsletterMailings.length)}</strong> udsendelser med tagget {view === "competence" ? "Kompetencenyt" : "Psykologernes Nyhedsbrev"}</p></section> : null}
       {view === "audiences" ? <MeasurementGuide /> : null}
       {liveData.status === "unavailable" ? <Empty title="Data er ikke tilgængelige" text="Den seneste dataopdatering kunne ikke læses. Prøv igen senere." /> : null}
-      {liveData.status !== "unavailable" && view === "overview" ? <Overview rows={newsletterMailings} onOpen={openMailing} asOf={liveData.updatedAt || new Date().toISOString()} /> : null}
+      {liveData.status !== "unavailable" && view === "overview" ? <Overview rows={newsletterMailings} onOpen={openMailing} asOf={liveData.updatedAt || new Date().toISOString()} period={period} onPeriodChange={setPeriod} /> : null}
       {liveData.status !== "unavailable" && view === "audiences" ? <AudienceView rows={newsletterMailings} onOpen={openMailing} asOf={liveData.updatedAt || new Date().toISOString()} /> : null}
       {liveData.status !== "unavailable" && view === "mailing" ? <MailingView rows={newsletterMailings} selected={selected} onChange={setSelectedId} asOf={liveData.updatedAt || new Date().toISOString()} /> : null}
       {liveData.status !== "unavailable" && view === "about" ? <AboutNumbers rows={newsletterMailings} /> : null}
@@ -105,13 +105,13 @@ function CompetenceOverview({ rows, asOf }: { rows: Mailing[]; asOf: string }) {
   </div>;
 }
 
-function PeriodAverageChart({ openRate, clickRate, count }: { openRate: number; clickRate: number; count: number }) {
+function PeriodAverageChart({ openRate, clickRate, count, tag = "Kompetencenyt", period, onPeriodChange }: { openRate: number; clickRate: number; count: number; tag?: string; period?: string; onPeriodChange?: (period: string) => void }) {
   const metrics = [
     { label: "Gennemsnitlig åbningsrate", value: openRate, className: "open" },
     { label: "Gennemsnitlig klikrate", value: clickRate, className: "click" },
   ];
   return <section className="panel period-average" aria-labelledby="period-average-title">
-    <div className="overview-section-header"><div><h2 id="period-average-title">Gennemsnit i den valgte periode</h2><p>Beregnet på tværs af {num(count)} udsendelser med tagget Kompetencenyt.</p></div></div>
+    <div className="overview-section-header"><div><h2 id="period-average-title">Gennemsnit i den valgte periode</h2><p>Beregnet på tværs af {num(count)} udsendelser med tagget {tag}.</p></div>{period && onPeriodChange ? <label className="average-period"><span>Periode</span><select value={period} onChange={(event) => onPeriodChange(event.target.value)}><option>Seneste 12 måneder</option><option>Seneste 6 måneder</option><option>Alle år</option></select></label> : null}</div>
     <div className="period-average-chart">{metrics.map(metric => <article key={metric.label} className={metric.className}>
       <div><span>{metric.label}</span><strong>{pct(metric.value)}</strong></div>
       <div className="average-track" aria-hidden="true"><span style={{ width: `${Math.max(0, Math.min(100, metric.value))}%` }} /></div>
@@ -141,10 +141,12 @@ function Nav({ active, onClick, icon, label, nested = false }: { active: boolean
   return <button className={`nav-item${nested ? " nav-item-nested" : ""}${active ? " active" : ""}`} onClick={onClick}>{icon}<span>{label}</span><ChevronRight /></button>;
 }
 
-function Overview({ rows, onOpen, asOf }: { rows: Mailing[]; onOpen: (id: string) => void; asOf: string }) {
+function Overview({ rows, onOpen, asOf, period, onPeriodChange }: { rows: Mailing[]; onOpen: (id: string) => void; asOf: string; period: string; onPeriodChange: (period: string) => void }) {
   const latest = rows[0];
   const previous = rows[1];
   if (!latest) return <Empty title="Ingen udsendelser i perioden" text="Vælg en længere periode for at se Psykologernes Nyhedsbrev." />;
+  const averageOpenRate = average(rows.map(row => row.openRate));
+  const averageClickRate = average(rows.map(row => row.clickRate));
   const comparison = normalLevel(rows, latest, { metric: "clickRate", asOf });
   const openComparison = normalLevel(rows, latest, { metric: "openRate", asOf });
   const topLinks = latest.content.filter(item => item.editorial?.kind === "news").sort((a, b) => b.clicks - a.clicks).slice(0, 3);
@@ -155,6 +157,7 @@ function Overview({ rows, onOpen, asOf }: { rows: Mailing[]; onOpen: (id: string
   const weakest = performance.at(-1);
   const strongestLink = [...segmentLinkRows(latest)].sort((a, b) => b.clicks - a.clicks)[0];
   return <div className="stack overview-page">
+    <PeriodAverageChart openRate={averageOpenRate} clickRate={averageClickRate} count={rows.length} tag="Psykologernes Nyhedsbrev" period={period} onPeriodChange={onPeriodChange} />
     <section className={`overview-verdict ${comparison.delta !== null && comparison.delta < 0 ? "below" : "above"}`}>
       <div className="overview-verdict-content">
         <p className="eyebrow">Seneste udsendelse · {latest.date}</p>
