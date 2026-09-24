@@ -62,3 +62,9 @@ test("Kompetencenyt sammenligner åbning og klik uden en samlet misvisende dom",
   assert.match(dashboardSource, /Klikraten er lavere end det tidligere niveau/);
   assert.doesNotMatch(dashboardSource, /Udsendelsen lå under det normale niveau/);
 });
+
+test("Kompetencenyt viser Ungappeds mest besøgte links uden redaktionelt servicefilter", () => {
+  assert.match(dashboardSource, /item\.clickMeasurement\?\.metric === "unique-contacts"/);
+  assert.doesNotMatch(dashboardSource, /latest\.content\.filter\(item => item\.editorial\?\.kind !== "service"\)/);
+  assert.match(dashboardSource, /De fem destinationslinks med flest unikke klik i Ungapped/);
+});
