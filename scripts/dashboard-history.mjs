@@ -44,6 +44,40 @@ export function publicSegmentRows(rows) {
   }));
 }
 
+// Re-read historical destination results with the current unique-contact
+// definition. Fresh rows replace every older placement of the same destination;
+// unrelated historical rows stay intact until Ungapped returns a result for them.
+export function replaceHistoricalLinkPerformance(mailing, { available, results }, links, delivered) {
+  if (!available) return mailing;
+  const titles = new Map([...(mailing.links || []), ...(mailing.content || []), ...(links || [])]
+    .filter(row => row.destination && row.title)
+    .map(row => [row.destination, row.title]));
+  const refreshed = results
+    .filter(row => row.clicks >= 5)
+    .map(row => ({
+      title: titles.get(row.destination) || row.title,
+      destination: row.destination,
+      recipients: delivered,
+      clicks: row.clicks,
+      rate: row.clicks / Math.max(1, delivered) * 100,
+      clickMeasurement: row.clickMeasurement,
+    }));
+  const refreshedDestinations = new Set(results.map(row => row.destination));
+  const content = [
+    ...refreshed,
+    ...(mailing.content || []).filter(row => !refreshedDestinations.has(row.destination)),
+  ];
+  const linkMap = new Map((mailing.links || []).map(row => [row.destination, row]));
+  for (const row of links || []) linkMap.set(row.destination, row);
+  return {
+    ...mailing,
+    content,
+    links: [...linkMap.values()],
+    linkMeasurementVersion: 2,
+    dataCoverage: { ...mailing.dataCoverage, linkPerformance: true },
+  };
+}
+
 // Historical totals and existing audiences stay frozen. Only missing audiences
 // are supplemented; failed lookups remain retryable on the next hourly run.
 export async function supplementHistoricalSegments(mailing, { performance, subjects, links }, includeLinks) {
