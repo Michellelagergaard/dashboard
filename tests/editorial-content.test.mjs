@@ -58,19 +58,19 @@ test("utility links are separate, social posts are not confused with profiles", 
 });
 
 test("headline topic has priority over navigation path and corrections have priority over both", () => {
-  assert.equal(editorialCategory({title:"Nye regler for autorisation",destination:"https://dp.dk/netvaerk-og-job/karriere/test"}),"Autorisation og regler");
-  assert.equal(editorialCategory({title:"Nye regler for autorisation",destination:"https://dp.dk/x",editorial:{category:"Politik og presse"}}),"Politik og presse");
-  assert.equal(editorialCategory({title:"Ukendt",destination:"https://dp.dk/nyheder/l%C3%B8nstigning"}),"Løn og arbejdsliv");
+  assert.equal(editorialCategory({title:"Nye regler for autorisation",destination:"https://dp.dk/netvaerk-og-job/karriere/test"}),"Autorisation, tilsyn og regler");
+  assert.equal(editorialCategory({title:"Nye regler for autorisation",destination:"https://dp.dk/x",editorial:{category:"Politik og interessevaretagelse"}}),"Politik og interessevaretagelse");
+  assert.equal(editorialCategory({title:"Ukendt",destination:"https://dp.dk/nyheder/l%C3%B8nstigning"}),"Løn, overenskomst og ansættelse");
 });
 
 test("corrections are scoped to issue and URL and update both result views without modifying source", () => {
   const row={title:"Læs mere",destination:"https://dp.dk/a",clicks:10,rate:1};
   const source=[{id:"one",content:[row],links:[row],segmentLinkPerformance:[{...row,audience:"Ledige"}]},{id:"two",content:[row],links:[],segmentLinkPerformance:[]}];
   const before=JSON.stringify(source);
-  const corrections=validateCorrections({version:1,corrections:[{mailingId:"one",destination:row.destination,title:"En rettet overskrift",kind:"news",category:"Politik og presse"}]});
+  const corrections=validateCorrections({version:1,corrections:[{mailingId:"one",destination:row.destination,title:"En rettet overskrift",kind:"news",category:"Politik og interessevaretagelse"}]});
   const result=enrichMailings(source,corrections);
   assert.equal(result[0].content[0].editorial.title,"En rettet overskrift");
-  assert.equal(result[0].segmentLinkPerformance[0].editorial.category,"Politik og presse");
+  assert.equal(result[0].segmentLinkPerformance[0].editorial.category,"Politik og interessevaretagelse");
   assert.equal(result[1].content[0].editorial.title,"Læs mere");
   assert.equal(JSON.stringify(source),before);
   assert.equal(result[0].content[0].rate,1);
@@ -88,11 +88,11 @@ test("import validates the entire file before use and merging retains unrelated 
 
 test("service traffic and uncertain items cannot become a news-topic conclusion", () => {
   const summary=summarizeEditorialTopics([{id:"a",content:[
-    {clicks:500,editorial:{kind:"service",category:"Job og karriere"}},
-    {clicks:300,editorial:{kind:"unknown",category:"Politik og presse"}},
-    {clicks:10,editorial:{kind:"news",category:"Løn og arbejdsliv"}},
+    {clicks:500,editorial:{kind:"service",category:"Karriere og job"}},
+    {clicks:300,editorial:{kind:"unknown",category:"Politik og interessevaretagelse"}},
+    {clicks:10,editorial:{kind:"news",category:"Løn, overenskomst og ansættelse"}},
   ]}]);
-  assert.deepEqual(summary,[{category:"Løn og arbejdsliv",clicks:10,links:1,mailings:1}]);
+  assert.deepEqual(summary,[{category:"Løn, overenskomst og ansættelse",clicks:10,links:1,mailings:1}]);
 });
 
 test("the complete archive survives editorial enrichment with all original fields intact", () => {
