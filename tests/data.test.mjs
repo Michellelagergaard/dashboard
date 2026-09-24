@@ -52,7 +52,7 @@ test("Kompetencenyt er en selvstændig, ikke-segmenteret tagvisning", () => {
   assert.match(dashboardSource, /label="Kompetencenyt"/);
   assert.match(dashboardSource, /function CompetenceOverview/);
   assert.match(dashboardSource, /Nyhedsbrevet segmenteres ikke/);
-  assert.match(generatorSource, /newsletterTags = \["Psykologernes Nyhedsbrev", "Kompetencenyt", "Magasinet P"\]/);
+  assert.match(generatorSource, /newsletterTags = \["Psykologernes Nyhedsbrev", "Kompetencenyt", "Magasinet P", "TR\/AMR Nyt"\]/);
   assert.match(generatorSource, /issue\.dashboardType === "Psykologernes Nyhedsbrev" && issue\.delivered/);
 });
 
@@ -60,7 +60,14 @@ test("Magasinet P er en selvstændig, ikke-segmenteret tagvisning", () => {
   assert.match(dashboardSource, /label="Magasinet P"/);
   assert.match(dashboardSource, /function MagazineOverview/);
   assert.match(dashboardSource, /name: "Kompetencenyt" \| "Magasinet P"/);
-  assert.match(generatorSource, /newsletterTags = \["Psykologernes Nyhedsbrev", "Kompetencenyt", "Magasinet P"\]/);
+  assert.match(generatorSource, /newsletterTags = \["Psykologernes Nyhedsbrev", "Kompetencenyt", "Magasinet P", "TR\/AMR Nyt"\]/);
+});
+
+test("TR/AMR Nyt er en selvstændig, ikke-segmenteret tagvisning", () => {
+  assert.match(dashboardSource, /label="TR\/AMR Nyt"/);
+  assert.match(dashboardSource, /function TrAmrOverview/);
+  assert.match(dashboardSource, /name="TR\/AMR Nyt"/);
+  assert.match(generatorSource, /newsletterTags = \["Psykologernes Nyhedsbrev", "Kompetencenyt", "Magasinet P", "TR\/AMR Nyt"\]/);
 });
 
 test("Kompetencenyt sammenligner åbning og klik uden en samlet misvisende dom", () => {
