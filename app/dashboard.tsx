@@ -117,10 +117,38 @@ function UnsegmentedNewsletterOverview({ rows, asOf, name }: { rows: Mailing[]; 
       <Kpi icon={<Users />} label="Afmeldinger" value={num(latest.unsubscribes || 0)} note="Registreret efter udsendelsen" />
     </section>
     <section className="overview-section"><div className="overview-section-header"><div><h2>Mest besøgte links</h2><p>De fem destinationslinks med flest unikke klik i Ungapped.</p></div></div><div className="overview-stories">{topLinks.length ? topLinks.map((item, index) => <article key={`${item.destination}-${index}`}><span className="overview-rank">{index + 1}</span><div><strong>{displayTitle(item)}</strong><span>{String(editorialCategory(item))}</span></div><div><strong>{num(item.clicks)} unikke klik</strong><span>{formatPoint(item.rate)} pr. 100 leverede</span></div></article>) : <DataGap title="Ingen dokumenterede linkresultater" text="Ungapped leverede ikke brugbare unikke klik pr. link for denne udsendelse." />}</div></section>
+    {name !== "TR/AMR Nyt" ? <UnsegmentedAudienceClicks rows={rows} name={name} /> : null}
     <OverviewTrend rows={rows} latest={latest} baseline={comparison.baseline} />
     <section className="panel table-panel overview-recent"><div className="overview-section-header"><div><h2>Seneste udsendelser</h2><p>Udviklingen i {name} måned for måned. Sammenligningen viser hver måling i forhold til op til fem tidligere udsendelser.</p></div></div><div className="table-scroll"><table><thead><tr><th>Dato og emnefelt</th><th>Sammenligning med tidligere</th><th>Leverede</th><th>Åbnet</th><th>Klikket</th><th>CTOR</th></tr></thead><tbody>{rows.slice(0, 12).map((row) => { const clickLevel = normalLevel(rows, row, { metric: "clickRate", asOf }); const rowOpenLevel = normalLevel(rows, row, { metric: "openRate", asOf }); return <tr key={row.id}><td><strong>{row.date} · {row.subject || row.title}</strong></td><td><CompetenceComparison openDelta={rowOpenLevel.delta} clickDelta={clickLevel.delta} /></td><td>{num(row.delivered)}</td><td>{pct(row.openRate)}</td><td><b>{pct(row.clickRate)}</b></td><td>{row.openRate > 0 ? pct(row.clickRate / row.openRate * 100) : "—"}</td></tr>; })}</tbody></table></div></section>
     <details className="panel overview-method"><summary>Om tallene og datagrundlaget</summary><p>Visningen omfatter kun sendte udsendelser med Ungapped-tagget <strong>{name}</strong>. Nyhedsbrevet segmenteres ikke, og derfor vises ingen målgruppeanalyse.</p><MeasurementGuideContent /></details>
   </div>;
+}
+
+function UnsegmentedAudienceClicks({ rows, name }: { rows: Mailing[]; name: "Kompetencenyt" | "Magasinet P" }) {
+  const profiles = segments.map((segment) => {
+    const measurements = rows.flatMap((mailing) => {
+      const data = segmentRows(mailing).find((item) => item.name === segment);
+      return data ? [{ mailing, data }] : [];
+    });
+    const delivered = measurements.reduce((sum, item) => sum + (item.data.delivered || item.data.recipients || 0), 0);
+    const weightedClicks = measurements.reduce((sum, item) => {
+      const denominator = item.data.delivered || item.data.recipients || 0;
+      return sum + item.data.clickRate / 100 * denominator;
+    }, 0);
+    const clickRate = delivered > 0 ? weightedClicks / delivered * 100 : average(measurements.map((item) => item.data.clickRate));
+    return { segment, clickRate, issues: measurements.length, delivered };
+  }).filter((profile) => profile.issues > 0).sort((a, b) => b.clickRate - a.clickRate);
+  const maxRate = Math.max(...profiles.map((profile) => profile.clickRate), 1);
+  const overallRate = average(rows.map((row) => row.clickRate));
+  const leader = profiles[0];
+  return <section className="panel unsegmented-audience-profile" aria-labelledby={`${name.replace(/\W/g, "-")}-audience-title`}>
+    <div className="audience-profile-header"><div><p className="eyebrow">Klik efter medlemsgruppe</p><h2 id={`${name.replace(/\W/g, "-")}-audience-title`}>Hvilke medlemsgrupper klikkede?</h2><p>Gruppernes gennemsnitlige klikrate i den valgte periode.</p></div>{leader ? <div className="audience-profile-highlight"><span>Højeste klikrate</span><strong>{leader.segment}</strong><small>{pct(leader.clickRate)} · {num(leader.issues)} udgaver med data</small></div> : null}</div>
+    {profiles.length ? <><div className="audience-profile-chart" role="list" aria-label={`Klikrate i ${name} efter medlemsgruppe`}>{profiles.map((profile, index) => <article key={profile.segment} role="listitem" className={index === 0 ? "leading" : ""}>
+      <div className="audience-profile-label"><span>{index + 1}</span><div><strong>{profile.segment}</strong><small>{num(profile.issues)} af {num(rows.length)} udgaver med data</small></div></div>
+      <div className="audience-profile-bar" aria-label={`${profile.segment}: ${pct(profile.clickRate)}`}><span style={{ width: `${Math.max(3, profile.clickRate / maxRate * 100)}%` }} /></div>
+      <strong className="audience-profile-rate">{pct(profile.clickRate)}</strong>
+    </article>)}</div><div className="audience-profile-benchmark"><span /><p>Nyhedsbrevets gennemsnitlige klikrate i perioden: <strong>{pct(overallRate)}</strong></p></div><p className="method-note">Alle modtog samme nyhedsbrev. Medlemsgrupperne er efterfølgende filtre på Ungappeds aggregerede klikstatistik og kan overlappe. Derfor summerer de ikke til 100 %, og modulet viser ikke unikke personer på tværs af grupper.</p></> : <DataGap title="Målgruppedata er på vej" text="Modulet vises, når Ungapped har leveret filtrerede klikresultater for mindst én medlemsgruppe." />}
+  </section>;
 }
 
 function PeriodAverageChart({ openRate, clickRate, count, tag = "Kompetencenyt", description, period, onPeriodChange }: { openRate: number; clickRate: number; count: number; tag?: string; description?: string; period?: string; onPeriodChange?: (period: string) => void }) {
