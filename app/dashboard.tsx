@@ -199,7 +199,32 @@ function Overview({ rows, onOpen, asOf, period, onPeriodChange }: { rows: Mailin
     <OverviewTrend rows={rows} latest={latest} baseline={comparison.baseline} />
     <section className="panel table-panel overview-recent"><div className="overview-section-header"><div><h2>Seneste udsendelser</h2><p>Et kort overblik over udviklingen.</p></div></div><div className="table-scroll"><table><thead><tr><th>Dato og emnefelt</th><th>Vurdering</th><th>Åbnet</th><th>Klikket</th><th></th></tr></thead><tbody>{rows.slice(0, 5).map((row) => { const level = normalLevel(rows, row, { metric: "clickRate", asOf }); return <tr key={row.id}><td><strong>{row.date} · {row.subject || row.title}</strong></td><td><PerformanceBadge delta={level.delta} /></td><td>{pct(row.openRate)}</td><td><b>{pct(row.clickRate)}</b></td><td><button className="row-link" onClick={() => onOpen(row.id)}>Åbn</button></td></tr>; })}</tbody></table></div></section>
     <details className="panel overview-method"><summary>Om tallene og datagrundlaget</summary><MeasurementGuideContent /><CoverageSummary rows={rows} /></details>
+    <CategoryInterestChart rows={rows} />
   </div>;
+}
+
+function CategoryInterestChart({ rows }: { rows: Mailing[] }) {
+  const coveredRows = rows
+    .map(row => ({ ...row, content: row.content.filter(item => isComparableLink(item) && item.editorial?.kind === "news") }))
+    .filter(row => row.content.length);
+  const topics = summarizeEditorialTopics(coveredRows).filter(topic => topic.category !== "Andet" && topic.clicks > 0);
+  const totalClicks = topics.reduce((sum, topic) => sum + topic.clicks, 0);
+  const maxClicks = Math.max(...topics.map(topic => topic.clicks), 1);
+  const leader = topics[0];
+  const mostEfficient = [...topics].sort((a, b) => b.clicks / Math.max(1, b.links) - a.clicks / Math.max(1, a.links))[0];
+  return <section className="panel category-interest" aria-labelledby="category-interest-title">
+    <div className="category-interest-header"><div><p className="eyebrow">Indholdsfordeling i den valgte periode</p><h2 id="category-interest-title">Hvilke emner blev der klikket mest på?</h2><p>Sammenlign den samlede klikinteresse med klik pr. nyhed.</p></div>{leader ? <div className="category-interest-highlight"><span>Flest klik samlet</span><strong>{leader.category}</strong><small>{num(leader.clicks)} registrerede klik</small></div> : null}</div>
+    {topics.length ? <><div className="category-chart" role="list" aria-label="Registrerede klik fordelt på nyhedskategorier">{topics.map((topic, index) => {
+      const share = totalClicks ? topic.clicks / totalClicks * 100 : 0;
+      const perStory = topic.clicks / Math.max(1, topic.links);
+      return <article key={topic.category} role="listitem" className={index === 0 ? "leading" : ""}>
+        <div className="category-chart-label"><span>{index + 1}</span><div><strong>{topic.category}</strong><small>{num(topic.links)} nyhed{topic.links === 1 ? "" : "er"}</small></div></div>
+        <div className="category-chart-bar" aria-label={`${topic.category}: ${num(topic.clicks)} klik, ${pct(share)} af de kategoriserede klik`}><span style={{ width: `${Math.max(2, topic.clicks / maxClicks * 100)}%` }} /></div>
+        <div className="category-chart-total"><strong>{num(topic.clicks)}</strong><span>klik · {pct(share)}</span></div>
+        <div className="category-chart-average"><strong>{num(Math.round(perStory))}</strong><span>klik pr. nyhed</span></div>
+      </article>;
+    })}</div><div className="category-interest-footer"><p><strong>{num(totalClicks)}</strong> kategoriserede klik fordelt på <strong>{num(topics.reduce((sum, topic) => sum + topic.links, 0))}</strong> nyheder i <strong>{num(coveredRows.length)}</strong> udsendelser.</p>{mostEfficient ? <p>Flest klik pr. nyhed: <strong>{mostEfficient.category}</strong> med {num(Math.round(mostEfficient.clicks / Math.max(1, mostEfficient.links)))}.</p> : null}</div><p className="method-note">Grafen viser registrerede klik på redaktionelle historier – ikke dokumenteret læsning eller unikke personer på tværs af links. Kategorier med flere nyheder får naturligt flere muligheder for klik; derfor vises også klik pr. nyhed.</p></> : <DataGap title="Ingen kategoriserede klik i perioden" text="Modulet vises, når udsendelserne har dokumenterede klik på redaktionelle historier." />}
+  </section>;
 }
 
 function AudienceView({ rows, onOpen, asOf }: { rows: Mailing[]; onOpen: (id: string) => void; asOf: string }) {
