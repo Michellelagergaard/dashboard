@@ -502,7 +502,12 @@ function safeDestination(rawHref) {
   const sensitive = /(unsubscribe|afmeld|recipient|contact|email|token|signature|personal)/i;
   if (sensitive.test(`${url.hostname}${url.pathname}`)) return null;
   const segments = url.pathname.split("/").filter(Boolean);
-  if (segments.some(segment => /^[a-f0-9-]{24,}$/i.test(segment) || /^[A-Za-z0-9_-]{32,}$/.test(segment))) return null;
+  // Bevar menneskeligt læsbare slugs som
+  // "familieterapi-teori-og-intervention-403313". Den tidligere brede regel
+  // behandlede alle lange slugs som mulige personlige tokens og fjernede derfor
+  // legitime kursuslinks fra statistikken. UUID-/hex-id'er og lange, udelte
+  // tokens bliver fortsat afvist.
+  if (segments.some(segment => /^[a-f0-9-]{24,}$/i.test(segment) || /^[A-Za-z0-9_]{32,}$/.test(segment))) return null;
   url.username = "";
   url.password = "";
   url.search = "";
