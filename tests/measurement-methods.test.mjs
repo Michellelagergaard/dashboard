@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { reduceLinkStatistics, sanitizeIssue, fetchIssueSegmentPerformance } from "../scripts/ungapped-client.mjs";
 import { summarizeSegmentRates, clickMeasurementLabel, isComparableLink } from "../config/measurement-methods.mjs";
-import { mergeHistoricalMailing, publicSegmentRows } from "../scripts/dashboard-history.mjs";
+import { mergeHistoricalMailing, publicSegmentRows, replaceHistoricalLinkPerformance } from "../scripts/dashboard-history.mjs";
 
 const url = "https://www.dp.dk/news";
 test("contact counts and click events retain distinct definitions, including zero", () => {
@@ -67,6 +67,24 @@ test("new segment rows retain the actual recipient and delivery denominators", (
   assert.equal(row.recipients,100);
   assert.equal(row.delivered,90);
   assert.equal(row.measurementVersion,2);
+});
+
+test("historical link backfill replaces old placements with current unique-contact measurements", () => {
+  const old = {
+    id:"old", links:[{destination:url,title:"Gammel titel",firstPosition:1,occurrences:2}],
+    content:[
+      {destination:url,title:"Placering 1",clicks:20,rate:2,recipients:1000},
+      {destination:url,title:"Placering 2",clicks:15,rate:1.5,recipients:1000},
+      {destination:"https://www.dp.dk/andet",title:"Bevares",clicks:4,rate:.4,recipients:1000},
+    ], dataCoverage:{linkPerformance:true,segmentPerformance:false,segmentSubjects:false,segmentLinkPerformance:false},
+  };
+  const fresh = replaceHistoricalLinkPerformance(old, {available:true,results:[{destination:url,title:"Ny",clicks:12,clickMeasurement:{metric:"unique-contacts",source:"ContactCount",aggregation:"single-link",sourceRows:1}}]}, [], 900);
+  assert.equal(fresh.content.filter(row => row.destination === url).length,1);
+  assert.equal(fresh.content.find(row => row.destination === url).clicks,12);
+  assert.equal(fresh.content.find(row => row.destination === url).recipients,900);
+  assert.equal(fresh.content.find(row => row.destination === url).clickMeasurement.metric,"unique-contacts");
+  assert.equal(fresh.content.some(row => row.destination.endsWith("/andet")),true);
+  assert.equal(fresh.linkMeasurementVersion,2);
 });
 
 test("all recorded baseline rows survive a measurement rollout without numeric changes", () => {
