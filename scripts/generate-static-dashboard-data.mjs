@@ -1,7 +1,7 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { fetchIssueEditorialCatalog, fetchIssueLinkCatalog, fetchIssueLinkPerformance, fetchIssueSegmentLinkData, fetchIssueSegmentPerformance, fetchIssueSegmentSubjects, fetchSentIssues } from "./ungapped-client.mjs";
 import { editorialCatalogVersion } from "./editorial-catalog.mjs";
-import { mergeHistoricalMailing, supplementHistoricalSegments, publicSegmentRows } from "./dashboard-history.mjs";
+import { mergeHistoricalMailing, replaceHistoricalLinkPerformance, supplementHistoricalSegments, publicSegmentRows } from "./dashboard-history.mjs";
 import { segmentMappingVersion } from "../config/member-segments.mjs";
 import { mergeCheckpointLedgers, recordCheckpoints, validateCheckpointLedger } from "../config/decision-methods.mjs";
 
@@ -47,7 +47,10 @@ const segmentIssueIds = new Set(sorted
   .filter((issue) => issue.dashboardType === "Psykologernes Nyhedsbrev" && issue.delivered >= 500 && issue.sentAt && new Date(issue.sentAt) >= segmentCutoff)
   .map((issue) => issue.id));
 const segmentLinkIssueIds = new Set(sorted.filter((issue) => segmentIssueIds.has(issue.id)).slice(0, 5).map((issue) => issue.id));
-const linkIssueIds = new Set(newsletterTags.flatMap((type) => sorted.filter((issue) => issue.dashboardType === type).slice(0, 12).map((issue) => issue.id)));
+const linkIssueIds = new Set([
+  ...sorted.filter((issue) => issue.dashboardType === "Psykologernes Nyhedsbrev" && issue.sentAt && new Date(issue.sentAt) >= segmentCutoff).map((issue) => issue.id),
+  ...newsletterTags.filter(type => type !== "Psykologernes Nyhedsbrev").flatMap((type) => sorted.filter((issue) => issue.dashboardType === type).slice(0, 12).map((issue) => issue.id)),
+]);
 
 const mailings = await mapConcurrent(sorted, 1, async (issue) => {
   const historicalMailing = historyById.has(issue.id)
@@ -55,11 +58,18 @@ const mailings = await mapConcurrent(sorted, 1, async (issue) => {
     : baselineById.has(issue.id) ? mergeHistoricalMailing(emptyMailing(issue), baselineById.get(issue.id)) : undefined;
   if (isOlderThan(issue.sentAt, historyCutoff) && historicalMailing) {
     if (issue.dashboardType !== "Psykologernes Nyhedsbrev") return historicalMailing;
-    return supplementHistoricalSegments(historicalMailing, {
+    let refreshedHistory = historicalMailing;
+    if (linkIssueIds.has(issue.id) && historicalMailing.linkMeasurementVersion !== 2) {
+      let links = [];
+      try { links = (await fetchIssueLinkCatalog(apiKey, issue.id)).links; } catch { /* A later hourly run retries the backfill. */ }
+      const performance = await safe(() => fetchIssueLinkPerformance(apiKey, issue.id), { available: false, results: [] });
+      refreshedHistory = replaceHistoricalLinkPerformance(historicalMailing, performance, links, issue.delivered);
+    }
+    return supplementHistoricalSegments(refreshedHistory, {
       performance: segments => safe(() => fetchIssueSegmentPerformance(apiKey, issue.id, fetch, segments), { available: false, results: [] }),
       subjects: () => safe(() => fetchIssueSegmentSubjects(apiKey, issue.id), []),
       links: segments => safe(() => fetchIssueSegmentLinkData(apiKey, issue.id, fetch, segments), { available: false, results: [] }),
-    }, segmentLinkIssueIds.has(issue.id) || historicalMailing.segmentLinkPerformance?.length > 0);
+    }, segmentLinkIssueIds.has(issue.id) || refreshedHistory.segmentLinkPerformance?.length > 0);
   }
 
   const includeLinks = linkIssueIds.has(issue.id);
@@ -88,6 +98,7 @@ const mailings = await mapConcurrent(sorted, 1, async (issue) => {
     segmentLinkPerformance: segmentLinkPerformance.filter(item => segmentRecipientCounts.get(item.audience) > 0).map((item) => ({ title: linkTitles.get(item.destination) || item.title, destination: item.destination, audience: item.audience, clicks: item.clicks, rate: item.clicks / segmentRecipientCounts.get(item.audience) * 100, clickMeasurement: item.clickMeasurement })),
     ...(segmentData.available ? { segmentMappingVersion } : {}),
     ...(segmentLinkData.available ? { segmentLinkMappingVersion: segmentMappingVersion } : {}),
+    ...(linkPerformance.available ? { linkMeasurementVersion: 2 } : {}),
     dataCoverage: {
       linkPerformance: Boolean(includeLinks && linkPerformance.available),
       segmentPerformance: Boolean(includeSegments && segmentData.available),
