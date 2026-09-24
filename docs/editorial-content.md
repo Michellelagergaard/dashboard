@@ -20,7 +20,7 @@ Alle typer er bevaret og kan vises. De automatiske emnekonklusioner bruger kun n
 
 ## Emneforslag
 
-`config/editorial-topics.mjs` indeholder gennemskuelige nøgleordsregler. Overskrift vurderes før URL-sti. URL-stien afkodes, så danske bogstaver læses korrekt. Kurser/arrangementer og medlemsfordele/foreningsliv har hver sin kategori. “Andet” bruges ved manglende match. Et automatisk match er et forslag, ikke en dokumenteret redaktionel vurdering.
+`config/editorial-topics.mjs` indeholder gennemskuelige nøgleordsregler. Overskrift vurderes før URL-sti. URL-stien afkodes, så danske bogstaver læses korrekt. Kategorierne tager udgangspunkt i nyhedens primære medlemsværdi: politik og interessevaretagelse; løn, overenskomst og ansættelse; arbejdsmiljø og trivsel; autorisation, tilsyn og regler; faglighed og praksis; karriere og job; kurser og arrangementer; medlemsfordele; foreningsliv og demokrati; samt praksis og ydernummer. “Andet” bruges ved manglende match. Et automatisk match er et forslag, ikke en dokumenteret redaktionel vurdering.
 
 ## Ret en historie
 
