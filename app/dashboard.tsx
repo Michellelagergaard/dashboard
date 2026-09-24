@@ -199,11 +199,11 @@ function Overview({ rows, onOpen, asOf, period, onPeriodChange }: { rows: Mailin
     <OverviewTrend rows={rows} latest={latest} baseline={comparison.baseline} />
     <section className="panel table-panel overview-recent"><div className="overview-section-header"><div><h2>Seneste udsendelser</h2><p>Et kort overblik over udviklingen.</p></div></div><div className="table-scroll"><table><thead><tr><th>Dato og emnefelt</th><th>Vurdering</th><th>Åbnet</th><th>Klikket</th><th></th></tr></thead><tbody>{rows.slice(0, 5).map((row) => { const level = normalLevel(rows, row, { metric: "clickRate", asOf }); return <tr key={row.id}><td><strong>{row.date} · {row.subject || row.title}</strong></td><td><PerformanceBadge delta={level.delta} /></td><td>{pct(row.openRate)}</td><td><b>{pct(row.clickRate)}</b></td><td><button className="row-link" onClick={() => onOpen(row.id)}>Åbn</button></td></tr>; })}</tbody></table></div></section>
     <details className="panel overview-method"><summary>Om tallene og datagrundlaget</summary><MeasurementGuideContent /><CoverageSummary rows={rows} /></details>
-    <CategoryInterestChart rows={rows} />
+    <CategoryInterestChart rows={rows} period={period} onPeriodChange={onPeriodChange} />
   </div>;
 }
 
-function CategoryInterestChart({ rows }: { rows: Mailing[] }) {
+function CategoryInterestChart({ rows, period, onPeriodChange }: { rows: Mailing[]; period: string; onPeriodChange: (period: string) => void }) {
   const coveredRows = rows
     .map(row => ({ ...row, content: row.content.filter(item => isComparableLink(item) && item.editorial?.kind === "news") }))
     .filter(row => row.content.length);
@@ -213,7 +213,7 @@ function CategoryInterestChart({ rows }: { rows: Mailing[] }) {
   const leader = topics[0];
   const mostEfficient = [...topics].sort((a, b) => b.clicks / Math.max(1, b.links) - a.clicks / Math.max(1, a.links))[0];
   return <section className="panel category-interest" aria-labelledby="category-interest-title">
-    <div className="category-interest-header"><div><p className="eyebrow">Indholdsfordeling i den valgte periode</p><h2 id="category-interest-title">Hvilke emner blev der klikket mest på?</h2><p>Sammenlign den samlede klikinteresse med klik pr. nyhed.</p></div>{leader ? <div className="category-interest-highlight"><span>Flest klik samlet</span><strong>{leader.category}</strong><small>{num(leader.clicks)} registrerede klik</small></div> : null}</div>
+    <div className="category-interest-header"><div><p className="eyebrow">Indholdsfordeling i den valgte periode</p><h2 id="category-interest-title">Hvilke emner blev der klikket mest på?</h2><p>Sammenlign den samlede klikinteresse med klik pr. nyhed.</p></div><div className="category-interest-actions"><label className="category-period"><span>Periode</span><select value={period} onChange={(event) => onPeriodChange(event.target.value)} aria-label="Periode for indholdsfordeling"><option>Seneste 12 måneder</option><option>Seneste 6 måneder</option><option>Alle år</option></select></label>{leader ? <div className="category-interest-highlight"><span>Flest klik samlet</span><strong>{leader.category}</strong><small>{num(leader.clicks)} registrerede klik</small></div> : null}</div></div>
     {topics.length ? <><div className="category-chart" role="list" aria-label="Registrerede klik fordelt på nyhedskategorier">{topics.map((topic, index) => {
       const share = totalClicks ? topic.clicks / totalClicks * 100 : 0;
       const perStory = topic.clicks / Math.max(1, topic.links);
