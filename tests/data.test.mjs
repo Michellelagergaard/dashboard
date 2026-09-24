@@ -68,3 +68,9 @@ test("Kompetencenyt viser Ungappeds mest besøgte links uden redaktionelt servic
   assert.doesNotMatch(dashboardSource, /latest\.content\.filter\(item => item\.editorial\?\.kind !== "service"\)/);
   assert.match(dashboardSource, /De fem destinationslinks med flest unikke klik i Ungapped/);
 });
+
+test("generiske CTA-tekster erstattes af en læsbar destinationstitel", () => {
+  assert.match(dashboardSource, /genericCta = \/\^\(tilmeld/);
+  assert.match(dashboardSource, /readableDestinationTitle\(item\.destination\)/);
+  assert.match(dashboardSource, /replace\(\/\\bboern\\b\/gi, "børn"\)/);
+});
