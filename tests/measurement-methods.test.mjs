@@ -29,6 +29,16 @@ test("repeated placements give a lower bound, never a sum or event/contact maxim
   assert.equal(clickMeasurementLabel(row),"Mindst dette antal kontakter");
 });
 
+test("human-readable course slugs survive privacy filtering while opaque ids do not", () => {
+  const course = "https://www.dp.dk/course/familieterapi-teori-og-intervention-403313/?utm_source=Ungapped";
+  const [row] = reduceLinkStatistics([{ Url: course, ContactCount: 174, ClickCount: 191 }]);
+  assert.equal(row.destination, "https://www.dp.dk/course/familieterapi-teori-og-intervention-403313/");
+  assert.equal(row.clicks, 174);
+
+  const opaque = "https://example.com/AbCdEfGhIjKlMnOpQrStUvWxYz0123456789";
+  assert.deepEqual(reduceLinkStatistics([{ Url: opaque, ContactCount: 9 }]), []);
+});
+
 test("zero deliveries are not replaced with recipients", async () => {
   const stats = {RecipientCount:100,ReceivedCount:0,ClickCount:0,OpenCount:0};
   const issue = sanitizeIssue({IssueId:'x'},stats);
