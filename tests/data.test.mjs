@@ -23,12 +23,15 @@ test("lange målgruppetabeller kan foldes ud", () => {
 });
 
 test("redaktionelle emner klassificeres med faste og gennemsigtige regler", () => {
-  assert.equal(editorialCategory({ title: "Se OK26-resultaterne", destination: "https://dp.dk/ok26" }), "Løn og arbejdsliv");
+  assert.equal(editorialCategory({ title: "Se OK26-resultaterne", destination: "https://dp.dk/ok26" }), "Løn, overenskomst og ansættelse");
   assert.equal(editorialCategory({ title: "Sådan søger du ydernummer", destination: "https://dp.dk/ydernummer" }), "Praksis og ydernummer");
-  assert.equal(editorialCategory({ title: "Ny vejledning om autorisation", destination: "https://dp.dk/autorisation" }), "Autorisation og regler");
-  assert.equal(editorialCategory({ title: "Børnehus Sjælland", destination: "https://psykologjob.dk/job/" }), "Job og karriere");
+  assert.equal(editorialCategory({ title: "Ny vejledning om autorisation", destination: "https://dp.dk/autorisation" }), "Autorisation, tilsyn og regler");
+  assert.equal(editorialCategory({ title: "Børnehus Sjælland", destination: "https://psykologjob.dk/job/" }), "Karriere og job");
   assert.equal(editorialCategory({ title: "Læs opslaget på LinkedIn", destination: "https://linkedin.com/feed/update/123" }), "Andet");
-  assert.equal(editorialCategory({ title: "Find din vej ind i psykologfaget", destination: "https://dp.dk/netvaerk-og-job/karriere/" }), "Job og karriere");
+  assert.equal(editorialCategory({ title: "Find din vej ind i psykologfaget", destination: "https://dp.dk/netvaerk-og-job/karriere/" }), "Karriere og job");
+  assert.equal(editorialCategory({ title: "Dansk Psykolog Forening i skarp kritik af regionernes udbud", destination: "https://dp.dk/nyheder/udbud" }), "Politik og interessevaretagelse");
+  assert.equal(editorialCategory({ title: "Generalforsamling i Selvstændige Psykologers Sektion", destination: "https://dp.dk/gf27" }), "Foreningsliv og demokrati");
+  assert.equal(editorialCategory({ title: "Sådan forebygger I moralsk stress", destination: "https://dp.dk/arbejdsmiljoe" }), "Arbejdsmiljø og trivsel");
   assert.equal(editorialCategory({ title: "Ukendt tema", destination: "https://example.com/x" }), "Andet");
   assert.equal(new Set(editorialTopicNames).size, editorialTopicNames.length);
 });
@@ -38,7 +41,7 @@ test("redaktionelle konklusioner summerer kun dokumenterede linkklik", () => {
     { id: "a", content: [{ title: "OK26", destination: "https://dp.dk/ok26", clicks: 40 }, { title: "Ferie", destination: "https://dp.dk/ferie", clicks: 10 }] },
     { id: "b", content: [{ title: "Løn", destination: "https://dp.dk/loen", clicks: 20 }] },
   ]);
-  assert.deepEqual(result[0], { category: "Løn og arbejdsliv", clicks: 70, links: 3, mailings: 2 });
+  assert.deepEqual(result[0], { category: "Løn, overenskomst og ansættelse", clicks: 70, links: 3, mailings: 2 });
 });
 
 test("dashboardet forklarer grænsen mellem fælles og målgruppefordelte resultater", () => {
