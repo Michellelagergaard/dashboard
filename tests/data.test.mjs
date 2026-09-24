@@ -44,6 +44,14 @@ test("redaktionelle konklusioner summerer kun dokumenterede linkklik", () => {
   assert.deepEqual(result[0], { category: "Løn, overenskomst og ansættelse", clicks: 70, links: 3, mailings: 2 });
 });
 
+test("overblikssiden viser en visuel kategorifordeling med både volumen og klik pr. nyhed", () => {
+  assert.match(dashboardSource, /function CategoryInterestChart/);
+  assert.match(dashboardSource, /Hvilke emner blev der klikket mest på\?/);
+  assert.match(dashboardSource, /klik pr\. nyhed/);
+  assert.match(dashboardSource, /topic\.clicks \/ Math\.max\(1, topic\.links\)/);
+  assert.match(dashboardSource, /Grafen viser registrerede klik på redaktionelle historier/);
+});
+
 test("dashboardet forklarer grænsen mellem fælles og målgruppefordelte resultater", () => {
   assert.match(dashboardSource, /Samlede klik i hele udsendelsen uden målgruppefilter/);
   assert.match(dashboardSource, /dokumenterer, hvem der klikkede/);
