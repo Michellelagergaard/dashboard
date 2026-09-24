@@ -12,7 +12,7 @@ let checkpoints;
 try { checkpoints = validateCheckpointLedger(JSON.parse(await readFile(checkpointUrl, "utf8"))); }
 catch (error) { if (error.code !== "ENOENT") throw error; checkpoints = { version: 1, records: [] }; }
 
-const newsletterTag = "Psykologernes Nyhedsbrev";
+const newsletterTags = ["Psykologernes Nyhedsbrev", "Kompetencenyt"];
 const historyCacheUrl = new URL("../.cache/dashboard-history.json", import.meta.url);
 const baselineUrl = new URL("../data/dashboard-history-baseline.json", import.meta.url);
 const historyCutoff = new Date();
@@ -30,11 +30,12 @@ const baselineById = await loadBaseline(baselineUrl);
 checkpoints = mergeCheckpointLedgers(checkpoints, { version: 1, records: [...historyById.values()].flatMap(mailing => mailing.checkpoints || []) });
 const issues = await fetchSentIssues(apiKey);
 const sorted = issues
-  .filter((issue) => (issue.tags || []).some((tag) => normalize(tag) === normalize(newsletterTag)))
+  .map((issue) => ({ ...issue, dashboardType: newsletterTags.find((name) => (issue.tags || []).some((tag) => normalize(tag) === normalize(name))) || null }))
+  .filter((issue) => issue.dashboardType)
   .sort((a, b) => String(b.sentAt).localeCompare(String(a.sentAt)));
 
 if (sorted.length === 0) {
-  throw new Error(`Ingen sendte udsendelser havde tagget "${newsletterTag}". Seneste gyldige dashboard bevares.`);
+  throw new Error(`Ingen sendte udsendelser havde taggene ${newsletterTags.map(tag => `"${tag}"`).join(" eller ")}. Seneste gyldige dashboard bevares.`);
 }
 
 // Dashboardet er afgrænset til det redaktionelle nyhedsbrev via det dokumenterede tag.
@@ -43,16 +44,17 @@ if (sorted.length === 0) {
 const segmentCutoff = new Date();
 segmentCutoff.setUTCFullYear(segmentCutoff.getUTCFullYear() - 1);
 const segmentIssueIds = new Set(sorted
-  .filter((issue) => issue.delivered >= 500 && issue.sentAt && new Date(issue.sentAt) >= segmentCutoff)
+  .filter((issue) => issue.dashboardType === "Psykologernes Nyhedsbrev" && issue.delivered >= 500 && issue.sentAt && new Date(issue.sentAt) >= segmentCutoff)
   .map((issue) => issue.id));
 const segmentLinkIssueIds = new Set(sorted.filter((issue) => segmentIssueIds.has(issue.id)).slice(0, 5).map((issue) => issue.id));
-const linkIssueIds = new Set(sorted.slice(0, 12).map((issue) => issue.id));
+const linkIssueIds = new Set(newsletterTags.flatMap((type) => sorted.filter((issue) => issue.dashboardType === type).slice(0, 12).map((issue) => issue.id)));
 
 const mailings = await mapConcurrent(sorted, 1, async (issue) => {
   const historicalMailing = historyById.has(issue.id)
     ? mergeHistoricalMailing(historyById.get(issue.id), baselineById.get(issue.id))
     : baselineById.has(issue.id) ? mergeHistoricalMailing(emptyMailing(issue), baselineById.get(issue.id)) : undefined;
   if (isOlderThan(issue.sentAt, historyCutoff) && historicalMailing) {
+    if (issue.dashboardType === "Kompetencenyt") return historicalMailing;
     return supplementHistoricalSegments(historicalMailing, {
       performance: segments => safe(() => fetchIssueSegmentPerformance(apiKey, issue.id, fetch, segments), { available: false, results: [] }),
       subjects: () => safe(() => fetchIssueSegmentSubjects(apiKey, issue.id), []),
@@ -133,7 +135,7 @@ console.log(`Historik bevaret: ${historyById.size} cacheudgaver, ${baselineById.
 function emptyMailing(issue) {
   return {
     id: issue.id, title: issue.name || issue.subject || "Uden titel", subject: issue.subject || "Emnefelt mangler",
-    type: newsletterTag, date: formatDate(issue.sentAt), sentAt: issue.sentAt,
+    type: issue.dashboardType || issue.category || "Ikke kategoriseret", date: formatDate(issue.sentAt), sentAt: issue.sentAt,
     delivered: issue.delivered, openRate: issue.openRate ?? 0, clickRate: issue.clickRate ?? 0, unsubscribes: issue.unsubscribes ?? 0,
     measurementVersion: issue.measurementVersion, measurement: issue.measurement, observedAt: issue.fetchedAt,
     content: [], links: [], segments: issue.classificationMetadata?.segments || [],
