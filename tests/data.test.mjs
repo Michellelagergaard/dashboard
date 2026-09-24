@@ -55,3 +55,10 @@ test("Kompetencenyt er en selvstændig, ikke-segmenteret tagvisning", () => {
   assert.match(generatorSource, /newsletterTags = \["Psykologernes Nyhedsbrev", "Kompetencenyt"\]/);
   assert.match(generatorSource, /issue\.dashboardType === "Psykologernes Nyhedsbrev" && issue\.delivered/);
 });
+
+test("Kompetencenyt sammenligner åbning og klik uden en samlet misvisende dom", () => {
+  assert.match(dashboardSource, /Sammenligning med tidligere/);
+  assert.match(dashboardSource, /<CompetenceComparison openDelta=/);
+  assert.match(dashboardSource, /Klikraten er lavere end det tidligere niveau/);
+  assert.doesNotMatch(dashboardSource, /Udsendelsen lå under det normale niveau/);
+});
