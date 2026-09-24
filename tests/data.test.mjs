@@ -50,6 +50,8 @@ test("overblikssiden viser en visuel kategorifordeling med både volumen og klik
   assert.match(dashboardSource, /klik pr\. nyhed/);
   assert.match(dashboardSource, /topic\.clicks \/ Math\.max\(1, topic\.links\)/);
   assert.match(dashboardSource, /Grafen viser registrerede klik på redaktionelle historier/);
+  assert.match(dashboardSource, /aria-label="Periode for indholdsfordeling"/);
+  assert.match(dashboardSource, /CategoryInterestChart rows=\{rows\} period=\{period\} onPeriodChange=\{onPeriodChange\}/);
 });
 
 test("historiske nyhedsbreve i den valgte 12-månedersperiode får aktuelle linkmålinger", () => {
