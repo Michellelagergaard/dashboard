@@ -6,7 +6,11 @@
       "destination": "https://www.dp.dk/videnscenter-for-psykologi/standarder/faglig-norm-for-psykologfaglig-behandling/",
       "title": "Ny faglig norm for psykologfaglig behandling",
       "kind": "news",
-      "category": "Faglighed og praksis"
+      "category": "Faglighed og praksis",
+      "audienceScope": "targeted",
+      "audiences": [
+        "Selvstændige psykologer uden ydernummer"
+      ]
     }
   ]
 }
