@@ -1,4 +1,12 @@
 {
   "version": 1,
-  "corrections": []
+  "corrections": [
+    {
+      "mailingId": "1287245d-d4d1-427f-b56c-8e6f9383eec0",
+      "destination": "https://www.dp.dk/videnscenter-for-psykologi/standarder/faglig-norm-for-psykologfaglig-behandling/",
+      "title": "Ny faglig norm for psykologfaglig behandling",
+      "kind": "news",
+      "category": "Faglighed og praksis"
+    }
+  ]
 }
