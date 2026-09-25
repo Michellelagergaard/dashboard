@@ -31,10 +31,15 @@ export function validateCorrections(input) {
     if (!/^https?:$/.test(url.protocol) || url.username || url.password || url.search || url.hash) throw Error("Linket skal være en offentlig adresse uden sporingsparametre.");
     if (typeof row.title !== "string" || !row.title.trim() || row.title.length > 220 || /[<>]/.test(row.title)) throw Error("Overskriften skal være mellem 1 og 220 tegn uden HTML.");
     if (!Object.hasOwn(contentKinds, row.kind) || !editorialTopicNames.includes(row.category)) throw Error("Ukendt indholdstype eller emnekategori.");
+    if (row.audienceScope !== undefined && !["all", "targeted", "unknown"].includes(row.audienceScope)) throw Error("Ukendt modtagerafgrænsning.");
+    if (row.audiences !== undefined && (!Array.isArray(row.audiences) || row.audiences.length > 20 || row.audiences.some(value => typeof value !== "string" || !value.trim() || value.length > 100 || /[<>]/.test(value)))) throw Error("Ugyldig modtagergruppe.");
+    if (row.audienceScope === "targeted" && !row.audiences?.length) throw Error("Målrettet indhold skal have mindst én modtagergruppe.");
+    if (row.audienceScope === "all" && row.audiences?.length) throw Error("Indhold til alle kan ikke have særskilte modtagergrupper.");
     const key = correctionKey(row.mailingId, row.destination);
     if (keys.has(key)) throw Error("Filen indeholder flere rettelser til samme link og udsendelse.");
     keys.add(key);
-    return { mailingId: row.mailingId, destination: row.destination, title: row.title.trim(), kind: row.kind, category: row.category };
+    return { mailingId: row.mailingId, destination: row.destination, title: row.title.trim(), kind: row.kind, category: row.category,
+      ...(row.audienceScope ? { audienceScope: row.audienceScope, audiences: (row.audiences || []).map(value => value.trim()) } : {}) };
   });
   return { version: 1, corrections };
 }
@@ -55,7 +60,7 @@ export function enrichMailings(mailings, correctionFile) {
       const correction = overrides.get(correctionKey(mailing.id, item.destination));
       const title = correction?.title || metadata?.title || item.title || item.destination;
       const kind = correction?.kind || classifyContent({ ...item, ...metadata });
-      return { ...item, editorial: { mailingId: mailing.id, title, kind, category: correction?.category || editorialCategory({ title, destination: item.destination }), source: correction ? "editor" : metadata?.titleSource || "original", ambiguous: !correction && Boolean(metadata?.ambiguous), audienceScope: metadata?.audienceScope || "unknown", audiences: metadata?.audiences || [] } };
+      return { ...item, editorial: { mailingId: mailing.id, title, kind, category: correction?.category || editorialCategory({ title, destination: item.destination }), source: correction ? "editor" : metadata?.titleSource || "original", ambiguous: !correction && Boolean(metadata?.ambiguous), audienceScope: correction?.audienceScope || metadata?.audienceScope || "unknown", audiences: correction?.audiences || metadata?.audiences || [] } };
     };
     return { ...mailing, content: mailing.content.map(decorate), links: mailing.links.map(decorate), segmentLinkPerformance: (mailing.segmentLinkPerformance || []).map(decorate) };
   });
