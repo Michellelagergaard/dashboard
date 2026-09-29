@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState, type ReactNode } from "react";
-import { Activity, AlertCircle, BookOpen, ChevronDown, ChevronRight, ChevronUp, CircleHelp, ClipboardList, Mail, MousePointerClick, Send, TrendingUp, Users } from "lucide-react";
+import { Activity, AlertCircle, ArrowRight, BookOpen, ChevronDown, ChevronRight, ChevronUp, CircleHelp, ClipboardList, LayoutDashboard, Mail, MousePointerClick, Send, TrendingUp, Users } from "lucide-react";
 import type { ClickMeasurement, EditorialMetadata, LiveDashboardData, LiveMailing } from "./live-data";
 import { EditorialProvider } from "./editorial-editor";
 import { enrichMailings } from "../config/editorial-content.mjs";
@@ -10,7 +10,7 @@ import { editorialCategory, summarizeEditorialTopics } from "../config/editorial
 import { clickMeasurementLabel, isComparableLink } from "../config/measurement-methods.mjs";
 import { normalLevel } from "../config/decision-methods.mjs";
 
-type View = "overview" | "audiences" | "mailing" | "about" | "competence" | "magazine" | "tr-amr";
+type View = "home" | "overview" | "audiences" | "mailing" | "about" | "competence" | "magazine" | "tr-amr";
 type Mailing = LiveMailing;
 
 const segments = memberSegmentNames;
@@ -23,7 +23,7 @@ export function Dashboard({ liveData }: { liveData: LiveDashboardData }) {
 }
 
 function DashboardContent({ liveData }: { liveData: LiveDashboardData }) {
-  const [view, setView] = useState<View>("overview");
+  const [view, setView] = useState<View>("home");
   const [period, setPeriod] = useState("Seneste 12 måneder");
   const mailings = useMemo(
     () => [...liveData.mailings].filter((mailing) => inPeriod(mailing, period)).sort((a, b) => sentTime(b) - sentTime(a)),
@@ -50,6 +50,7 @@ function DashboardContent({ liveData }: { liveData: LiveDashboardData }) {
       <div className="brand"><div className="brand-mark" aria-hidden="true">dp</div><div><strong>Dansk Psykolog<br />Forening</strong><span>Udsendelsesdashboard</span></div></div>
       <nav aria-label="Primær navigation">
         <p className="nav-kicker">Redaktionelt dashboard</p>
+        <Nav active={view === "home"} onClick={() => setView("home")} icon={<LayoutDashboard />} label="Forside" />
         <Nav active={view === "overview"} onClick={() => setView("overview")} icon={<Send />} label="Psykologernes Nyhedsbrev" />
         <div className="nav-subpages" aria-label="Undersider til Psykologernes Nyhedsbrev">
           <Nav nested active={view === "mailing"} onClick={() => setView("mailing")} icon={<ClipboardList />} label="Redaktionel analyse" />
@@ -63,10 +64,11 @@ function DashboardContent({ liveData }: { liveData: LiveDashboardData }) {
       <div className="sidebar-footer"><div className="sidebar-note"><span className="status-dot" />{liveData.status === "live" ? "Opdateres fra Ungapped" : "Seneste tilgængelige data"}<span className="sidebar-updated">{updated}</span></div></div>
     </aside>
     <main id="main" className="main">
-      <header className="topbar"><div><p className="eyebrow">Analyse af medlemskommunikation</p><h1>{view === "overview" ? "Psykologernes Nyhedsbrev" : view === "audiences" ? "Målgrupper" : view === "mailing" ? "Redaktionel analyse" : view === "competence" ? "Kompetencenyt" : view === "magazine" ? "Magasinet P" : view === "tr-amr" ? "TR/AMR Nyt" : "Om tallene"}</h1></div><div className="sync-box"><div><span>Senest opdateret</span><strong>{updated}</strong></div></div></header>
-      {view !== "overview" ? <section className="filters simple-filters" aria-label="Filtre"><div className="filter-main"><label><span>Periode</span><select value={period} onChange={(event) => setPeriod(event.target.value)}><option>Seneste 12 måneder</option><option>Seneste 6 måneder</option><option>Alle år</option></select></label></div><p className="filter-result"><strong>{num(view === "competence" ? competenceMailings.length : view === "magazine" ? magazineMailings.length : view === "tr-amr" ? trAmrMailings.length : newsletterMailings.length)}</strong> udsendelser med tagget {view === "competence" ? "Kompetencenyt" : view === "magazine" ? "Magasinet P" : view === "tr-amr" ? "TR/AMR Nyt" : "Psykologernes Nyhedsbrev"}</p></section> : null}
+      <header className="topbar"><div><p className="eyebrow">Analyse af medlemskommunikation</p><h1>{view === "home" ? "Samlet overblik" : view === "overview" ? "Psykologernes Nyhedsbrev" : view === "audiences" ? "Målgrupper" : view === "mailing" ? "Redaktionel analyse" : view === "competence" ? "Kompetencenyt" : view === "magazine" ? "Magasinet P" : view === "tr-amr" ? "TR/AMR Nyt" : "Om tallene"}</h1></div><div className="sync-box"><div><span>Senest opdateret</span><strong>{updated}</strong></div></div></header>
+      {view !== "overview" && view !== "home" ? <section className="filters simple-filters" aria-label="Filtre"><div className="filter-main"><label><span>Periode</span><select value={period} onChange={(event) => setPeriod(event.target.value)}><option>Seneste 12 måneder</option><option>Seneste 6 måneder</option><option>Alle år</option></select></label></div><p className="filter-result"><strong>{num(view === "competence" ? competenceMailings.length : view === "magazine" ? magazineMailings.length : view === "tr-amr" ? trAmrMailings.length : newsletterMailings.length)}</strong> udsendelser med tagget {view === "competence" ? "Kompetencenyt" : view === "magazine" ? "Magasinet P" : view === "tr-amr" ? "TR/AMR Nyt" : "Psykologernes Nyhedsbrev"}</p></section> : null}
       {view === "audiences" ? <MeasurementGuide /> : null}
       {liveData.status === "unavailable" ? <Empty title="Data er ikke tilgængelige" text="Den seneste dataopdatering kunne ikke læses. Prøv igen senere." /> : null}
+      {liveData.status !== "unavailable" && view === "home" ? <HomeOverview rows={mailings} period={period} onPeriodChange={setPeriod} asOf={liveData.updatedAt || new Date().toISOString()} onNavigate={setView} /> : null}
       {liveData.status !== "unavailable" && view === "overview" ? <Overview rows={newsletterMailings} onOpen={openMailing} asOf={liveData.updatedAt || new Date().toISOString()} period={period} onPeriodChange={setPeriod} /> : null}
       {liveData.status !== "unavailable" && view === "audiences" ? <AudienceView rows={newsletterMailings} onOpen={openMailing} asOf={liveData.updatedAt || new Date().toISOString()} /> : null}
       {liveData.status !== "unavailable" && view === "mailing" ? <MailingView rows={newsletterMailings} selected={selected} onChange={setSelectedId} asOf={liveData.updatedAt || new Date().toISOString()} /> : null}
@@ -75,6 +77,51 @@ function DashboardContent({ liveData }: { liveData: LiveDashboardData }) {
       {liveData.status !== "unavailable" && view === "magazine" ? <MagazineOverview rows={magazineMailings} asOf={liveData.updatedAt || new Date().toISOString()} /> : null}
       {liveData.status !== "unavailable" && view === "tr-amr" ? <TrAmrOverview rows={trAmrMailings} asOf={liveData.updatedAt || new Date().toISOString()} /> : null}
     </main>
+  </div>;
+}
+
+const newsletterViews: Array<{ name: Mailing["type"]; view: View; icon: ReactNode; className: string }> = [
+  { name: "Psykologernes Nyhedsbrev", view: "overview", icon: <Send />, className: "newsletter" },
+  { name: "Kompetencenyt", view: "competence", icon: <Activity />, className: "competence" },
+  { name: "Magasinet P", view: "magazine", icon: <BookOpen />, className: "magazine" },
+  { name: "TR/AMR Nyt", view: "tr-amr", icon: <Users />, className: "tr-amr" },
+];
+
+function HomeOverview({ rows, period, onPeriodChange, asOf, onNavigate }: { rows: Mailing[]; period: string; onPeriodChange: (period: string) => void; asOf: string; onNavigate: (view: View) => void }) {
+  const grouped = newsletterViews.map((item) => {
+    const issues = rows.filter((row) => row.type === item.name);
+    const latest = issues[0];
+    const clickLevel = latest ? normalLevel(issues, latest, { metric: "clickRate", asOf }) : null;
+    const openLevel = latest ? normalLevel(issues, latest, { metric: "openRate", asOf }) : null;
+    return { ...item, issues, latest, clickLevel, openLevel };
+  });
+  const recent = rows.filter((row) => newsletterViews.some((item) => item.name === row.type)).slice(0, 5);
+  const issueCount = grouped.reduce((sum, group) => sum + group.issues.length, 0);
+
+  return <div className="stack home-page">
+    <section className="home-intro panel">
+      <div><p className="eyebrow">Forside</p><h2>Det vigtigste på tværs af udsendelser</h2><p>Se den seneste udvikling for DP&apos;s fire redaktionelle nyhedsbreve, og gå videre til den analyse, du har brug for.</p></div>
+      <label className="home-period"><span>Periode</span><select value={period} onChange={(event) => onPeriodChange(event.target.value)}><option>Seneste 12 måneder</option><option>Seneste 6 måneder</option><option>Alle år</option></select></label>
+      <div className="home-coverage"><strong>{num(issueCount)}</strong><span>udsendelser i perioden</span></div>
+    </section>
+
+    <section className="home-status" aria-labelledby="home-status-title">
+      <div className="overview-section-header"><div><h2 id="home-status-title">Status for nyhedsbrevene</h2><p>Seneste udsendelse vurderet i forhold til samme nyhedsbrevs tidligere niveau.</p></div></div>
+      <div className="home-status-grid">{grouped.map((group) => group.latest ? <article className={"home-status-card " + group.className} key={group.name}>
+        <div className="home-card-heading"><span className="home-card-icon">{group.icon}</span><div><h3>{group.name}</h3><p>Senest udsendt {group.latest.date}</p></div></div>
+        <div className="home-card-metrics"><div><span>Åbningsrate</span><strong>{pct(group.latest.openRate)}</strong><small>{levelText(group.openLevel?.delta ?? null)}</small></div><div><span>Klikrate</span><strong>{pct(group.latest.clickRate)}</strong><small>{levelText(group.clickLevel?.delta ?? null)}</small></div></div>
+        <div className="home-card-footer"><PerformanceBadge delta={group.clickLevel?.delta ?? null} /><button onClick={() => onNavigate(group.view)}>Se analyse <ArrowRight /></button></div>
+      </article> : <article className={"home-status-card empty " + group.className} key={group.name}><div className="home-card-heading"><span className="home-card-icon">{group.icon}</span><div><h3>{group.name}</h3><p>Ingen udsendelser i perioden</p></div></div><button onClick={() => onNavigate(group.view)}>Se side <ArrowRight /></button></article>)}</div>
+    </section>
+
+    <section className="panel table-panel home-recent" aria-labelledby="home-recent-title">
+      <div className="overview-section-header"><div><h2 id="home-recent-title">Seneste udsendelser på tværs</h2><p>De fem seneste udsendelser i den valgte periode.</p></div></div>
+      {recent.length ? <div className="table-scroll"><table><thead><tr><th>Dato og nyhedsbrev</th><th>Emnefelt</th><th>Åbnet</th><th>Klikket</th><th></th></tr></thead><tbody>{recent.map((row) => {
+        const item = newsletterViews.find((candidate) => candidate.name === row.type);
+        const destination = item?.view || "home";
+        return <tr key={row.type + "-" + row.id}><td><span className={"home-type-badge " + (item?.className || "")}>{row.type}</span><small>{row.date}</small></td><td><strong>{row.subject || row.title}</strong></td><td>{pct(row.openRate)}</td><td><b>{pct(row.clickRate)}</b></td><td><button className="row-link" onClick={() => onNavigate(destination)}>Åbn</button></td></tr>;
+      })}</tbody></table></div> : <DataGap title="Ingen udsendelser i perioden" text="Vælg en længere periode for at se tidligere udsendelser." />}
+    </section>
   </div>;
 }
 
