@@ -88,8 +88,7 @@ const newsletterViews: Array<{ name: Mailing["type"]; view: View; icon: ReactNod
 ];
 
 const externalBenchmarks = {
-  nonprofit: { openRate: 52.38, clickRate: 2.90, ctor: 8.24 },
-  europe: { openRate: 45.08, clickRate: 2.04, ctor: 6.46 },
+  associations: { openRate: 33.54, clickRate: 2.68 },
 };
 
 function HomeOverview({ rows, period, onPeriodChange, asOf, onNavigate }: { rows: Mailing[]; period: string; onPeriodChange: (period: string) => void; asOf: string; onNavigate: (view: View) => void }) {
@@ -136,22 +135,33 @@ function BenchmarkOverview({ grouped }: { grouped: Array<(typeof newsletterViews
   const allIssues = grouped.flatMap((group) => group.issues);
   const dpOpen = average(allIssues.map((row) => row.openRate));
   const dpClick = average(allIssues.map((row) => row.clickRate));
-  const dpCtor = dpOpen > 0 ? dpClick / dpOpen * 100 : 0;
-  const clickDelta = dpClick - externalBenchmarks.nonprofit.clickRate;
+  const clickDelta = dpClick - externalBenchmarks.associations.clickRate;
+  const benchmarkRows = [
+    { label: "Klikrate", dp: dpClick, benchmark: externalBenchmarks.associations.clickRate, primary: true },
+    { label: "Åbningsrate", dp: dpOpen, benchmark: externalBenchmarks.associations.openRate, primary: false },
+  ];
   return <section className="panel benchmark-panel" aria-labelledby="benchmark-title">
-    <div className="benchmark-header"><div><p className="eyebrow">Eksternt benchmark</p><h2 id="benchmark-title">Hvordan performer DP?</h2><p>Klikraten er det mest robuste sammenligningsmål. Åbninger og CTOR påvirkes af automatisk registrerede Apple Mail-åbninger.</p></div><span className="benchmark-verdict">{clickDelta >= 0 ? formatPoint(clickDelta) + " procentpoint over nonprofit" : formatPoint(Math.abs(clickDelta)) + " procentpoint under nonprofit"}</span></div>
-    <div className="benchmark-summary">
-      <article className="dp"><span>DP · valgt periode</span><strong>{pct(dpClick)}</strong><small>Klikrate · {num(allIssues.length)} udsendelser</small></article>
-      <article><span>Nonprofit 2025</span><strong>{pct(externalBenchmarks.nonprofit.clickRate)}</strong><small>Klikrate · 3,6 mio. kampagner i datasættet</small></article>
-      <article><span>Europa 2025</span><strong>{pct(externalBenchmarks.europe.clickRate)}</strong><small>Klikrate · alle brancher</small></article>
+    <div className="benchmark-header"><div><p className="eyebrow">Eksternt benchmark</p><h2 id="benchmark-title">Sammenlignet med andre</h2><p>DP holdt op mod foreninger og medlemsorganisationer i Higher Logics internationale benchmark.</p></div><span className="benchmark-verdict">{clickDelta >= 0 ? `+${formatPoint(clickDelta)} procentpoint i klikrate` : `${formatPoint(clickDelta)} procentpoint i klikrate`}</span></div>
+    <div className="benchmark-chip">Foreninger og medlemsorganisationer</div>
+    <div className="benchmark-bars">
+      {benchmarkRows.map((row) => {
+        const scale = Math.max(row.dp, row.benchmark) * 1.08 || 1;
+        const delta = row.dp - row.benchmark;
+        return <article className={row.primary ? "primary" : ""} key={row.label}>
+          <div className="benchmark-metric-heading"><h3>{row.label}</h3><span className={delta >= 0 ? "benchmark-positive" : "benchmark-negative"}>{delta >= 0 ? "+" : ""}{formatPoint(delta)} procentpoint</span></div>
+          <div className="benchmark-bar-row"><strong>DP</strong><div className="benchmark-track"><span className="dp-bar" style={{ width: `${row.dp / scale * 100}%` }} /></div><b>{pct(row.dp)}</b></div>
+          <div className="benchmark-bar-row"><strong>Andre</strong><div className="benchmark-track"><span className="peer-bar" style={{ width: `${row.benchmark / scale * 100}%` }} /></div><b>{pct(row.benchmark)}</b></div>
+          {!row.primary && <p className="benchmark-caveat">Åbningsrater er ikke direkte sammenlignelige på tværs af platforme på grund af bl.a. Apple Mail Privacy Protection.</p>}
+        </article>;
+      })}
     </div>
-    <div className="benchmark-table-wrap"><table className="benchmark-table"><thead><tr><th>Nyhedsbrev</th><th>Udsendelser</th><th>Åbnet</th><th>Klikket</th><th>Mod nonprofit</th></tr></thead><tbody>{grouped.map((group) => {
+    <details className="benchmark-breakdown"><summary>Se forskelle mellem DP's nyhedsbreve</summary><div className="benchmark-table-wrap"><table className="benchmark-table"><thead><tr><th>Nyhedsbrev</th><th>Udsendelser</th><th>Åbnet</th><th>Klikket</th><th>Mod andre</th></tr></thead><tbody>{grouped.map((group) => {
       const openRate = average(group.issues.map((row) => row.openRate));
       const clickRate = average(group.issues.map((row) => row.clickRate));
-      const delta = clickRate - externalBenchmarks.nonprofit.clickRate;
+      const delta = clickRate - externalBenchmarks.associations.clickRate;
       return <tr key={group.name}><td><strong>{group.name}</strong></td><td>{num(group.issues.length)}</td><td>{group.issues.length ? pct(openRate) : "—"}</td><td><b>{group.issues.length ? pct(clickRate) : "—"}</b></td><td>{group.issues.length ? <span className={delta >= 0 ? "benchmark-positive" : "benchmark-negative"}>{delta >= 0 ? "+" : ""}{formatPoint(delta)} pp.</span> : "—"}</td></tr>;
-    })}</tbody></table></div>
-    <details className="benchmark-method"><summary>Datagrundlag og begrænsninger</summary><p>Benchmarken er vejledende, fordi platforme og afsendere kan beregne målene forskelligt. DP-tallene er almindelige gennemsnit af udsendelserne i den valgte periode. Den eksterne reference er MailerLites 2025-datasæt med 3,6 mio. kampagner fra december 2024 til november 2025; rapporten viser medianer for nonprofit og Europa. Åbningsrater kan være kunstigt høje på grund af Apple Mail Privacy Protection.</p><p><a href="https://www.mailerlite.com/blog/compare-your-email-performance-metrics-industry-benchmarks" target="_blank" rel="noreferrer">Se den eksterne benchmarkkilde</a></p></details>
+    })}</tbody></table></div></details>
+    <div className="benchmark-source"><p><strong>Kilde:</strong> Higher Logic, <em>Association Email Benchmark Report 2025–2026</em>. Ca. 1.500 foreninger og nonprofits og mere end 2 mia. mails sendt i 2025.</p><p>DP-tallene er almindelige gennemsnit af {num(allIssues.length)} udsendelser i den valgte periode. Klik er det mest robuste sammenligningsmål, men platformenes målemetoder kan variere.</p><a href="https://www.higherlogic.com/news/higher-logic-releases-2025-2026-association-email-benchmark-report/" target="_blank" rel="noreferrer">Se benchmarkrapporten</a></div>
   </section>;
 }
 
