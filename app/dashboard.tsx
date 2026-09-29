@@ -120,6 +120,8 @@ function HomeOverview({ rows, period, onPeriodChange, asOf, onNavigate }: { rows
 
     <BenchmarkOverview grouped={grouped} />
 
+    <HomeRecommendations grouped={grouped} />
+
     <section className="panel table-panel home-recent" aria-labelledby="home-recent-title">
       <div className="overview-section-header"><div><h2 id="home-recent-title">Seneste udsendelser på tværs</h2><p>De fem seneste udsendelser i den valgte periode.</p></div></div>
       {recent.length ? <div className="table-scroll"><table><thead><tr><th>Dato og nyhedsbrev</th><th>Emnefelt</th><th>Åbnet</th><th>Klikket</th><th></th></tr></thead><tbody>{recent.map((row) => {
@@ -162,6 +164,30 @@ function BenchmarkOverview({ grouped }: { grouped: Array<(typeof newsletterViews
       return <tr key={group.name}><td><strong>{group.name}</strong></td><td>{num(group.issues.length)}</td><td>{group.issues.length ? pct(openRate) : "—"}</td><td><b>{group.issues.length ? pct(clickRate) : "—"}</b></td><td>{group.issues.length ? <span className={delta >= 0 ? "benchmark-positive" : "benchmark-negative"}>{delta >= 0 ? "+" : ""}{formatPoint(delta)} pp.</span> : "—"}</td></tr>;
     })}</tbody></table></div></details>
     <div className="benchmark-source"><p><strong>Kilde:</strong> Higher Logic, <em>Association Email Benchmark Report 2025–2026</em>. Ca. 1.500 foreninger og nonprofits og mere end 2 mia. mails sendt i 2025.</p><p>DP-tallene er almindelige gennemsnit af {num(allIssues.length)} udsendelser i den valgte periode. Klik er det mest robuste sammenligningsmål, men platformenes målemetoder kan variere.</p><a href="https://www.higherlogic.com/news/higher-logic-releases-2025-2026-association-email-benchmark-report/" target="_blank" rel="noreferrer">Se benchmarkrapporten</a></div>
+  </section>;
+}
+
+function HomeRecommendations({ grouped }: { grouped: Array<{ name: Mailing["type"]; issues: Mailing[]; latest?: Mailing; clickLevel: { delta: number } | null }> }) {
+  const available = grouped.filter((group) => group.issues.length > 0);
+  const allIssues = available.flatMap((group) => group.issues);
+  if (!allIssues.length) return null;
+  const dpClick = average(allIssues.map((row) => row.clickRate));
+  const benchmarkDelta = dpClick - externalBenchmarks.associations.clickRate;
+  const leader = [...available].sort((a, b) => average(b.issues.map((row) => row.clickRate)) - average(a.issues.map((row) => row.clickRate)))[0];
+  const leaderRate = average(leader.issues.map((row) => row.clickRate));
+  const comparable = available.filter((group) => group.latest && group.clickLevel).sort((a, b) => (a.clickLevel?.delta || 0) - (b.clickLevel?.delta || 0));
+  const attention = comparable[0];
+  const attentionDelta = attention?.clickLevel?.delta ?? null;
+  const target = attentionDelta !== null && attentionDelta < -1 ? attention : [...available].sort((a, b) => average(a.issues.map((row) => row.clickRate)) - average(b.issues.map((row) => row.clickRate)))[0];
+  const targetRate = target.latest?.clickRate ?? average(target.issues.map((row) => row.clickRate));
+  const targetBaseline = targetRate - (target.clickLevel?.delta ?? 0);
+  return <section className="panel recommendation-panel" aria-labelledby="recommendation-title">
+    <div className="overview-section-header"><div><p className="eyebrow">Beslutningsstøtte</p><h2 id="recommendation-title">Hvad tager vi med videre?</h2><p>Observation, anbefalet handling og beslutningsregel er adskilt, så en sammenhæng ikke bliver præsenteret som en dokumenteret årsag.</p></div></div>
+    <div className="recommendation-grid">
+      <article className="strength"><span className="recommendation-icon"><TrendingUp /></span><div><p>Porteføljebeslutning</p><h3>Styr efter klik — men sæt ikke samme mål for alle nyhedsbreve</h3><dl><div><dt>Observation</dt><dd>DP ligger {formatPoint(Math.abs(benchmarkDelta))} procentpoint {benchmarkDelta >= 0 ? "over" : "under"} foreningsbenchmarken. {leader.name} ligger højest med {pct(leaderRate)} i gennemsnit på tværs af {num(leader.issues.length)} udsendelser.</dd></div><div><dt>Handling</dt><dd>Brug klikrate som fælles hovedmål, men vurder hvert nyhedsbrev mod dets egen historik. Kortlæg de tre mest klikkede historier i {leader.name} og noter én overførbar egenskab: behov, vinkel eller CTA.</dd></div><div><dt>Beslutningsregel</dt><dd>Overfør kun mønstret til andre nyhedsbreve, hvis det gentager sig i mindst to udsendelser; målgruppernes størrelse og behov er forskellige.</dd></div></dl></div></article>
+      <article className="attention"><span className="recommendation-icon"><AlertCircle /></span><div><p>Prioriteret indsats</p><h3>{attentionDelta !== null && attentionDelta < -1 ? `Genopret klikniveauet i ${target.name}` : `Undersøg klikspredningen i ${target.name}`}</h3><dl><div><dt>Observation</dt><dd>{attentionDelta !== null && attentionDelta < -1 && target.latest ? `Seneste udsendelse fik ${pct(target.latest.clickRate)} — ${formatPoint(Math.abs(attentionDelta))} procentpoint under et normalt niveau på ca. ${pct(targetBaseline)}.` : `${target.name} har periodens laveste gennemsnitlige klikrate. Det er ikke i sig selv dokumentation for lav kvalitet.`}</dd></div><div><dt>Handling</dt><dd>Gennemgå første skærmbillede og de tre mest klikkede links i den seneste og en normal udsendelse. Se efter forskelle i prioritering, konkret medlemsnytte og om CTA’en lover det samme som landingssiden leverer.</dd></div><div><dt>Beslutningsregel</dt><dd>Prioritér en ændring, hvis den samme svaghed findes i mindst to af de tre områder. Ellers behandles resultatet som almindelig variation.</dd></div></dl></div></article>
+      <article className="test"><span className="recommendation-icon"><MousePointerClick /></span><div><p>Kontrolleret redaktionel test</p><h3>Test én ændring over de næste to {target.name}-udsendelser</h3><dl><div><dt>Hypotese</dt><dd>En skarpere prioritering af den første historie kan løfte klikraten uden at øge antallet af historier.</dd></div><div><dt>Testdesign</dt><dd>Ændr kun én ting: formulér første histories rubrik som konkret medlemsudbytte. Bevar så vidt muligt placering, CTA-type, udsendelsesdag og målgruppe, så resultatet bliver mere fortolkeligt.</dd></div><div><dt>Succeskriterium</dt><dd>Mindst {pct(targetBaseline)} i klikrate i én af de næste to udsendelser — og ingen tydelig forværring i den anden. Hvis målet ikke nås, forkastes hypotesen frem for at gentage ændringen automatisk.</dd></div></dl></div></article>
+    </div>
   </section>;
 }
 
