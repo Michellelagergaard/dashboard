@@ -87,6 +87,11 @@ const newsletterViews: Array<{ name: Mailing["type"]; view: View; icon: ReactNod
   { name: "TR/AMR Nyt", view: "tr-amr", icon: <Users />, className: "tr-amr" },
 ];
 
+const externalBenchmarks = {
+  nonprofit: { openRate: 52.38, clickRate: 2.90, ctor: 8.24 },
+  europe: { openRate: 45.08, clickRate: 2.04, ctor: 6.46 },
+};
+
 function HomeOverview({ rows, period, onPeriodChange, asOf, onNavigate }: { rows: Mailing[]; period: string; onPeriodChange: (period: string) => void; asOf: string; onNavigate: (view: View) => void }) {
   const grouped = newsletterViews.map((item) => {
     const issues = rows.filter((row) => row.type === item.name);
@@ -114,6 +119,8 @@ function HomeOverview({ rows, period, onPeriodChange, asOf, onNavigate }: { rows
       </article> : <article className={"home-status-card empty " + group.className} key={group.name}><div className="home-card-heading"><span className="home-card-icon">{group.icon}</span><div><h3>{group.name}</h3><p>Ingen udsendelser i perioden</p></div></div><button onClick={() => onNavigate(group.view)}>Se side <ArrowRight /></button></article>)}</div>
     </section>
 
+    <BenchmarkOverview grouped={grouped} />
+
     <section className="panel table-panel home-recent" aria-labelledby="home-recent-title">
       <div className="overview-section-header"><div><h2 id="home-recent-title">Seneste udsendelser på tværs</h2><p>De fem seneste udsendelser i den valgte periode.</p></div></div>
       {recent.length ? <div className="table-scroll"><table><thead><tr><th>Dato og nyhedsbrev</th><th>Emnefelt</th><th>Åbnet</th><th>Klikket</th><th></th></tr></thead><tbody>{recent.map((row) => {
@@ -123,6 +130,29 @@ function HomeOverview({ rows, period, onPeriodChange, asOf, onNavigate }: { rows
       })}</tbody></table></div> : <DataGap title="Ingen udsendelser i perioden" text="Vælg en længere periode for at se tidligere udsendelser." />}
     </section>
   </div>;
+}
+
+function BenchmarkOverview({ grouped }: { grouped: Array<(typeof newsletterViews)[number] & { issues: Mailing[] }> }) {
+  const allIssues = grouped.flatMap((group) => group.issues);
+  const dpOpen = average(allIssues.map((row) => row.openRate));
+  const dpClick = average(allIssues.map((row) => row.clickRate));
+  const dpCtor = dpOpen > 0 ? dpClick / dpOpen * 100 : 0;
+  const clickDelta = dpClick - externalBenchmarks.nonprofit.clickRate;
+  return <section className="panel benchmark-panel" aria-labelledby="benchmark-title">
+    <div className="benchmark-header"><div><p className="eyebrow">Eksternt benchmark</p><h2 id="benchmark-title">Hvordan performer DP?</h2><p>Klikraten er det mest robuste sammenligningsmål. Åbninger og CTOR påvirkes af automatisk registrerede Apple Mail-åbninger.</p></div><span className="benchmark-verdict">{clickDelta >= 0 ? formatPoint(clickDelta) + " procentpoint over nonprofit" : formatPoint(Math.abs(clickDelta)) + " procentpoint under nonprofit"}</span></div>
+    <div className="benchmark-summary">
+      <article className="dp"><span>DP · valgt periode</span><strong>{pct(dpClick)}</strong><small>Klikrate · {num(allIssues.length)} udsendelser</small></article>
+      <article><span>Nonprofit 2025</span><strong>{pct(externalBenchmarks.nonprofit.clickRate)}</strong><small>Klikrate · 3,6 mio. kampagner i datasættet</small></article>
+      <article><span>Europa 2025</span><strong>{pct(externalBenchmarks.europe.clickRate)}</strong><small>Klikrate · alle brancher</small></article>
+    </div>
+    <div className="benchmark-table-wrap"><table className="benchmark-table"><thead><tr><th>Nyhedsbrev</th><th>Udsendelser</th><th>Åbnet</th><th>Klikket</th><th>Mod nonprofit</th></tr></thead><tbody>{grouped.map((group) => {
+      const openRate = average(group.issues.map((row) => row.openRate));
+      const clickRate = average(group.issues.map((row) => row.clickRate));
+      const delta = clickRate - externalBenchmarks.nonprofit.clickRate;
+      return <tr key={group.name}><td><strong>{group.name}</strong></td><td>{num(group.issues.length)}</td><td>{group.issues.length ? pct(openRate) : "—"}</td><td><b>{group.issues.length ? pct(clickRate) : "—"}</b></td><td>{group.issues.length ? <span className={delta >= 0 ? "benchmark-positive" : "benchmark-negative"}>{delta >= 0 ? "+" : ""}{formatPoint(delta)} pp.</span> : "—"}</td></tr>;
+    })}</tbody></table></div>
+    <details className="benchmark-method"><summary>Datagrundlag og begrænsninger</summary><p>Benchmarken er vejledende, fordi platforme og afsendere kan beregne målene forskelligt. DP-tallene er almindelige gennemsnit af udsendelserne i den valgte periode. Den eksterne reference er MailerLites 2025-datasæt med 3,6 mio. kampagner fra december 2024 til november 2025; rapporten viser medianer for nonprofit og Europa. Åbningsrater kan være kunstigt høje på grund af Apple Mail Privacy Protection.</p><p><a href="https://www.mailerlite.com/blog/compare-your-email-performance-metrics-industry-benchmarks" target="_blank" rel="noreferrer">Se den eksterne benchmarkkilde</a></p></details>
+  </section>;
 }
 
 function CompetenceOverview({ rows, asOf }: { rows: Mailing[]; asOf: string }) {
