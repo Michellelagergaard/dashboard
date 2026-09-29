@@ -155,7 +155,7 @@ function BenchmarkOverview({ grouped }: { grouped: Array<(typeof newsletterViews
         </article>;
       })}
     </div>
-    <details className="benchmark-breakdown"><summary>Se forskelle mellem DP's nyhedsbreve</summary><div className="benchmark-table-wrap"><table className="benchmark-table"><thead><tr><th>Nyhedsbrev</th><th>Udsendelser</th><th>Åbnet</th><th>Klikket</th><th>Mod andre</th></tr></thead><tbody>{grouped.map((group) => {
+    <details className="benchmark-breakdown"><summary>Se forskelle mellem DP’s nyhedsbreve</summary><div className="benchmark-table-wrap"><table className="benchmark-table"><thead><tr><th>Nyhedsbrev</th><th>Udsendelser</th><th>Åbnet</th><th>Klikket</th><th>Mod andre</th></tr></thead><tbody>{grouped.map((group) => {
       const openRate = average(group.issues.map((row) => row.openRate));
       const clickRate = average(group.issues.map((row) => row.clickRate));
       const delta = clickRate - externalBenchmarks.associations.clickRate;
