@@ -314,7 +314,14 @@ function Overview({ rows, onOpen, asOf, period, onPeriodChange }: { rows: Mailin
   const performance = [...segmentRows(latest)].filter(item => Number.isFinite(item.clickRate)).sort((a, b) => b.clickRate - a.clickRate);
   const strongest = performance[0];
   const weakest = performance.at(-1);
-  const strongestLink = [...segmentLinkRows(latest)].sort((a, b) => b.clicks - a.clicks)[0];
+  const audienceSignals = performance.map((audience) => ({ audience, comparison: normalLevel(rows, latest, { audience: audience.name, metric: "clickRate", asOf }) }));
+  const opportunity = [...audienceSignals].filter((signal) => signal.comparison.delta !== null && signal.comparison.delta <= -1).sort((a, b) => (a.comparison.delta ?? 0) - (b.comparison.delta ?? 0))[0];
+  const strongestComparison = strongest ? audienceSignals.find((signal) => signal.audience.name === strongest.name)?.comparison : null;
+  const strongestLink = strongest
+    ? [...segmentLinkRows(latest)].filter((item) => item.audience === strongest.name).sort((a, b) => b.clicks - a.clicks)[0]
+    : undefined;
+  const opportunityAudience = opportunity?.audience || weakest;
+  const opportunityComparison = opportunity?.comparison || (opportunityAudience ? normalLevel(rows, latest, { audience: opportunityAudience.name, metric: "clickRate", asOf }) : null);
   return <div className="stack overview-page">
     <PeriodAverageChart openRate={averageOpenRate} clickRate={averageClickRate} count={rows.length} tag="Psykologernes Nyhedsbrev" period={period} onPeriodChange={onPeriodChange} />
     <section className={`overview-verdict ${comparison.delta !== null && comparison.delta < 0 ? "below" : "above"}`}>
@@ -332,11 +339,11 @@ function Overview({ rows, onOpen, asOf, period, onPeriodChange }: { rows: Mailin
       <Kpi icon={<Users />} label="Afmeldinger" value={num(latest.unsubscribes || 0)} note="Registreret efter udsendelsen" />
     </section>
     <section className="overview-section"><div className="overview-section-header"><div><h2>Hvad interesserede medlemmerne?</h2><p>De mest klikkede nyheder i den seneste udsendelse.</p></div><button className="row-link" onClick={() => onOpen(latest.id)}>Se hele analysen</button></div><div className="overview-stories">{topLinks.length ? topLinks.map((item, index) => <article key={`${item.destination}-${index}`}><span className="overview-rank">{index + 1}</span><div><strong>{displayTitle(item)}</strong><span>{String(editorialCategory(item))}</span></div><div><strong>{num(item.clicks)} klik</strong><span>{formatPoint(item.rate)} pr. 100 leverede</span></div></article>) : <DataGap title="Ingen dokumenterede linkresultater" text="Ungapped leverede ikke brugbare klik pr. nyhed for denne udsendelse." />}</div></section>
-    <section className="overview-section"><div className="overview-section-header"><div><h2>Det vigtigste på tværs af målgrupper</h2><p>Dokumenterede observationer fra den seneste udsendelse.</p></div></div><div className="overview-insights">
-      {strongest ? <article><TrendingUp /><h3>{strongest.name}</h3><p>Havde udsendelsens højeste klikrate: {pct(strongest.clickRate)}.</p></article> : null}
-      {strongestLink ? <article><MousePointerClick /><h3>{strongestLink.audience}</h3><p>Klikkede især på “{displayTitle(strongestLink)}”.</p></article> : null}
-      {weakest ? <article><AlertCircle /><h3>{weakest.name}</h3><p>Havde udsendelsens laveste klikrate: {pct(weakest.clickRate)}.</p></article> : null}
-    </div></section>
+    <section className="overview-section audience-signals"><div className="overview-section-header"><div><h2>Målgrupper: signaler og næste handling</h2><p>Resultater sammenholdt med målgruppernes eget historiske niveau. Fortolkningerne er redaktionelle hypoteser.</p></div></div><div className="overview-insights">
+      {strongest ? <article className="audience-signal positive"><div className="audience-signal-heading"><TrendingUp /><span>Stærkeste målgruppe</span></div><h3>{strongest.name}</h3><strong className="audience-signal-value">{pct(strongest.clickRate)}</strong><p className="audience-signal-comparison">{audienceComparisonText(strongestComparison?.delta ?? null, strongestComparison?.count ?? 0)}</p><dl><div><dt>Signal</dt><dd>Højeste klikrate i denne udsendelse.</dd></div><div><dt>Næste handling</dt><dd>Undersøg, om samme konkrete medlemsnytte kan bruges i kommende indhold til målgruppen.</dd></div><div><dt>Datagrundlag</dt><dd>{audienceSize(strongest)} modtagere i seneste måling{strongestComparison?.count ? ` · ${strongestComparison.count} tidligere udsendelser i sammenligningen` : ""}.</dd></div></dl></article> : null}
+      {opportunityAudience ? <article className="audience-signal warning"><div className="audience-signal-heading"><AlertCircle /><span>Største forbedringsmulighed</span></div><h3>{opportunityAudience.name}</h3><strong className="audience-signal-value">{pct(opportunityAudience.clickRate)}</strong><p className="audience-signal-comparison">{audienceComparisonText(opportunityComparison?.delta ?? null, opportunityComparison?.count ?? 0)}</p><dl><div><dt>Signal</dt><dd>{opportunityComparison?.delta !== null && opportunityComparison?.delta !== undefined && opportunityComparison.delta < -1 ? "Målgruppen ligger tydeligt under sit eget normale niveau." : "Målgruppen har udsendelsens laveste klikrate, men afvigelsen fra eget niveau er ikke dokumenteret."}</dd></div><div><dt>Næste handling</dt><dd>Test én tydeligere modtagervinkel i næste udsendelse, og behold resten uændret, så effekten kan vurderes.</dd></div><div><dt>Datagrundlag</dt><dd>{audienceSize(opportunityAudience)} modtagere i seneste måling{opportunityComparison?.count ? ` · ${opportunityComparison.count} tidligere udsendelser i sammenligningen` : ""}.</dd></div></dl></article> : null}
+      {strongestLink ? <article className="audience-signal pattern"><div className="audience-signal-heading"><MousePointerClick /><span>Mønster at undersøge</span></div><h3>{strongest.name}</h3><p className="audience-signal-story">“{displayTitle(strongestLink)}”</p><dl><div><dt>Signal</dt><dd>Mest klikkede dokumenterede link for den stærkeste målgruppe: {num(strongestLink.clicks)} klik.</dd></div><div><dt>Hypotese</dt><dd>Konkret, driftskritisk information med en tydelig konsekvens kan være særligt handlingsudløsende.</dd></div><div><dt>Næste handling</dt><dd>Afprøv samme indholdslogik — konkret ændring, konsekvens og handling — uden at kopiere emnet ukritisk.</dd></div></dl></article> : null}
+    </div><p className="audience-signals-note">Kortene viser dokumenterede tal, men forklaringer og handlinger er hypoteser. De skal vurderes redaktionelt og kan ikke bruges som dokumentation for årsag.</p></section>
     <OverviewTrend rows={rows} latest={latest} baseline={comparison.baseline} />
     <section className="panel table-panel overview-recent"><div className="overview-section-header"><div><h2>Seneste udsendelser</h2><p>Et kort overblik over udviklingen.</p></div></div><div className="table-scroll"><table><thead><tr><th>Dato og emnefelt</th><th>Vurdering</th><th>Åbnet</th><th>Klikket</th><th></th></tr></thead><tbody>{rows.slice(0, 5).map((row) => { const level = normalLevel(rows, row, { metric: "clickRate", asOf }); return <tr key={row.id}><td><strong>{row.date} · {row.subject || row.title}</strong></td><td><PerformanceBadge delta={level.delta} /></td><td>{pct(row.openRate)}</td><td><b>{pct(row.clickRate)}</b></td><td><button className="row-link" onClick={() => onOpen(row.id)}>Åbn</button></td></tr>; })}</tbody></table></div></section>
     <details className="panel overview-method"><summary>Om tallene og datagrundlaget</summary><MeasurementGuideContent /><CoverageSummary rows={rows} /></details>
@@ -539,6 +546,15 @@ function Empty({ title, text }: { title: string; text: string }) { return <secti
 function EmptyRow({ columns, text }: { columns: number; text: string }) { return <tr><td className="empty-cell" colSpan={columns}>{text}</td></tr>; }
 function segmentRows(mailing: Mailing) { return mailing.segmentPerformance || []; }
 function segmentLinkRows(mailing: Mailing) { return mailing.segmentLinkPerformance || []; }
+function audienceSize(audience: NonNullable<Mailing["segmentPerformance"]>[number]) {
+  return num(audience.delivered || audience.recipients || Number(audience.recipientsLabel.replaceAll(".", "")) || 0);
+}
+function audienceComparisonText(delta: number | null, count: number) {
+  if (delta === null || count < 3) return "Ikke nok sammenlignelige historiske målinger";
+  if (delta >= 1) return `${formatPoint(delta)} procentpoint over eget normale niveau`;
+  if (delta <= -1) return `${formatPoint(Math.abs(delta))} procentpoint under eget normale niveau`;
+  return "På niveau med målgruppens tidligere udsendelser";
+}
 function subjectForAudience(mailing: Mailing, audience: string) { return mailing.segmentSubjects?.find((item) => item.audience === audience)?.subject; }
 function coverageFor(mailing: Mailing) { return mailing.dataCoverage || { linkPerformance: mailing.content.length > 0, segmentPerformance: segmentRows(mailing).length > 0, segmentSubjects: Boolean(mailing.segmentSubjects?.length), segmentLinkPerformance: segmentLinkRows(mailing).length > 0 }; }
 function displayTitle(item: { title?: string; destination: string; editorial?: EditorialMetadata }) {
