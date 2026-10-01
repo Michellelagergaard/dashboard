@@ -13,7 +13,7 @@ test("testdatasættet er tydeligt afgrænset og uden personfelter", () => {
 });
 
 test("alle centrale udsendelsestyper er repræsenteret", () => {
-  for (const type of ["Psykologernes Nyhedsbrev", "TR/AMR Nyt", "Magasinet P", "Kompetencenyt", "Medlemskommunikation"]) assert.match(source, new RegExp(type.replace("/", "\\/")));
+  for (const type of ["Psykologernes Nyhedsbrev", "TR/AMR Nyt", "Magasinet P", "Kompetencenyt", "Netværksnyt", "Medlemskommunikation"]) assert.match(source, new RegExp(type.replace("/", "\\/")));
 });
 
 test("lange målgruppetabeller kan foldes ud", () => {
@@ -71,7 +71,7 @@ test("Kompetencenyt er en selvstændig, ikke-segmenteret tagvisning", () => {
   assert.match(dashboardSource, /label="Kompetencenyt"/);
   assert.match(dashboardSource, /function CompetenceOverview/);
   assert.match(dashboardSource, /Nyhedsbrevet segmenteres ikke/);
-  assert.match(generatorSource, /newsletterTags = \["Psykologernes Nyhedsbrev", "Kompetencenyt", "Magasinet P", "TR\/AMR Nyt"\]/);
+  assert.match(generatorSource, /newsletterTags = \["Psykologernes Nyhedsbrev", "Kompetencenyt", "Magasinet P", "TR\/AMR Nyt", "Netværksnyt"\]/);
   assert.match(generatorSource, /audienceProfileTypes\.has\(issue\.dashboardType\) && issue\.delivered/);
 });
 
@@ -79,14 +79,21 @@ test("Magasinet P er en selvstændig, ikke-segmenteret tagvisning", () => {
   assert.match(dashboardSource, /label="Magasinet P"/);
   assert.match(dashboardSource, /function MagazineOverview/);
   assert.match(dashboardSource, /name: "Kompetencenyt" \| "Magasinet P"/);
-  assert.match(generatorSource, /newsletterTags = \["Psykologernes Nyhedsbrev", "Kompetencenyt", "Magasinet P", "TR\/AMR Nyt"\]/);
+  assert.match(generatorSource, /newsletterTags = \["Psykologernes Nyhedsbrev", "Kompetencenyt", "Magasinet P", "TR\/AMR Nyt", "Netværksnyt"\]/);
 });
 
 test("TR/AMR Nyt er en selvstændig, ikke-segmenteret tagvisning", () => {
   assert.match(dashboardSource, /label="TR\/AMR Nyt"/);
   assert.match(dashboardSource, /function TrAmrOverview/);
   assert.match(dashboardSource, /name="TR\/AMR Nyt"/);
-  assert.match(generatorSource, /newsletterTags = \["Psykologernes Nyhedsbrev", "Kompetencenyt", "Magasinet P", "TR\/AMR Nyt"\]/);
+  assert.match(generatorSource, /newsletterTags = \["Psykologernes Nyhedsbrev", "Kompetencenyt", "Magasinet P", "TR\/AMR Nyt", "Netværksnyt"\]/);
+});
+
+test("Netværksnyt er en selvstændig, ikke-segmenteret tagvisning", () => {
+  assert.match(dashboardSource, /label="Netværksnyt"/);
+  assert.match(dashboardSource, /function NetworkOverview/);
+  assert.match(dashboardSource, /name="Netværksnyt"/);
+  assert.match(generatorSource, /newsletterTags = \["Psykologernes Nyhedsbrev", "Kompetencenyt", "Magasinet P", "TR\/AMR Nyt", "Netværksnyt"\]/);
 });
 
 test("Kompetencenyt sammenligner åbning og klik uden en samlet misvisende dom", () => {
@@ -106,7 +113,7 @@ test("Kompetencenyt og Magasinet P viser dokumenterede klikprofiler for overlapp
   assert.match(dashboardSource, /function UnsegmentedAudienceClicks/);
   assert.match(dashboardSource, /Hvilke medlemsgrupper klikkede\?/);
   assert.match(dashboardSource, /Medlemsgrupperne er efterfølgende filtre på Ungappeds aggregerede klikstatistik og kan overlappe/);
-  assert.match(dashboardSource, /name !== "TR\/AMR Nyt"/);
+  assert.match(dashboardSource, /name === "Kompetencenyt" \|\| name === "Magasinet P"/);
   assert.match(generatorSource, /audienceProfileTypes = new Set\(\["Psykologernes Nyhedsbrev", "Kompetencenyt", "Magasinet P"\]\)/);
   assert.match(generatorSource, /false, memberSegments/);
 });

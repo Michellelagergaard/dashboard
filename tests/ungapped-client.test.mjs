@@ -30,6 +30,7 @@ test("detects duplicate ids", () => {
 test("classifies the agreed newsletter types and prioritizes flows", () => {
   assert.equal(classifyIssue({ name: "Psykologernes Nyhedsbrev 8. september", tags: [] }), "Psykologernes Nyhedsbrev");
   assert.equal(classifyIssue({ name: "September", tags: ["TR/AMR Nyt"] }), "TR/AMR Nyt");
+  assert.equal(classifyIssue({ name: "September", tags: ["Netværksnyt"] }), "Netværksnyt");
   assert.equal(classifyIssue({ subject: "Nyt Magasinet P", tags: [] }), "Magasinet P");
   assert.equal(classifyIssue({ name: "Velkomst", tags: ["Kompetencenyt"], automated: true }), "Automatiske flows");
   assert.equal(classifyIssue({ subject: "Nyhedsbrevet fra P: Bliv klogere på traumeområdet", tags: [] }), "Magasinet P");
