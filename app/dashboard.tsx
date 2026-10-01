@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState, type ReactNode } from "react";
-import { Activity, AlertCircle, ArrowRight, BookOpen, ChevronDown, ChevronRight, ChevronUp, CircleHelp, ClipboardList, LayoutDashboard, Mail, MousePointerClick, Send, TrendingUp, Users } from "lucide-react";
+import { Activity, AlertCircle, ArrowRight, BookOpen, ChevronDown, ChevronRight, ChevronUp, CircleHelp, ClipboardList, LayoutDashboard, Mail, MousePointerClick, Network, Send, TrendingUp, Users } from "lucide-react";
 import type { ClickMeasurement, EditorialMetadata, LiveDashboardData, LiveMailing } from "./live-data";
 import { EditorialProvider } from "./editorial-editor";
 import { enrichMailings } from "../config/editorial-content.mjs";
@@ -10,7 +10,7 @@ import { editorialCategory, summarizeEditorialTopics } from "../config/editorial
 import { clickMeasurementLabel, isComparableLink } from "../config/measurement-methods.mjs";
 import { normalLevel } from "../config/decision-methods.mjs";
 
-type View = "home" | "overview" | "audiences" | "mailing" | "about" | "competence" | "magazine" | "tr-amr";
+type View = "home" | "overview" | "audiences" | "mailing" | "about" | "competence" | "magazine" | "tr-amr" | "network";
 type Mailing = LiveMailing;
 
 const segments = memberSegmentNames;
@@ -33,6 +33,7 @@ function DashboardContent({ liveData }: { liveData: LiveDashboardData }) {
   const competenceMailings = useMemo(() => mailings.filter((mailing) => mailing.type === "Kompetencenyt"), [mailings]);
   const magazineMailings = useMemo(() => mailings.filter((mailing) => mailing.type === "Magasinet P"), [mailings]);
   const trAmrMailings = useMemo(() => mailings.filter((mailing) => mailing.type === "TR/AMR Nyt"), [mailings]);
+  const networkMailings = useMemo(() => mailings.filter((mailing) => mailing.type === "Netværksnyt"), [mailings]);
   const [selectedId, setSelectedId] = useState("");
   const selected = newsletterMailings.find((mailing) => mailing.id === selectedId) || newsletterMailings[0];
   const updated = liveData.updatedAt
@@ -60,12 +61,13 @@ function DashboardContent({ liveData }: { liveData: LiveDashboardData }) {
         <Nav active={view === "competence"} onClick={() => setView("competence")} icon={<Activity />} label="Kompetencenyt" />
         <Nav active={view === "magazine"} onClick={() => setView("magazine")} icon={<BookOpen />} label="Magasinet P" />
         <Nav active={view === "tr-amr"} onClick={() => setView("tr-amr")} icon={<Users />} label="TR/AMR Nyt" />
+        <Nav active={view === "network"} onClick={() => setView("network")} icon={<Network />} label="Netværksnyt" />
       </nav>
       <div className="sidebar-footer"><div className="sidebar-note"><span className="status-dot" />{liveData.status === "live" ? "Opdateres fra Ungapped" : "Seneste tilgængelige data"}<span className="sidebar-updated">{updated}</span></div></div>
     </aside>
     <main id="main" className="main">
-      <header className="topbar"><div><p className="eyebrow">Analyse af medlemskommunikation</p><h1>{view === "home" ? "Samlet overblik" : view === "overview" ? "Psykologernes Nyhedsbrev" : view === "audiences" ? "Målgrupper" : view === "mailing" ? "Redaktionel analyse" : view === "competence" ? "Kompetencenyt" : view === "magazine" ? "Magasinet P" : view === "tr-amr" ? "TR/AMR Nyt" : "Om tallene"}</h1></div><div className="sync-box"><div><span>Senest opdateret</span><strong>{updated}</strong></div></div></header>
-      {view !== "overview" && view !== "home" ? <section className="filters simple-filters" aria-label="Filtre"><div className="filter-main"><label><span>Periode</span><select value={period} onChange={(event) => setPeriod(event.target.value)}><option>Seneste 12 måneder</option><option>Seneste 6 måneder</option><option>Alle år</option></select></label></div><p className="filter-result"><strong>{num(view === "competence" ? competenceMailings.length : view === "magazine" ? magazineMailings.length : view === "tr-amr" ? trAmrMailings.length : newsletterMailings.length)}</strong> udsendelser med tagget {view === "competence" ? "Kompetencenyt" : view === "magazine" ? "Magasinet P" : view === "tr-amr" ? "TR/AMR Nyt" : "Psykologernes Nyhedsbrev"}</p></section> : null}
+      <header className="topbar"><div><p className="eyebrow">Analyse af medlemskommunikation</p><h1>{view === "home" ? "Samlet overblik" : view === "overview" ? "Psykologernes Nyhedsbrev" : view === "audiences" ? "Målgrupper" : view === "mailing" ? "Redaktionel analyse" : view === "competence" ? "Kompetencenyt" : view === "magazine" ? "Magasinet P" : view === "tr-amr" ? "TR/AMR Nyt" : view === "network" ? "Netværksnyt" : "Om tallene"}</h1></div><div className="sync-box"><div><span>Senest opdateret</span><strong>{updated}</strong></div></div></header>
+      {view !== "overview" && view !== "home" ? <section className="filters simple-filters" aria-label="Filtre"><div className="filter-main"><label><span>Periode</span><select value={period} onChange={(event) => setPeriod(event.target.value)}><option>Seneste 12 måneder</option><option>Seneste 6 måneder</option><option>Alle år</option></select></label></div><p className="filter-result"><strong>{num(view === "competence" ? competenceMailings.length : view === "magazine" ? magazineMailings.length : view === "tr-amr" ? trAmrMailings.length : view === "network" ? networkMailings.length : newsletterMailings.length)}</strong> udsendelser med tagget {view === "competence" ? "Kompetencenyt" : view === "magazine" ? "Magasinet P" : view === "tr-amr" ? "TR/AMR Nyt" : view === "network" ? "Netværksnyt" : "Psykologernes Nyhedsbrev"}</p></section> : null}
       {view === "audiences" ? <MeasurementGuide /> : null}
       {liveData.status === "unavailable" ? <Empty title="Data er ikke tilgængelige" text="Den seneste dataopdatering kunne ikke læses. Prøv igen senere." /> : null}
       {liveData.status !== "unavailable" && view === "home" ? <HomeOverview rows={mailings} period={period} onPeriodChange={setPeriod} asOf={liveData.updatedAt || new Date().toISOString()} onNavigate={setView} /> : null}
@@ -76,6 +78,7 @@ function DashboardContent({ liveData }: { liveData: LiveDashboardData }) {
       {liveData.status !== "unavailable" && view === "competence" ? <CompetenceOverview rows={competenceMailings} asOf={liveData.updatedAt || new Date().toISOString()} /> : null}
       {liveData.status !== "unavailable" && view === "magazine" ? <MagazineOverview rows={magazineMailings} asOf={liveData.updatedAt || new Date().toISOString()} /> : null}
       {liveData.status !== "unavailable" && view === "tr-amr" ? <TrAmrOverview rows={trAmrMailings} asOf={liveData.updatedAt || new Date().toISOString()} /> : null}
+      {liveData.status !== "unavailable" && view === "network" ? <NetworkOverview rows={networkMailings} asOf={liveData.updatedAt || new Date().toISOString()} /> : null}
     </main>
   </div>;
 }
@@ -85,6 +88,7 @@ const newsletterViews: Array<{ name: Mailing["type"]; view: View; icon: ReactNod
   { name: "Kompetencenyt", view: "competence", icon: <Activity />, className: "competence" },
   { name: "Magasinet P", view: "magazine", icon: <BookOpen />, className: "magazine" },
   { name: "TR/AMR Nyt", view: "tr-amr", icon: <Users />, className: "tr-amr" },
+  { name: "Netværksnyt", view: "network", icon: <Network />, className: "network" },
 ];
 
 const externalBenchmarks = {
@@ -104,7 +108,7 @@ function HomeOverview({ rows, period, onPeriodChange, asOf, onNavigate }: { rows
 
   return <div className="stack home-page">
     <section className="home-intro panel">
-      <div><p className="eyebrow">Forside</p><h2>Det vigtigste på tværs af udsendelser</h2><p>Se den seneste udvikling for DP&apos;s fire redaktionelle nyhedsbreve, og gå videre til den analyse, du har brug for.</p></div>
+      <div><p className="eyebrow">Forside</p><h2>Det vigtigste på tværs af udsendelser</h2><p>Se den seneste udvikling for DP&apos;s fem redaktionelle nyhedsbreve, og gå videre til den analyse, du har brug for.</p></div>
       <label className="home-period"><span>Periode</span><select value={period} onChange={(event) => onPeriodChange(event.target.value)}><option>Seneste 12 måneder</option><option>Seneste 6 måneder</option><option>Alle år</option></select></label>
       <div className="home-coverage"><strong>{num(issueCount)}</strong><span>udsendelser i perioden</span></div>
     </section>
@@ -203,7 +207,11 @@ function TrAmrOverview({ rows, asOf }: { rows: Mailing[]; asOf: string }) {
   return <UnsegmentedNewsletterOverview rows={rows} asOf={asOf} name="TR/AMR Nyt" />;
 }
 
-function UnsegmentedNewsletterOverview({ rows, asOf, name }: { rows: Mailing[]; asOf: string; name: "Kompetencenyt" | "Magasinet P" | "TR/AMR Nyt" }) {
+function NetworkOverview({ rows, asOf }: { rows: Mailing[]; asOf: string }) {
+  return <UnsegmentedNewsletterOverview rows={rows} asOf={asOf} name="Netværksnyt" />;
+}
+
+function UnsegmentedNewsletterOverview({ rows, asOf, name }: { rows: Mailing[]; asOf: string; name: "Kompetencenyt" | "Magasinet P" | "TR/AMR Nyt" | "Netværksnyt" }) {
   const latest = rows[0];
   if (!latest) return <Empty title="Ingen udsendelser i perioden" text={`Vælg en længere periode for at se ${name}.`} />;
   const averageOpenRate = average(rows.map(row => row.openRate));
@@ -230,7 +238,7 @@ function UnsegmentedNewsletterOverview({ rows, asOf, name }: { rows: Mailing[]; 
       <Kpi icon={<Users />} label="Afmeldinger" value={num(latest.unsubscribes || 0)} note="Registreret efter udsendelsen" />
     </section>
     <section className="overview-section"><div className="overview-section-header"><div><h2>Mest besøgte links</h2><p>De fem destinationslinks med flest unikke klik i Ungapped.</p></div></div><div className="overview-stories">{topLinks.length ? topLinks.map((item, index) => <article key={`${item.destination}-${index}`}><span className="overview-rank">{index + 1}</span><div><strong>{displayTitle(item)}</strong><span>{String(editorialCategory(item))}</span></div><div><strong>{num(item.clicks)} unikke klik</strong><span>{formatPoint(item.rate)} pr. 100 leverede</span></div></article>) : <DataGap title="Ingen dokumenterede linkresultater" text="Ungapped leverede ikke brugbare unikke klik pr. link for denne udsendelse." />}</div></section>
-    {name !== "TR/AMR Nyt" ? <UnsegmentedAudienceClicks rows={rows} name={name} /> : null}
+    {name === "Kompetencenyt" || name === "Magasinet P" ? <UnsegmentedAudienceClicks rows={rows} name={name} /> : null}
     <OverviewTrend rows={rows} latest={latest} baseline={comparison.baseline} />
     <section className="panel table-panel overview-recent"><div className="overview-section-header"><div><h2>Seneste udsendelser</h2><p>Udviklingen i {name} måned for måned. Sammenligningen viser hver måling i forhold til op til fem tidligere udsendelser.</p></div></div><div className="table-scroll"><table><thead><tr><th>Dato og emnefelt</th><th>Sammenligning med tidligere</th><th>Leverede</th><th>Åbnet</th><th>Klikket</th><th>CTOR</th></tr></thead><tbody>{rows.slice(0, 12).map((row) => { const clickLevel = normalLevel(rows, row, { metric: "clickRate", asOf }); const rowOpenLevel = normalLevel(rows, row, { metric: "openRate", asOf }); return <tr key={row.id}><td><strong>{row.date} · {row.subject || row.title}</strong></td><td><CompetenceComparison openDelta={rowOpenLevel.delta} clickDelta={clickLevel.delta} /></td><td>{num(row.delivered)}</td><td>{pct(row.openRate)}</td><td><b>{pct(row.clickRate)}</b></td><td>{row.openRate > 0 ? pct(row.clickRate / row.openRate * 100) : "—"}</td></tr>; })}</tbody></table></div></section>
     <details className="panel overview-method"><summary>Om tallene og datagrundlaget</summary><p>Visningen omfatter kun sendte udsendelser med Ungapped-tagget <strong>{name}</strong>. Nyhedsbrevet segmenteres ikke, og derfor vises ingen målgruppeanalyse.</p><MeasurementGuideContent /></details>

@@ -1,4 +1,4 @@
-export const newsletterTypes = ["Psykologernes Nyhedsbrev", "TR/AMR Nyt", "Magasinet P", "Kompetencenyt", "Medlemskommunikation"];
+export const newsletterTypes = ["Psykologernes Nyhedsbrev", "TR/AMR Nyt", "Magasinet P", "Kompetencenyt", "Netværksnyt", "Medlemskommunikation"];
 
 export const mailings = [
   { id:"pn-0827", title:"46 ledige ydernumre og nyt om praksisuddannelsen", subject:"46 ledige ydernumre | Sådan får du vejledning om praksisuddannelsen", type:"Psykologernes Nyhedsbrev", date:"27. aug. 2026", delivered:12984, openRate:54.8, clickRate:15.9, content:[
@@ -10,6 +10,7 @@ export const mailings = [
   { id:"tr-0826", title:"Tjek dine oplysninger – og bliv klar til lønforhandlingen", subject:"TR/AMR Nyt: Tjek dine oplysninger og bliv klar", type:"TR/AMR Nyt", date:"26. aug. 2026", delivered:1184, openRate:61.2, clickRate:13.1, content:[] },
   { id:"mp-0821", title:"Ny faglig viden: anoreksi, kognition og ADHD", subject:"Ny faglig viden: anoreksi, kognition og ADHD", type:"Magasinet P", date:"21. aug. 2026", delivered:12066, openRate:48.4, clickRate:8.9, content:[] },
   { id:"kn-0818", title:"Nye faglige tilbud – og flere er gratis for medlemmer", subject:"Nye faglige tilbud – og flere er gratis for medlemmer", type:"Kompetencenyt", date:"18. aug. 2026", delivered:9874, openRate:51.7, clickRate:13.8, content:[] },
+  { id:"nn-0812", title:"Nyt fra DP's netværk", subject:"Netværksnyt: arrangementer og faglige fællesskaber", type:"Netværksnyt", date:"12. aug. 2026", delivered:4210, openRate:53.6, clickRate:11.4, content:[] },
   { id:"pn-0730", title:"Sommerudgave: faglig inspiration og medlemsfordele", subject:"Faglig inspiration til sommerferien", type:"Psykologernes Nyhedsbrev", date:"30. jul. 2026", delivered:12742, openRate:52.1, clickRate:14.3, content:[] },
   { id:"mp-0710", title:"Faglig inspiration til sommerferien", subject:"Faglig inspiration til sommerferien ☀️", type:"Magasinet P", date:"10. jul. 2026", delivered:11706, openRate:46.8, clickRate:7.6, content:[] },
   { id:"kn-0707", title:"Nye kurser – fra supervision til AI og ICD-11", subject:"Nye kurser – fra supervision til AI og ICD-11", type:"Kompetencenyt", date:"7. jul. 2026", delivered:9633, openRate:50.9, clickRate:12.5, content:[] },
