@@ -550,7 +550,8 @@ function audienceSize(audience: NonNullable<Mailing["segmentPerformance"]>[numbe
   return num(audience.delivered || audience.recipients || Number(audience.recipientsLabel.replaceAll(".", "")) || 0);
 }
 function audienceComparisonText(delta: number | null, count: number) {
-  if (delta === null || count < 3) return "Ikke nok sammenlignelige historiske målinger";
+  if (count < 3) return "Ikke nok sammenlignelige historiske målinger";
+  if (delta === null) return "Historisk sammenligning afventer en moden 7-dagesmåling";
   if (delta >= 1) return `${formatPoint(delta)} procentpoint over eget normale niveau`;
   if (delta <= -1) return `${formatPoint(Math.abs(delta))} procentpoint under eget normale niveau`;
   return "På niveau med målgruppens tidligere udsendelser";
