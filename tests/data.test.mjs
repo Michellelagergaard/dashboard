@@ -16,6 +16,11 @@ test("alle centrale udsendelsestyper er repræsenteret", () => {
   for (const type of ["Psykologernes Nyhedsbrev", "TR/AMR Nyt", "Magasinet P", "Kompetencenyt", "Netværksnyt", "Medlemskommunikation"]) assert.match(source, new RegExp(type.replace("/", "\\/")));
 });
 
+test("dashboardet bruger Michelle's Motherboard-brandingen", () => {
+  assert.match(dashboardSource, /Michelle&apos;s/);
+  assert.match(dashboardSource, /favicon\.png/);
+});
+
 test("lange målgruppetabeller kan foldes ud", () => {
   assert.match(dashboardSource, /aria-expanded=\{expanded\}/);
   assert.match(dashboardSource, /Vis alle \{total\}/);
