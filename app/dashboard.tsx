@@ -48,7 +48,7 @@ function DashboardContent({ liveData }: { liveData: LiveDashboardData }) {
   return <div className="app-shell simple-dashboard">
     <a className="skip-link" href="#main">Gå til indhold</a>
     <aside className="sidebar">
-      <div className="brand"><div className="brand-mark" aria-hidden="true">dp</div><div><strong>Dansk Psykolog<br />Forening</strong><span>Udsendelsesdashboard</span></div></div>
+      <div className="brand"><div className="brand-mark"><img src="./favicon.png" alt="" /></div><div><strong>Michelle&apos;s<br />Motherboard</strong><span>Udsendelsesdashboard</span></div></div>
       <nav aria-label="Primær navigation">
         <p className="nav-kicker">Redaktionelt dashboard</p>
         <Nav active={view === "home"} onClick={() => setView("home")} icon={<LayoutDashboard />} label="Forside" />

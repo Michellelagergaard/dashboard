@@ -2,14 +2,14 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Udsendelsesdashboard | Dansk Psykolog Forening",
-  description: "Internt analyseværktøj til DP's medlemskommunikation.",
+  title: "Michelle's Motherboard",
+  description: "Overblik over DP's nyhedsbreve og medlemskommunikation.",
   other: {
     "codex-preview": "development",
   },
   icons: {
-    icon: "/favicon.svg",
-    shortcut: "/favicon.svg",
+    icon: "/favicon.png",
+    shortcut: "/favicon.png",
   },
 };
 
