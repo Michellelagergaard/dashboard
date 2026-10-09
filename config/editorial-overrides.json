@@ -12,6 +12,13 @@
         "Selvstændige psykologer uden ydernummer",
         "Kommunalt ansatte"
       ]
+    },
+    {
+      "mailingId": "44d2e6e6-3a78-4c64-bb00-385ba3911e58",
+      "destination": "https://www.dp.dk/akutplan-med-hjaelp-til-boern-og-unge-med-staerke-psykologfaglige-aftryk/",
+      "title": "Akutplan med hjælp til børn og unge med stærke psykologfaglige aftryk",
+      "kind": "news",
+      "category": "Politik og interessevaretagelse"
     }
   ]
 }
