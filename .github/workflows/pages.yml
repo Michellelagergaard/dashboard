@@ -2,7 +2,7 @@ name: Validate dashboard
 
 on:
   schedule:
-    - cron: "17 * * * *"
+    - cron: "43 * * * *"
   push:
     branches: [main]
   workflow_dispatch:
