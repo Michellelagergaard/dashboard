@@ -39,6 +39,9 @@ export function publicSegmentRows(rows) {
   return rows.map(item => ({
     name: item.name, recipientsLabel: item.recipients.toLocaleString("da-DK"),
     ...(Number.isFinite(item.delivered) ? { recipients: item.recipients, delivered: item.delivered, measurementVersion: item.measurementVersion, membershipTimeBasis: item.membershipTimeBasis } : {}),
+    ...(Number.isFinite(item.openCount) ? { openCount: item.openCount } : {}),
+    ...(Number.isFinite(item.clickCount) ? { clickCount: item.clickCount } : {}),
+    ...(item.observedAt ? { observedAt: item.observedAt } : {}),
     openRate: item.openRate ?? 0, clickRate: item.clickRate ?? 0,
     ctor: item.ctor ?? 0, unsubscribes: item.unsubscribes,
   }));

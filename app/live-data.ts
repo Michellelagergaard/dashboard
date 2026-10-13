@@ -24,6 +24,8 @@ export type LiveMailing = {
   measurementVersion?: number;
   linkMeasurementVersion?: number;
   measurement?: { overviewSource: string; openSource: string; clickSource: string; denominator: string; deliverySource: string; uniqueness: string };
+  openCount?: number;
+  clickCount?: number;
   openRate: number;
   clickRate: number;
   unsubscribes: number;
@@ -48,6 +50,9 @@ export type LiveMailing = {
   segmentLinkMappingVersion?: number;
   segmentPerformance?: Array<{
     name: string;
+    observedAt?: string;
+    openCount?: number;
+    clickCount?: number;
     recipientsLabel: string;
     recipients?: number;
     delivered?: number;
@@ -93,6 +98,8 @@ type UngappedIssue = {
   suggestedCategory?: string | null;
   sentAt: string | null;
   delivered: number;
+  openCount?: number;
+  clickCount?: number;
   openRate?: number | null;
   clickRate?: number | null;
   unsubscribes?: number | null;
@@ -117,6 +124,8 @@ export async function getLiveDashboardData(): Promise<LiveDashboardData> {
         date: formatDate(issue.sentAt),
         sentAt: issue.sentAt,
         delivered: issue.delivered,
+        openCount: issue.openCount,
+        clickCount: issue.clickCount,
         openRate: issue.openRate ?? 0,
         clickRate: issue.clickRate ?? 0,
         unsubscribes: 0,

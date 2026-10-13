@@ -33,3 +33,12 @@ export function partitionLinkMeasurements(rows) {
   const descending = (a, b) => b.clicks - a.clicks;
   return { contacts: contacts.sort(descending), events: events.sort(descending), historical };
 }
+
+export function summarizeCoverage(rows) {
+  return {
+    total: rows.length,
+    links: rows.filter(row => (row.content || []).some(isComparableLink)).length,
+    segments: rows.filter(row => (row.segmentPerformance || []).some(item => Number.isFinite(item.openRate) && Number.isFinite(item.clickRate))).length,
+    segmentLinks: rows.filter(row => (row.segmentLinkPerformance || []).some(isComparableLink)).length,
+  };
+}

@@ -115,3 +115,9 @@ test('contact rankings exclude events and historical measurements without changi
   assert.equal(groups.contacts[1].clickMeasurement.aggregation,'max-per-destination');
   assert.equal(JSON.stringify(rows),before);
 });
+
+import { summarizeCoverage } from '../config/measurement-methods.mjs';
+test('coverage counts documented contact data rather than legacy availability flags', () => {
+  const rows = [{content:[{clicks:9}],dataCoverage:{linkPerformance:true},segmentPerformance:[]}, {content:[{clicks:5,clickMeasurement:{metric:'unique-contacts'}}],segmentPerformance:[{openRate:0,clickRate:0}],segmentLinkPerformance:[{clicks:5,clickMeasurement:{metric:'total-clicks'}}]}];
+  assert.deepEqual(summarizeCoverage(rows),{total:2,links:1,segments:1,segmentLinks:0});
+});

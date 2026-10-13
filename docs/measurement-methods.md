@@ -90,6 +90,11 @@ Officiel baggrund om sporing:
 https://ungapped.com/support/user-manuals/manual-for-mailings-newsletters/tracking-opens-clicks/
 
 
-## Periode og udsendelse i analysevisningerne
+## Visning af grundlag (etape 2)
 
-Målgrupper og Redaktionel analyse bruger den samme filterbjælke. Vælg 6 måneder, 12 måneder eller Alle år; antallet af udsendelser i perioden vises under filtrene. Datoperioden regnes fra dashboardets seneste dataopdatering. Ved periodeskift nulstilles et enkelt udsendelsesvalg: Målgrupper viser igen alle udsendelser i perioden, og Redaktionel analyse vælger den seneste tilgængelige udsendelse. Udsendelseslisten viser kun udsendelser i den valgte periode. Målgruppetal og linkresultater afgrænses til den valgte udsendelse, når en enkelt udgave vælges.
+- Åbnings- og klikantal gemmes som `openCount` / `clickCount` fra API’ets `OpenCount` / `ClickCount`. De er ikke verificeret som unikke mennesker. Fraværende antal bliver ikke rekonstrueret fra en rate. Historiske antal bevares, hvor de allerede findes.
+- Det almindelige udsendelsesgennemsnit og det eksterne benchmark er uvægtede gennemsnit pr. udsendelse; hver udgave tæller lige meget. Målgruppegennemsnit bruger `summarizeSegmentRates`: vægtning efter leverede, hvis alle brugbare udgaver har leveringstal, ellers uvægtet gennemsnit pr. udgave. Medlemsantal må ikke erstatte manglende leveringer som vægt.
+- Historiske vurderinger bruger senest registrerede rater. De kræver mindst tre (maksimalt fem) tidligere udsendelser inden for ±25 % af den aktuelle leverings-/modtagerstørrelse og en udsendelsesalder på mindst syv dage. Det er ikke en sammenligning af faste syvdagesmålinger. Vurderingen gælder den valgte periode; udvid perioden ved utilstrækkelig historik.
+- `MeasurementContext` viser, om sammenligningen er foreløbig, mangler rater/størrelse, mangler historik eller er tilgængelig. Baselinekurven skjules, når vurderingen ikke er tilgængelig. Arkivets 1- og 7-dagesmålinger vises særskilt med observeret tidspunkt; et passeret målevindue er ikke nul og bliver ikke efterkonstrueret.
+- Datadækning tæller udsendelser med mindst ét dokumenteret kontaktklik. Et gammelt tilgængelighedsflag eller et ukendt historisk klikmål tæller ikke med. Det er udsendelsesdækning, ikke fuldstændig artikeldækning: importen gemmer linkresultater fra fem klik og opefter.
+- Det eksterne benchmark er en vejledende reference. Ens måledefinition og vægtning er ikke dokumenteret; forskellige formål og målgrupper gør forskellen i procentpoint uegnet som kvalitetsrangering.

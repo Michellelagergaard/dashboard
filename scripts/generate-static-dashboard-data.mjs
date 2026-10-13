@@ -90,7 +90,8 @@ const mailings = await mapConcurrent(sorted, 1, async (issue) => {
   const linkPerformance = includeLinks ? await safe(() => fetchIssueLinkPerformance(apiKey, issue.id), { available: false, results: [] }) : { available: false, results: [] };
   const segmentData = includeSegments ? await safe(() => fetchIssueSegmentPerformance(apiKey, issue.id), { available: false, results: [] }) : { available: false, results: [] };
   const segmentsObservedAt = new Date().toISOString();
-  checkpoints = recordCheckpoints(checkpoints, issue, segmentData.available ? publicSegmentRows(segmentData.results) : [], segmentsObservedAt);
+  const observedSegments = segmentData.results.map(row => ({ ...row, observedAt: segmentsObservedAt }));
+  checkpoints = recordCheckpoints(checkpoints, issue, segmentData.available ? publicSegmentRows(observedSegments) : [], segmentsObservedAt);
   const segmentLinkData = includeSegmentLinks ? await safe(() => fetchIssueSegmentLinkData(apiKey, issue.id), { available: false, results: [] }) : { available: false, results: [] };
   const segmentLinkPerformance = segmentLinkData.results;
   const segmentSubjects = includeSegments && issue.dashboardType === "Psykologernes Nyhedsbrev" ? await safe(() => fetchIssueSegmentSubjects(apiKey, issue.id), []) : [];
@@ -101,7 +102,7 @@ const mailings = await mapConcurrent(sorted, 1, async (issue) => {
     content: linkPerformance.results.filter((item) => item.clicks >= 5).map((item) => ({ title: linkTitles.get(item.destination) || item.title, destination: item.destination, recipients: issue.delivered, clicks: item.clicks, rate: item.clicks / Math.max(1, issue.delivered) * 100, clickMeasurement: item.clickMeasurement })),
     links,
     segments: issue.classificationMetadata?.segments || [],
-    segmentPerformance: publicSegmentRows(segmentData.results),
+    segmentPerformance: publicSegmentRows(observedSegments),
     segmentSubjects,
     segmentLinkPerformance: segmentLinkPerformance.filter(item => segmentRecipientCounts.get(item.audience) > 0).map((item) => ({ title: linkTitles.get(item.destination) || item.title, destination: item.destination, audience: item.audience, clicks: item.clicks, rate: item.clicks / segmentRecipientCounts.get(item.audience) * 100, clickMeasurement: item.clickMeasurement })),
     ...(segmentData.available ? { segmentMappingVersion } : {}),
@@ -156,6 +157,7 @@ function emptyMailing(issue) {
     id: issue.id, title: issue.name || issue.subject || "Uden titel", subject: issue.subject || "Emnefelt mangler",
     type: issue.dashboardType || issue.category || "Ikke kategoriseret", date: formatDate(issue.sentAt), sentAt: issue.sentAt,
     delivered: issue.delivered, openRate: issue.openRate ?? 0, clickRate: issue.clickRate ?? 0, unsubscribes: issue.unsubscribes ?? 0,
+    openCount: issue.openCount, clickCount: issue.clickCount,
     measurementVersion: issue.measurementVersion, measurement: issue.measurement, observedAt: issue.fetchedAt,
     content: [], links: [], segments: issue.classificationMetadata?.segments || [],
     segmentPerformance: [], segmentSubjects: [], segmentLinkPerformance: [],

@@ -73,3 +73,14 @@ export function mergeCheckpointLedgers(saved, incoming) {
   for (const row of incoming.records) { const key=JSON.stringify([row.mailingId,row.day]); if (!rows.has(key)) rows.set(key,row); }
   return { version: 1, records: [...rows.values()] };
 }
+
+// Explain the actual history comparison; ageing seven days is not a fixed checkpoint.
+export function comparisonStatus(level) {
+  if (!level || level.current.value === null || level.current.size === null || !Number.isFinite(Date.parse(level.current.mailing.sentAt))) return { status: "missing", label: "Mangler målegrundlag", message: "Der mangler en registreret rate eller et brugbart modtager-/leveringstal for sammenligningen." };
+  if (!level.mature) {
+    const readyAt = new Date(Date.parse(level.current.mailing.sentAt) + 7 * 86400000).toISOString();
+    return { status: "preliminary", label: "Foreløbige tal", readyAt, message: "Udsendelsen er under syv dage gammel. Tallene kan ændre sig; vurderingen af eget niveau afventer mindst syv dage." };
+  }
+  if (level.count < 3) return { status: "insufficient", label: "Mangler historik", message: `Kun ${level.count} sammenlignelige tidligere udsendelser i perioden. Der kræves mindst tre med en modtager-/leveringsstørrelse inden for ±25 %. En længere periode kan give mere grundlag.` };
+  return { status: "available", label: "Historisk sammenligning", message: `Medianen af ${level.count} tidligere udsendelser med tilsvarende størrelse. Vi sammenligner senest registrerede tal, ikke faste syvdagesmålinger; observationstidspunkterne kan variere.` };
+}

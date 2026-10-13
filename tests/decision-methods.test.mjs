@@ -74,3 +74,15 @@ test("the newest editorial note wins without losing other issues or audiences",(
   assert.throws(()=>validateNotes({version:1,notes:[note,note]}));
   validateNotes(JSON.parse(readFileSync(new URL("../config/editorial-notes.json",import.meta.url))));
 });
+
+import { comparisonStatus } from '../config/decision-methods.mjs';
+test('comparison explanations distinguish missing values, young issues and sparse history', () => {
+  assert.equal(comparisonStatus(null).status, 'missing');
+  assert.equal(comparisonStatus(normalLevel(prior, {...current, clickRate:undefined}, {asOf})).status, 'missing');
+  const young = normalLevel(prior, {...current, sentAt:'2026-11-30T12:00:00Z'}, {asOf});
+  assert.equal(comparisonStatus(young).status, 'preliminary');
+  assert.equal(comparisonStatus(young).readyAt, '2026-12-07T12:00:00.000Z');
+  assert.equal(comparisonStatus(normalLevel(prior.slice(0,2),current,{asOf})).status,'insufficient');
+  assert.equal(comparisonStatus(normalLevel(prior,current,{asOf})).status,'available');
+  assert.match(comparisonStatus(normalLevel(prior,current,{asOf})).message,/ikke faste syvdages/);
+});

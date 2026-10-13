@@ -7,10 +7,10 @@ import { EditorialProvider } from "./editorial-editor";
 import { enrichMailings } from "../config/editorial-content.mjs";
 import { memberSegmentNames } from "../config/member-segments.mjs";
 import { editorialCategory, summarizeEditorialTopics } from "../config/editorial-topics.mjs";
-import { clickMeasurementLabel, isComparableLink, partitionLinkMeasurements } from "../config/measurement-methods.mjs";
+import { clickMeasurementLabel, isComparableLink, partitionLinkMeasurements, summarizeSegmentRates, summarizeCoverage } from "../config/measurement-methods.mjs";
 import { magazineReviewTopic, magazineTopicNames, summarizeMagazineTopics } from "../config/magazine-topics.mjs";
 import { dashboardRouteUrl, normalizeDashboardRoute, parseDashboardRoute, viewForNewsletter } from "../config/dashboard-navigation.mjs";
-import { normalLevel } from "../config/decision-methods.mjs";
+import { normalLevel, comparisonStatus, checkpointStatus } from "../config/decision-methods.mjs";
 
 type View = "home" | "overview" | "audiences" | "mailing" | "about" | "competence" | "magazine" | "tr-amr" | "network";
 type Mailing = LiveMailing;
@@ -167,7 +167,8 @@ function HomeOverview({ rows, period, onPeriodChange, asOf, onNavigate, onOpen }
       <div className="overview-section-header"><div><h2 id="home-status-title">Status for nyhedsbrevene</h2><p>Seneste udsendelse vurderet i forhold til samme nyhedsbrevs tidligere niveau.</p></div></div>
       <div className="home-status-grid">{grouped.map((group) => group.latest ? <article className={"home-status-card " + group.className} key={group.name}>
         <div className="home-card-heading"><span className="home-card-icon">{group.icon}</span><div><h3>{group.name}</h3><p>Senest udsendt {group.latest.date}</p></div></div>
-        <div className="home-card-metrics"><div><span>Åbningsrate</span><strong>{pct(group.latest.openRate)}</strong><small>{levelText(group.openLevel?.delta ?? null)}</small></div><div><span>Klikrate</span><strong>{pct(group.latest.clickRate)}</strong><small>{levelText(group.clickLevel?.delta ?? null)}</small></div></div>
+        <div className="home-card-metrics"><div><span>Åbningsrate</span><strong>{pct(group.latest.openRate)}</strong><small>{countLabel(group.latest.openCount, "åbninger")}</small><small>{levelText(group.openLevel?.delta ?? null)}</small></div><div><span>Klikrate</span><strong>{pct(group.latest.clickRate)}</strong><small>{countLabel(group.latest.clickCount, "klik")}</small><small>{levelText(group.clickLevel?.delta ?? null)}</small></div></div>
+        <p className="home-measurement-note">{num(group.latest.delivered)} leverede · {comparisonStatus(group.clickLevel).label}{group.clickLevel?.delta === null ? ` · ${homeComparisonReason(group.clickLevel)}` : ` · ${group.clickLevel?.count} tidligere udsendelser`}</p>
         <div className="home-card-footer"><PerformanceBadge delta={group.clickLevel?.delta ?? null} /><button onClick={() => onNavigate(group.view)}>Se analyse <ArrowRight /></button></div>
       </article> : <article className={"home-status-card empty " + group.className} key={group.name}><div className="home-card-heading"><span className="home-card-icon">{group.icon}</span><div><h3>{group.name}</h3><p>Ingen udsendelser i perioden</p></div></div><button onClick={() => onNavigate(group.view)}>Se side <ArrowRight /></button></article>)}</div>
     </section>
@@ -190,13 +191,13 @@ function BenchmarkOverview({ grouped }: { grouped: Array<(typeof newsletterViews
   const allIssues = grouped.flatMap((group) => group.issues);
   const dpOpen = average(allIssues.map((row) => row.openRate));
   const dpClick = average(allIssues.map((row) => row.clickRate));
-  const clickDelta = dpClick - externalBenchmarks.associations.clickRate;
   const benchmarkRows = [
     { label: "Klikrate", dp: dpClick, benchmark: externalBenchmarks.associations.clickRate, primary: true },
     { label: "Åbningsrate", dp: dpOpen, benchmark: externalBenchmarks.associations.openRate, primary: false },
   ];
   return <section className="panel benchmark-panel benchmark-compact" aria-labelledby="benchmark-title">
-    <div className="benchmark-header"><div><p className="eyebrow">Eksternt benchmark</p><h2 id="benchmark-title">Hvordan ligger DP?</h2><p>Periodens gennemsnit sammenlignet med foreninger og medlemsorganisationer.</p></div><span className="benchmark-verdict">{clickDelta >= 0 ? `+${formatPoint(clickDelta)} procentpoint i klikrate` : `${formatPoint(clickDelta)} procentpoint i klikrate`}</span></div>
+    <div className="benchmark-header"><div><p className="eyebrow">Eksternt benchmark</p><h2 id="benchmark-title">Et pejlemærke udefra</h2><p>Vejledende reference. Målgrupper, udsendelsesformål og målemetoder er forskellige.</p></div><span className="benchmark-verdict">{num(allIssues.length)} udsendelser · blandede målgrupper</span></div>
+    <p className="analysis-coverage-note">DP-tallet samler fem forskellige nyhedsbreve og er et uvægtet gennemsnit pr. udsendelse. Brug eget nyhedsbrevs historik til at vurdere udvikling.</p>
     <div className="benchmark-bars">
       {benchmarkRows.map((row) => {
         const scale = Math.max(row.dp, row.benchmark) * 1.08 || 1;
@@ -204,18 +205,17 @@ function BenchmarkOverview({ grouped }: { grouped: Array<(typeof newsletterViews
         return <article className={row.primary ? "primary" : ""} key={row.label}>
           <div className="benchmark-metric-heading"><h3>{row.label}</h3><span className={delta >= 0 ? "benchmark-positive" : "benchmark-negative"}>{delta >= 0 ? "+" : ""}{formatPoint(delta)} procentpoint</span></div>
           <div className="benchmark-bar-row"><strong>DP</strong><div className="benchmark-track"><span className="dp-bar" style={{ width: `${row.dp / scale * 100}%` }} /></div><b>{pct(row.dp)}</b></div>
-          <div className="benchmark-bar-row"><strong>Andre</strong><div className="benchmark-track"><span className="peer-bar" style={{ width: `${row.benchmark / scale * 100}%` }} /></div><b>{pct(row.benchmark)}</b></div>
+          <div className="benchmark-bar-row"><strong>Reference</strong><div className="benchmark-track"><span className="peer-bar" style={{ width: `${row.benchmark / scale * 100}%` }} /></div><b>{pct(row.benchmark)}</b></div>
           {!row.primary && <p className="benchmark-caveat">Åbningsrater er ikke direkte sammenlignelige på tværs af platforme på grund af bl.a. Apple Mail Privacy Protection.</p>}
         </article>;
       })}
     </div>
-    <details className="benchmark-breakdown"><summary>Se nyhedsbreve, kilde og sammenligningsgrundlag</summary><div className="benchmark-table-wrap"><table className="benchmark-table"><thead><tr><th>Nyhedsbrev</th><th>Udsendelser</th><th>Åbnet</th><th>Klikket</th><th>Mod andre</th></tr></thead><tbody>{grouped.map((group) => {
+    <details className="benchmark-breakdown"><summary>Se nyhedsbreve, kilde og sammenligningsgrundlag</summary><div className="benchmark-table-wrap"><table className="benchmark-table"><thead><tr><th>Nyhedsbrev</th><th>Udsendelser</th><th>Åbnet</th><th>Klikket</th><th>Gns. leverede</th></tr></thead><tbody>{grouped.map((group) => {
       const openRate = average(group.issues.map((row) => row.openRate));
       const clickRate = average(group.issues.map((row) => row.clickRate));
-      const delta = clickRate - externalBenchmarks.associations.clickRate;
-      return <tr key={group.name}><td><strong>{group.name}</strong></td><td>{num(group.issues.length)}</td><td>{group.issues.length ? pct(openRate) : "—"}</td><td><b>{group.issues.length ? pct(clickRate) : "—"}</b></td><td>{group.issues.length ? <span className={delta >= 0 ? "benchmark-positive" : "benchmark-negative"}>{delta >= 0 ? "+" : ""}{formatPoint(delta)} pp.</span> : "—"}</td></tr>;
+      return <tr key={group.name}><td><strong>{group.name}</strong></td><td>{num(group.issues.length)}</td><td>{group.issues.length ? pct(openRate) : "—"}</td><td><b>{group.issues.length ? pct(clickRate) : "—"}</b></td><td>{group.issues.length ? num(Math.round(average(group.issues.map(row => row.delivered)))) : "—"}</td></tr>;
     })}</tbody></table></div>
-    <div className="benchmark-source"><p><strong>Kilde:</strong> Higher Logic, <em>Association Email Benchmark Report 2025–2026</em>. Ca. 1.500 foreninger og nonprofits og mere end 2 mia. mails sendt i 2025.</p><p>DP-tallene er almindelige gennemsnit af {num(allIssues.length)} udsendelser i den valgte periode. Klik er det mest robuste sammenligningsmål, men platformenes målemetoder kan variere.</p><a href="https://www.higherlogic.com/news/higher-logic-releases-2025-2026-association-email-benchmark-report/" target="_blank" rel="noreferrer">Se benchmarkrapporten</a></div></details>
+    <div className="benchmark-source"><p><strong>Kilde:</strong> Higher Logic, <em>Association Email Benchmark Report 2025–2026</em>. Ca. 1.500 foreninger og nonprofits og mere end 2 mia. mails sendt i 2025.</p><p>DP-tallene er almindelige gennemsnit af {num(allIssues.length)} udsendelser i den valgte periode. Hver udsendelse tæller lige meget, uanset antal leverede. Referencen er ikke dokumenteret beregnet med samme vægtning eller klikdefinition. Forskellen i procentpoint er derfor ikke en kvalitetsvurdering.</p><a href="https://www.higherlogic.com/news/higher-logic-releases-2025-2026-association-email-benchmark-report/" target="_blank" rel="noreferrer">Se benchmarkrapporten</a></div></details>
   </section>;
 }
 
@@ -259,24 +259,25 @@ function UnsegmentedNewsletterOverview({ rows, asOf, name, selectedId, onSelect,
     .sort((a, b) => b.clicks - a.clicks)
     .slice(0, 5);
   const verdict = comparison.delta === null ? "Resultatet kan endnu ikke sammenlignes" : comparison.delta >= 1 ? "Klikraten er højere end det tidligere niveau" : comparison.delta <= -1 ? "Klikraten er lavere end det tidligere niveau" : "Klikraten er på niveau med tidligere udsendelser";
-  const verdictNote = comparison.delta === null ? "Der er endnu ikke tilstrækkeligt sammenligningsgrundlag." : `Klikraten afviger med ${formatPoint(Math.abs(comparison.delta))} procentpoint fra medianen for ${comparison.count} tidligere udsendelser. Åbningsraten er ${comparisonPhrase(openComparison.delta)}.`;
+  const verdictNote = comparison.delta === null ? comparisonStatus(comparison).message : `Klikraten afviger med ${formatPoint(Math.abs(comparison.delta))} procentpoint fra medianen for ${comparison.count} tidligere udsendelser. Åbningsraten er ${comparisonPhrase(openComparison.delta)}.`;
   return <div className="stack overview-page competence-page">
     <PeriodAverageChart openRate={averageOpenRate} clickRate={averageClickRate} count={rows.length} tag={name} />
     <section className={`overview-verdict ${comparison.delta !== null && comparison.delta < -1 ? "below" : "above"}`}>
       <div className="overview-verdict-content"><p className="eyebrow">{selectedId ? "Valgt udsendelse" : "Seneste udsendelse"} · {latest.date}</p><h2>{latest.subject || latest.title}</h2><div className="overview-assessment"><span>Vurdering</span><h3>{verdict}</h3><p>{verdictNote}</p></div></div>
-      <strong>{comparison.delta === null ? "Afventer grundlag" : comparison.delta >= 1 ? "↑ Klik højere" : comparison.delta <= -1 ? "↓ Klik lavere" : "→ Klik på niveau"}</strong>
+      <strong>{comparison.delta === null ? comparisonStatus(comparison).label : comparison.delta >= 1 ? "↑ Klik højere" : comparison.delta <= -1 ? "↓ Klik lavere" : "→ Klik på niveau"}</strong>
     </section>
+    <MeasurementContext mailing={latest} level={comparison} asOf={asOf} /><CoverageSummary rows={rows} />
     <section className="kpi-grid competence-kpis" aria-label={`Nøgletal for ${selectedId ? "valgte" : "seneste"} ${name}`}>
       <Kpi icon={<Mail />} label="Leverede" value={num(latest.delivered)} note="Registreret som leveret" />
-      <Kpi icon={<Activity />} label="Åbningsrate" value={pct(latest.openRate)} note={levelText(openComparison.delta)} />
-      <Kpi icon={<MousePointerClick />} label="Klikrate" value={pct(latest.clickRate)} note={levelText(comparison.delta)} />
+      <Kpi icon={<Activity />} label="Åbningsrate" value={pct(latest.openRate)} count={countLabel(latest.openCount, "åbninger")} note={levelText(openComparison.delta)} />
+      <Kpi icon={<MousePointerClick />} label="Klikrate" value={pct(latest.clickRate)} count={countLabel(latest.clickCount, "klik")} note={levelText(comparison.delta)} />
       <Kpi icon={<TrendingUp />} label="CTOR" value={latest.openRate > 0 ? pct(latest.clickRate / latest.openRate * 100) : "—"} note="Klik blandt registrerede åbninger" />
       <Kpi icon={<Users />} label="Afmeldinger" value={num(latest.unsubscribes || 0)} note="Registreret efter udsendelsen" />
     </section>
     {name === "Magasinet P" ? <MagazineTopics rows={selectedId ? [latest] : rows} {...magazineState} /> : null}
     <section className="overview-section"><div className="overview-section-header"><div><h2>Mest besøgte links</h2><p>De fem destinationslinks med flest unikke klik i Ungapped.</p></div></div><div className="overview-stories">{topLinks.length ? topLinks.map((item, index) => <article key={`${item.destination}-${index}`}><span className="overview-rank">{index + 1}</span><div><strong>{displayTitle(item)}</strong><span>{contentTopic(item)}</span></div><div><strong>{item.clickMeasurement?.aggregation === "max-per-destination" ? "≥ " : ""}{num(item.clicks)} unikke klik</strong><span>{formatPoint(item.rate)} pr. 100 leverede</span></div></article>) : <DataGap title="Ingen dokumenterede linkresultater" text="Ungapped leverede ikke brugbare unikke klik pr. link for denne udsendelse." />}</div></section>
     {name === "Kompetencenyt" || name === "Magasinet P" ? <UnsegmentedAudienceClicks rows={selectedId ? [latest] : rows} name={name} singleIssue={Boolean(selectedId)} /> : null}
-    <OverviewTrend rows={rows} latest={latest} baseline={comparison.baseline} />
+    <OverviewTrend rows={rows} latest={latest} baseline={comparison.delta === null ? null : comparison.baseline} />
     <section className="panel table-panel overview-recent"><div className="overview-section-header"><div><h2>Seneste udsendelser</h2><p>Udviklingen i {name} måned for måned. Sammenligningen viser hver måling i forhold til op til fem tidligere udsendelser.</p></div></div><div className="table-scroll"><table><thead><tr><th>Dato og emnefelt</th><th>Sammenligning med tidligere</th><th>Leverede</th><th>Åbnet</th><th>Klikket</th><th>CTOR</th><th></th></tr></thead><tbody>{rows.slice(0, 12).map((row) => { const clickLevel = normalLevel(rows, row, { metric: "clickRate", asOf }); const rowOpenLevel = normalLevel(rows, row, { metric: "openRate", asOf }); return <tr key={row.id}><td><strong>{row.date} · {row.subject || row.title}</strong></td><td><CompetenceComparison openDelta={rowOpenLevel.delta} clickDelta={clickLevel.delta} /></td><td>{num(row.delivered)}</td><td>{pct(row.openRate)}</td><td><b>{pct(row.clickRate)}</b></td><td>{row.openRate > 0 ? pct(row.clickRate / row.openRate * 100) : "—"}</td><td>{onSelect ? <button className="row-link" onClick={() => onSelect(row.id)}>Åbn</button> : null}</td></tr>; })}</tbody></table></div></section>
     <details className="panel overview-method"><summary>Om tallene og datagrundlaget</summary><p>Visningen omfatter kun sendte udsendelser med Ungapped-tagget <strong>{name}</strong>. Nyhedsbrevet segmenteres ikke, og derfor vises ingen målgruppeanalyse.</p><MeasurementGuideContent /></details>
   </div>;
@@ -315,13 +316,8 @@ function UnsegmentedAudienceClicks({ rows, name, singleIssue = false }: { rows: 
       const data = segmentRows(mailing).find((item) => item.name === segment);
       return data ? [{ mailing, data }] : [];
     });
-    const delivered = measurements.reduce((sum, item) => sum + (item.data.delivered || item.data.recipients || 0), 0);
-    const weightedClicks = measurements.reduce((sum, item) => {
-      const denominator = item.data.delivered || item.data.recipients || 0;
-      return sum + item.data.clickRate / 100 * denominator;
-    }, 0);
-    const clickRate = delivered > 0 ? weightedClicks / delivered * 100 : average(measurements.map((item) => item.data.clickRate));
-    return { segment, clickRate, issues: measurements.length, delivered };
+    const summary = summarizeSegmentRates(measurements.map(item => item.data));
+    return { segment, clickRate: summary.click ?? 0, issues: summary.count, method: summary.method };
   }).filter((profile) => profile.issues > 0).sort((a, b) => b.clickRate - a.clickRate);
   const maxRate = Math.max(...profiles.map((profile) => profile.clickRate), 1);
   const overallRate = average(rows.map((row) => row.clickRate));
@@ -329,14 +325,14 @@ function UnsegmentedAudienceClicks({ rows, name, singleIssue = false }: { rows: 
   return <section className="panel unsegmented-audience-profile" aria-labelledby={`${name.replace(/\W/g, "-")}-audience-title`}>
     <div className="audience-profile-header"><div><p className="eyebrow">Klik efter medlemsgruppe</p><h2 id={`${name.replace(/\W/g, "-")}-audience-title`}>Hvilke medlemsgrupper klikkede?</h2><p>{singleIssue ? "Gruppernes klikrate i den valgte udsendelse." : "Gruppernes gennemsnitlige klikrate i den valgte periode."}</p></div>{leader ? <div className="audience-profile-highlight"><span>Højeste klikrate</span><strong>{leader.segment}</strong><small>{pct(leader.clickRate)} · {num(leader.issues)} udgaver med data</small></div> : null}</div>
     {profiles.length ? <><div className="audience-profile-chart" role="list" aria-label={`Klikrate i ${name} efter medlemsgruppe`}>{profiles.map((profile, index) => <article key={profile.segment} role="listitem" className={index === 0 ? "leading" : ""}>
-      <div className="audience-profile-label"><span>{index + 1}</span><div><strong>{profile.segment}</strong><small>{num(profile.issues)} af {num(rows.length)} udgaver med data</small></div></div>
+      <div className="audience-profile-label"><span>{index + 1}</span><div><strong>{profile.segment}</strong><small>{num(profile.issues)} af {num(rows.length)} udgaver · {profile.method === "delivered" ? "vægtet efter leverede" : "uvægtet gennemsnit"}</small></div></div>
       <div className="audience-profile-bar" aria-label={`${profile.segment}: ${pct(profile.clickRate)}`}><span style={{ width: `${Math.max(3, profile.clickRate / maxRate * 100)}%` }} /></div>
       <strong className="audience-profile-rate">{pct(profile.clickRate)}</strong>
     </article>)}</div><div className="audience-profile-benchmark"><span /><p>{singleIssue ? "Nyhedsbrevets klikrate i den valgte udsendelse:" : "Nyhedsbrevets gennemsnitlige klikrate i perioden:"} <strong>{pct(overallRate)}</strong></p></div><p className="method-note">Alle modtog samme nyhedsbrev. Medlemsgrupperne er efterfølgende filtre på Ungappeds aggregerede klikstatistik og kan overlappe. Derfor summerer de ikke til 100 %, og modulet viser ikke unikke personer på tværs af grupper.</p></> : <DataGap title="Målgruppedata er på vej" text="Modulet vises, når Ungapped har leveret filtrerede klikresultater for mindst én medlemsgruppe." />}
   </section>;
 }
 
-function PeriodAverageChart({ openRate, clickRate, count, tag = "Kompetencenyt", description, period, onPeriodChange }: { openRate: number; clickRate: number; count: number; tag?: string; description?: string; period?: string; onPeriodChange?: (period: string) => void }) {
+function PeriodAverageChart({ openRate, clickRate, count, tag = "Kompetencenyt", description, methodNote, period, onPeriodChange }: { openRate: number; clickRate: number; count: number; tag?: string; description?: string; methodNote?: string; period?: string; onPeriodChange?: (period: string) => void }) {
   const metrics = [
     { label: "Gennemsnitlig åbningsrate", value: openRate, className: "open" },
     { label: "Gennemsnitlig klikrate", value: clickRate, className: "click" },
@@ -347,7 +343,7 @@ function PeriodAverageChart({ openRate, clickRate, count, tag = "Kompetencenyt",
       <div><span>{metric.label}</span><strong>{pct(metric.value)}</strong></div>
       <div className="average-track" aria-hidden="true"><span style={{ width: `${Math.max(0, Math.min(100, metric.value))}%` }} /></div>
     </article>)}</div>
-    <p className="method-note">Gennemsnittet er beregnet som et almindeligt gennemsnit af udsendelsernes registrerede rater.</p>
+    <p className="method-note">{methodNote || "Hver udsendelse tæller lige meget i gennemsnittet af registrerede rater. Det er ikke en samlet andel af alle leverede mails."}</p>
   </section>;
 }
 
@@ -382,7 +378,7 @@ function Overview({ rows, onOpen, asOf, period, onPeriodChange }: { rows: Mailin
   const openComparison = normalLevel(rows, latest, { metric: "openRate", asOf });
   const topLinks = latest.content.filter(item => isComparableLink(item) && item.editorial?.kind === "news").sort((a, b) => b.clicks - a.clicks).slice(0, 3);
   const verdict = comparison.delta === null ? "Resultatet kan endnu ikke sammenlignes" : comparison.delta >= 0 ? "Nyhedsbrevet klarede sig bedre end normalt" : "Nyhedsbrevet lå under det normale niveau";
-  const verdictNote = comparison.delta === null ? "Der er endnu ikke tilstrækkeligt sammenligningsgrundlag." : `Klikraten var ${formatPoint(Math.abs(comparison.delta))} procentpoint ${comparison.delta >= 0 ? "over" : "under"} niveauet for ${comparison.count} tidligere udsendelser.`;
+  const verdictNote = comparison.delta === null ? comparisonStatus(comparison).message : `Klikraten var ${formatPoint(Math.abs(comparison.delta))} procentpoint ${comparison.delta >= 0 ? "over" : "under"} niveauet for ${comparison.count} tidligere udsendelser.`;
   const performance = [...segmentRows(latest)].filter(item => Number.isFinite(item.clickRate)).sort((a, b) => b.clickRate - a.clickRate);
   const strongest = performance[0];
   const weakest = performance.at(-1);
@@ -402,12 +398,13 @@ function Overview({ rows, onOpen, asOf, period, onPeriodChange }: { rows: Mailin
         <h2>{latest.subject || latest.title}</h2>
         <div className="overview-assessment"><span>Vurdering</span><h3>{verdict}</h3><p>{verdictNote}</p></div>
       </div>
-      <strong>{comparison.delta === null ? "Afventer grundlag" : comparison.delta >= 0 ? "↑ Over normalt niveau" : "↓ Under normalt niveau"}</strong>
+      <strong>{comparison.delta === null ? comparisonStatus(comparison).label : comparison.delta >= 0 ? "↑ Over normalt niveau" : "↓ Under normalt niveau"}</strong>
     </section>
+    <MeasurementContext mailing={latest} level={comparison} asOf={asOf} /><CoverageSummary rows={rows} />
     <section className="kpi-grid overview-kpis" aria-label="Nøgletal for seneste udsendelse">
       <Kpi icon={<Mail />} label="Leverede" value={num(latest.delivered)} note={previous ? `${signed(latest.delivered - previous.delivered)} sammenlignet med sidst` : "Første udsendelse i perioden"} />
-      <Kpi icon={<Activity />} label="Åbningsrate" value={pct(latest.openRate)} note={levelText(openComparison.delta)} />
-      <Kpi icon={<MousePointerClick />} label="Klikrate" value={pct(latest.clickRate)} note={levelText(comparison.delta)} />
+      <Kpi icon={<Activity />} label="Åbningsrate" value={pct(latest.openRate)} count={countLabel(latest.openCount, "åbninger")} note={levelText(openComparison.delta)} />
+      <Kpi icon={<MousePointerClick />} label="Klikrate" value={pct(latest.clickRate)} count={countLabel(latest.clickCount, "klik")} note={levelText(comparison.delta)} />
       <Kpi icon={<Users />} label="Afmeldinger" value={num(latest.unsubscribes || 0)} note="Registreret efter udsendelsen" />
     </section>
     <section className="overview-section"><div className="overview-section-header"><div><h2>Hvad interesserede medlemmerne?</h2><p>De mest klikkede nyheder i den seneste udsendelse.</p></div><button className="row-link" onClick={() => onOpen(latest.id)}>Se hele analysen</button></div><div className="overview-stories">{topLinks.length ? topLinks.map((item, index) => <article key={`${item.destination}-${index}`}><span className="overview-rank">{index + 1}</span><div><strong>{displayTitle(item)}</strong><span>{contentTopic(item)}</span></div><div><strong>{item.clickMeasurement?.aggregation === "max-per-destination" ? "≥ " : ""}{num(item.clicks)} klik</strong><span>{formatPoint(item.rate)} pr. 100 leverede</span></div></article>) : <DataGap title="Ingen dokumenterede linkresultater" text="Ungapped leverede ikke brugbare klik pr. nyhed for denne udsendelse." />}</div></section>
@@ -416,9 +413,9 @@ function Overview({ rows, onOpen, asOf, period, onPeriodChange }: { rows: Mailin
       {opportunityAudience ? <article className="audience-signal warning"><div className="audience-signal-heading"><AlertCircle /><span>Største forbedringsmulighed</span></div><h3>{opportunityAudience.name}</h3><strong className="audience-signal-value">{pct(opportunityAudience.clickRate)}</strong><p className="audience-signal-comparison">{audienceComparisonText(opportunityComparison?.delta ?? null, opportunityComparison?.count ?? 0)}</p><dl><div><dt>Signal</dt><dd>{opportunityComparison?.delta !== null && opportunityComparison?.delta !== undefined && opportunityComparison.delta < -1 ? "Målgruppen ligger tydeligt under sit eget normale niveau." : "Målgruppen har udsendelsens laveste klikrate, men afvigelsen fra eget niveau er ikke dokumenteret."}</dd></div><div><dt>Næste handling</dt><dd>Test én tydeligere modtagervinkel i næste udsendelse, og behold resten uændret, så effekten kan vurderes.</dd></div><div><dt>Datagrundlag</dt><dd>{audienceSize(opportunityAudience)} modtagere i seneste måling{opportunityComparison?.count ? ` · ${opportunityComparison.count} tidligere udsendelser i sammenligningen` : ""}.</dd></div></dl></article> : null}
       {strongestLink ? <article className="audience-signal pattern"><div className="audience-signal-heading"><MousePointerClick /><span>Mønster at undersøge</span></div><h3>{strongest.name}</h3><p className="audience-signal-story">“{displayTitle(strongestLink)}”</p><dl><div><dt>Signal</dt><dd>Mest klikkede dokumenterede link for den stærkeste målgruppe: {num(strongestLink.clicks)} klik.</dd></div><div><dt>Hypotese</dt><dd>Konkret, driftskritisk information med en tydelig konsekvens kan være særligt handlingsudløsende.</dd></div><div><dt>Næste handling</dt><dd>Afprøv samme indholdslogik — konkret ændring, konsekvens og handling — uden at kopiere emnet ukritisk.</dd></div></dl></article> : null}
     </div><p className="audience-signals-note">Kortene viser dokumenterede tal, men forklaringer og handlinger er hypoteser. De skal vurderes redaktionelt og kan ikke bruges som dokumentation for årsag.</p></section>
-    <OverviewTrend rows={rows} latest={latest} baseline={comparison.baseline} />
+    <OverviewTrend rows={rows} latest={latest} baseline={comparison.delta === null ? null : comparison.baseline} />
     <section className="panel table-panel overview-recent"><div className="overview-section-header"><div><h2>Seneste udsendelser</h2><p>Et kort overblik over udviklingen.</p></div></div><div className="table-scroll"><table><thead><tr><th>Dato og emnefelt</th><th>Vurdering</th><th>Åbnet</th><th>Klikket</th><th></th></tr></thead><tbody>{rows.slice(0, 5).map((row) => { const level = normalLevel(rows, row, { metric: "clickRate", asOf }); return <tr key={row.id}><td><strong>{row.date} · {row.subject || row.title}</strong></td><td><PerformanceBadge delta={level.delta} /></td><td>{pct(row.openRate)}</td><td><b>{pct(row.clickRate)}</b></td><td><button className="row-link" onClick={() => onOpen(row.id)}>Åbn</button></td></tr>; })}</tbody></table></div></section>
-    <details className="panel overview-method"><summary>Om tallene og datagrundlaget</summary><MeasurementGuideContent /><CoverageSummary rows={rows} /></details>
+    <details className="panel overview-method"><summary>Om tallene og datagrundlaget</summary><MeasurementGuideContent /></details>
     <CategoryInterestChart rows={rows} period={period} onPeriodChange={onPeriodChange} />
   </div>;
 }
@@ -456,15 +453,16 @@ function AudienceView({ rows, comparisonRows, singleIssue, onOpen, asOf, audienc
   const availableSegments = segments.filter((name) => comparisonRows.some((mailing) => segmentRows(mailing).some((item) => item.name === name)));
   const selectedAudience = audience;
   const series = rows.map((mailing) => ({ mailing, data: segmentRows(mailing).find((item) => item.name === selectedAudience) })).filter((item): item is { mailing: Mailing; data: NonNullable<LiveMailing["segmentPerformance"]>[number] } => Boolean(item.data));
-  const averageOpenRate = average(series.map(item => item.data.openRate));
-  const averageClickRate = average(series.map(item => item.data.clickRate));
+  const rateSummary = summarizeSegmentRates(series.map(item => item.data));
+  const averageOpenRate = rateSummary.open ?? 0;
+  const averageClickRate = rateSummary.click ?? 0;
   const allLinks = rows.flatMap((mailing) => segmentLinkRows(mailing).filter((item) => item.audience === selectedAudience).map((item) => ({ ...item, mailing })));
   const links = partitionLinkMeasurements(allLinks).contacts;
   const linkCoverage = new Set(links.map((item) => item.mailing.id)).size;
   const latest = series[0];
   const level = latest ? normalLevel(comparisonRows, latest.mailing, { audience: selectedAudience, metric: "clickRate", asOf }) : null;
   const verdict = !level || level.delta === null ? "Resultatet kan endnu ikke sammenlignes" : level.delta >= 1 ? "Målgruppen reagerede over sit normale niveau" : level.delta <= -1 ? "Målgruppen reagerede under sit normale niveau" : "Målgruppen reagerede på sit normale niveau";
-  const verdictNote = !level || level.delta === null ? "Der er endnu ikke tilstrækkeligt sammenligningsgrundlag." : `Klikraten var ${formatPoint(Math.abs(level.delta))} procentpoint ${level.delta >= 1 ? "over" : level.delta <= -1 ? "under" : "fra"} medianen for ${level.count} tidligere udsendelser.`;
+  const verdictNote = !level || level.delta === null ? comparisonStatus(level).message : `Klikraten var ${formatPoint(Math.abs(level.delta))} procentpoint ${level.delta >= 1 ? "over" : level.delta <= -1 ? "under" : "fra"} medianen for ${level.count} tidligere udsendelser.`;
   const visibleHistory = historyExpanded ? series : series.slice(0, 6);
   const visibleLinks = linksExpanded ? links : links.slice(0, 8);
   function selectAudience(name: string) {
@@ -476,11 +474,13 @@ function AudienceView({ rows, comparisonRows, singleIssue, onOpen, asOf, audienc
     <section className="newsletter-intro"><div><p className="eyebrow">Psykologernes Nyhedsbrev</p><h2>Følg én målgruppe ad gangen</h2><p>{singleIssue ? `Se resultaterne for udsendelsen ${rows[0]?.date || ""}.` : "Se udviklingen, de stærkeste historier og de vigtigste redaktionelle signaler."}</p></div><div className="segment-coverage"><strong>{series.length} udgaver</strong><span>har brugbare data for den valgte målgruppe</span></div></section>
     <section className="panel audience-picker"><div className="audience-tabs" role="tablist" aria-label="Medlemssegmenter">{segments.map((name) => { const available = availableSegments.includes(name); return <button key={name} role="tab" aria-selected={selectedAudience === name} disabled={!available} title={available ? undefined : "Ingen dokumenterede data i den valgte periode"} className={selectedAudience === name ? "audience-tab selected" : "audience-tab"} onClick={() => selectAudience(name)}><span>{name}</span>{!available ? <small>Ingen data</small> : null}</button>; })}</div></section>
     {singleIssue && !series.length ? <DataGap title="Ingen målgruppetal for den valgte udsendelse" text={`Der er ingen offentliggørelsesklare resultater for ${selectedAudience} i denne udsendelse. Vælg en anden målgruppe eller udsendelse.`} /> : null}
-    {!singleIssue && series.length ? <PeriodAverageChart openRate={averageOpenRate} clickRate={averageClickRate} count={series.length} description={`Beregnet på tværs af ${num(series.length)} udsendelser med brugbare data for ${selectedAudience}.`} /> : null}
-    {latest ? <section className={`audience-verdict ${level?.delta !== null && level && level.delta < -1 ? "below" : "above"}`}><div><p className="eyebrow">{selectedAudience} · {singleIssue ? "valgt udsendelse" : "seneste udsendelse"} {latest.mailing.date}</p><h2>{verdict}</h2><p>{verdictNote}</p></div><strong>{!level || level.delta === null ? "Afventer grundlag" : level.delta >= 1 ? "↑ Over normalt niveau" : level.delta <= -1 ? "↓ Under normalt niveau" : "→ På normalt niveau"}</strong></section> : null}
-    <section className="kpi-grid audience-kpis"><Kpi icon={<Mail />} label="Udgaver med data" value={num(series.length)} note={singleIssue ? "Den valgte udsendelse" : `${num(rows.length)} udgaver i perioden`} /><Kpi icon={<Users />} label={singleIssue ? "Modtagerantal" : "Seneste modtagerantal"} value={latest ? latest.data.recipientsLabel : "—"} note={singleIssue ? "Målgruppen i den valgte udsendelse" : "Målgruppen i seneste udsendelse"} /><Kpi icon={<Activity />} label="Åbningsrate" value={latest ? pct(latest.data.openRate) : "—"} note={singleIssue ? "Den valgte udsendelse" : "Seneste udsendelse"} /><Kpi icon={<MousePointerClick />} label="Klikrate" value={latest ? pct(latest.data.clickRate) : "—"} note={levelText(level?.delta ?? null)} /></section>
-    {!singleIssue && latest ? <AudienceTrend series={series} baseline={level?.baseline ?? null} audience={selectedAudience} /> : null}
-    <section className="panel table-panel audience-links"><PanelHeader eyebrow={selectedAudience} title="Hvad interesserede målgruppen?" meta={`${linkCoverage} af ${series.length} udgaver har målgruppefordelte linkklik`} /><p className="content-scope-note">{singleIssue ? "Historier rangeret efter dokumenterede unikke kontakter i den valgte udsendelse." : "Historier rangeret efter dokumenterede unikke kontakter i den valgte periode."} Visningen dokumenterer ikke, at indholdet kun blev sendt til denne målgruppe.</p><div className="table-scroll"><table><thead><tr><th>Historie eller link</th><th>Emne</th><th>Udsendelse</th><th>Registrerede linkklik</th><th>Klik pr. 100 modtagere</th></tr></thead><tbody>{links.length ? visibleLinks.map((item) => <tr key={`${item.mailing.id}-${item.destination}`}><td><ContentCell item={item} /></td><td><TopicBadge item={item} /></td><td>{item.mailing.date}</td><td><LinkClicks item={item} /></td><td><LinkRate item={item} /></td></tr>) : <EmptyRow columns={5} text={singleIssue ? "Ingen dokumenterede linkresultater for denne målgruppe i den valgte udsendelse." : "Ingen dokumenterede linkresultater for denne målgruppe i den valgte periode."} />}</tbody></table></div>{links.length > 8 ? <ExpandButton expanded={linksExpanded} total={links.length} onClick={() => setLinksExpanded((value) => !value)} /> : null}</section>
+    {!singleIssue && series.length ? <PeriodAverageChart openRate={averageOpenRate} clickRate={averageClickRate} count={series.length} tag="Psykologernes Nyhedsbrev" methodNote={rateSummary.method === "delivered" ? "Gennemsnittet er vægtet efter gemte leveringer for målgruppen i hver udsendelse." : "Uvægtet gennemsnit pr. udsendelse: historiske leveringstal mangler for mindst én udgave. Vi gætter ikke på dem."} description={`Beregnet på tværs af ${num(series.length)} udsendelser med brugbare data for ${selectedAudience}.`} /> : null}
+    {latest ? <section className={`audience-verdict ${level?.delta !== null && level && level.delta < -1 ? "below" : "above"}`}><div><p className="eyebrow">{selectedAudience} · {singleIssue ? "valgt udsendelse" : "seneste udsendelse"} {latest.mailing.date}</p><h2>{verdict}</h2><p>{verdictNote}</p></div><strong>{!level || level.delta === null ? comparisonStatus(level).label : level.delta >= 1 ? "↑ Over normalt niveau" : level.delta <= -1 ? "↓ Under normalt niveau" : "→ På normalt niveau"}</strong></section> : null}
+    {latest ? <MeasurementContext mailing={latest.mailing} level={level} asOf={asOf} audience={selectedAudience} /> : null}
+    <p className="analysis-coverage-note">Målgrupperater: {series.length} af {rows.length} udsendelser. Kontaktrangering: {linkCoverage} af {rows.length}. Manglende linkresultater er ikke nul klik. Medlemsstatus ved afsendelse er ikke dokumenteret.</p>
+    <section className="kpi-grid audience-kpis"><Kpi icon={<Mail />} label="Udgaver med data" value={num(series.length)} note={singleIssue ? "Den valgte udsendelse" : `${num(rows.length)} udgaver i perioden`} /><Kpi icon={<Users />} label={singleIssue ? "Modtagerantal" : "Seneste modtagerantal"} value={latest ? latest.data.recipientsLabel : "—"} note={latest?.data.delivered != null ? `${num(latest.data.delivered)} leverede · raternes grundlag` : "Historisk leveringstal ikke gemt"} /><Kpi icon={<Activity />} label="Åbningsrate" value={latest ? pct(latest.data.openRate) : "—"} count={countLabel(latest?.data.openCount, "åbninger")} note={singleIssue ? "Den valgte udsendelse" : "Seneste udsendelse"} /><Kpi icon={<MousePointerClick />} label="Klikrate" value={latest ? pct(latest.data.clickRate) : "—"} count={countLabel(latest?.data.clickCount, "klik")} note={levelText(level?.delta ?? null)} /></section>
+    {!singleIssue && latest ? <AudienceTrend series={series} baseline={level?.delta == null ? null : level.baseline} audience={selectedAudience} /> : null}
+    <section className="panel table-panel audience-links"><PanelHeader eyebrow={selectedAudience} title="Hvad interesserede målgruppen?" meta={`${linkCoverage} af ${rows.length} udgaver har dokumenterede målgruppekontaktklik`} /><p className="content-scope-note">{singleIssue ? "Historier rangeret efter dokumenterede unikke kontakter i den valgte udsendelse." : "Historier rangeret efter dokumenterede unikke kontakter i den valgte periode."} Visningen dokumenterer ikke, at indholdet kun blev sendt til denne målgruppe.</p><div className="table-scroll"><table><thead><tr><th>Historie eller link</th><th>Emne</th><th>Udsendelse</th><th>Registrerede linkklik</th><th>Klik pr. 100 modtagere</th></tr></thead><tbody>{links.length ? visibleLinks.map((item) => <tr key={`${item.mailing.id}-${item.destination}`}><td><ContentCell item={item} /></td><td><TopicBadge item={item} /></td><td>{item.mailing.date}</td><td><LinkClicks item={item} /></td><td><LinkRate item={item} /></td></tr>) : <EmptyRow columns={5} text={singleIssue ? "Ingen dokumenterede linkresultater for denne målgruppe i den valgte udsendelse." : "Ingen dokumenterede linkresultater for denne målgruppe i den valgte periode."} />}</tbody></table></div>{links.length > 8 ? <ExpandButton expanded={linksExpanded} total={links.length} onClick={() => setLinksExpanded((value) => !value)} /> : null}</section>
     <OtherLinkMeasurements items={allLinks} />
     {latest ? <AudienceTakeaways audience={selectedAudience} level={level} top={links[0]} /> : null}
     <details className="panel overview-method"><summary>{singleIssue ? "Se resultater og datagrundlag for den valgte udsendelse" : "Se de enkelte udsendelser og datagrundlaget"}</summary><div className="table-scroll"><table><thead><tr><th>Udsendelse</th><th>Dato</th><th>Modtagere</th><th>Åbnet</th><th>Klikket</th><th>CTOR</th><th></th></tr></thead><tbody>{series.length ? visibleHistory.map(({ mailing, data }) => <tr key={mailing.id}><td><strong>{mailing.title}</strong></td><td>{mailing.date}</td><td>{data.recipientsLabel}</td><td>{pct(data.openRate)}</td><td><b>{pct(data.clickRate)}</b></td><td>{pct(data.ctor)}</td><td><button className="row-link" onClick={() => onOpen(mailing.id)}>Åbn</button></td></tr>) : <EmptyRow columns={7} text={`Der er endnu ingen offentliggørelsesklare resultater for ${selectedAudience}.`} />}</tbody></table></div>{series.length > 6 ? <ExpandButton expanded={historyExpanded} total={series.length} onClick={() => setHistoryExpanded((value) => !value)} /> : null}<MeasurementGuideContent /></details>
@@ -512,11 +512,12 @@ function MailingView({ rows, selected, asOf }: { rows: Mailing[]; selected?: Mai
   const ctor = selected.openRate ? selected.clickRate / selected.openRate * 100 : 0;
   const level = normalLevel(rows, selected, { metric: "clickRate", asOf });
   const verdict = level.delta === null ? "Resultatet kan endnu ikke sammenlignes" : level.delta >= 1 ? "Udsendelsen klarede sig bedre end normalt" : level.delta <= -1 ? "Udsendelsen lå under sit normale niveau" : "Udsendelsen lå på sit normale niveau";
-  const verdictNote = level.delta === null ? "Der er endnu ikke nok sammenlignelige udsendelser." : `Klikraten var ${formatPoint(Math.abs(level.delta))} procentpoint ${level.delta >= 1 ? "over" : level.delta <= -1 ? "under" : "fra"} medianen for ${level.count} tidligere udsendelser.`;
+  const verdictNote = level.delta === null ? comparisonStatus(level).message : `Klikraten var ${formatPoint(Math.abs(level.delta))} procentpoint ${level.delta >= 1 ? "over" : level.delta <= -1 ? "under" : "fra"} medianen for ${level.count} tidligere udsendelser.`;
   return <div className="stack mailing-page">
     <section className={`mailing-verdict ${level.delta !== null && level.delta < -1 ? "below" : "above"}`}><div><p className="eyebrow">{selected.date} · Psykologernes Nyhedsbrev</p><h2>{verdict}</h2><p>{verdictNote}</p></div><PerformanceBadge delta={level.delta} /></section>
-    <section className="panel mailing-summary"><PanelHeader eyebrow="Denne udsendelse" title={selected.title} meta={selected.date} /><p className="subject-line"><span>Emnefelt</span>{selected.subject}</p><div className="kpi-grid compact mailing-kpis"><Kpi icon={<Mail />} label="Leverede" value={num(selected.delivered)} note="Mails registreret som leveret" /><Kpi icon={<Activity />} label="Åbningsrate" value={pct(selected.openRate)} note="Registrerede åbninger" /><Kpi icon={<MousePointerClick />} label="Klikrate" value={pct(selected.clickRate)} note={levelText(level.delta)} /><Kpi icon={<TrendingUp />} label="CTOR" value={pct(ctor)} note="Klik blandt registrerede åbninger" /><Kpi icon={<Users />} label="Afmeldinger" value={num(selected.unsubscribes || 0)} note="Registreret efter udsendelsen" /></div></section>
-    <MailingTrend rows={rows} selected={selected} baseline={level.baseline} />
+    <MeasurementContext mailing={selected} level={level} asOf={asOf} />
+    <section className="panel mailing-summary"><PanelHeader eyebrow="Denne udsendelse" title={selected.title} meta={selected.date} /><p className="subject-line"><span>Emnefelt</span>{selected.subject}</p><div className="kpi-grid compact mailing-kpis"><Kpi icon={<Mail />} label="Leverede" value={num(selected.delivered)} note="Mails registreret som leveret" /><Kpi icon={<Activity />} label="Åbningsrate" value={pct(selected.openRate)} count={countLabel(selected.openCount, "åbninger")} note="Registrerede åbninger" /><Kpi icon={<MousePointerClick />} label="Klikrate" value={pct(selected.clickRate)} count={countLabel(selected.clickCount, "klik")} note={levelText(level.delta)} /><Kpi icon={<TrendingUp />} label="CTOR" value={pct(ctor)} note="Klik blandt registrerede åbninger" /><Kpi icon={<Users />} label="Afmeldinger" value={num(selected.unsubscribes || 0)} note="Registreret efter udsendelsen" /></div></section>
+    <MailingTrend rows={rows} selected={selected} baseline={level.delta === null ? null : level.baseline} />
     <section className="overview-section"><div className="overview-section-header"><div><h2>Hvad interesserede medlemmerne?</h2><p>De mest klikkede redaktionelle historier i udsendelsen.</p></div></div><div className="overview-stories mailing-stories">{topStories.length ? topStories.map((item, index) => <article key={`${item.destination}-${index}`}><span className="overview-rank">{index + 1}</span><div><strong>{displayTitle(item)}</strong><span>{contentTopic(item)}</span><AudienceExposure item={item} /></div><div><strong>{item.clickMeasurement?.aggregation === "max-per-destination" ? "≥ " : ""}{num(item.clicks)} klik</strong><span>{formatPoint(item.rate)} pr. 100 leverede</span></div></article>) : <DataGap title="Ingen dokumenterede historier" text="Der er ingen brugbare klikresultater for redaktionelle historier i denne udsendelse." />}</div></section>
     <section className="panel table-panel mailing-audiences"><PanelHeader eyebrow="Målgrupper" title="Hvordan reagerede målgrupperne?" meta={performance.length ? `${performance.length} målgrupper med data` : "Ingen målgruppedata"} /><div className="table-scroll"><table><thead><tr><th>Målgruppe</th><th>Emnefelt</th><th>Modtagere</th><th>Åbnet</th><th>Klikket</th></tr></thead><tbody>{performance.length ? performance.map((item) => <tr key={item.name}><td><strong>{item.name}</strong></td><td>{subjectForAudience(selected, item.name) || <span className="muted-cell">Samme eller ikke dokumenteret</span>}</td><td>{item.recipientsLabel}</td><td>{pct(item.openRate)}</td><td><b>{pct(item.clickRate)}</b></td></tr>) : <EmptyRow columns={5} text="Der er ingen brugbare målgrupperesultater for denne udsendelse." />}</tbody></table></div></section>
     <MailingTakeaways selected={selected} level={level} topStory={topStories[0]} performance={performance} />
@@ -566,7 +567,23 @@ function TopicBadge({ item, category }: { item?: { title?: string; destination: 
 
 function ExpandButton({ expanded, total, onClick }: { expanded: boolean; total: number; onClick: () => void }) { return <button className="expand-table" type="button" aria-expanded={expanded} onClick={onClick}>{expanded ? <><ChevronUp />Vis færre</> : <><ChevronDown />Vis alle {total}</>}</button>; }
 
-function Kpi({ icon, label, value, note }: { icon: ReactNode; label: string; value: string; note: string }) { return <article className="kpi"><div className="kpi-icon">{icon}</div><span>{label}</span><strong>{value}</strong><small className="neutral">{note}</small></article>; }
+function homeComparisonReason(level: ReturnType<typeof normalLevel> | null) {
+  const status = comparisonStatus(level);
+  return status.readyAt ? `Vurdering tidligst ${new Intl.DateTimeFormat("da-DK", { dateStyle: "medium", timeZone: "Europe/Copenhagen" }).format(new Date(status.readyAt))}` : status.status === "insufficient" ? `${level?.count || 0} af mindst 3 tidligere målinger` : "Rate eller størrelsesgrundlag mangler";
+}
+function countLabel(value: number | undefined, noun: string) { return Number.isFinite(value) ? `${num(value!)} registrerede ${noun}` : "Antal ikke gemt"; }
+function measurementDate(value: string | undefined | null) { return value && Number.isFinite(Date.parse(value)) ? new Intl.DateTimeFormat("da-DK", { dateStyle: "medium", timeStyle: "short", timeZone: "Europe/Copenhagen" }).format(new Date(value)) : "tidspunkt ikke gemt"; }
+function MeasurementContext({ mailing, level, asOf, audience = "" }: { mailing: Mailing; level: ReturnType<typeof normalLevel> | null; asOf: string; audience?: string }) {
+  const status = comparisonStatus(level);
+  return <section className="panel measurement-context" aria-label="Måletidspunkt og sammenligningsgrundlag"><div className="measurement-context-heading"><strong>{status.label}</strong><span>Senest registreret: {measurementDate(audience ? mailing.segmentPerformance?.find(row => row.name === audience)?.observedAt : mailing.observedAt)}</span></div><p>{status.message}{status.readyAt ? ` Tidligst ${measurementDate(status.readyAt)}; det kræver også tilstrækkelig historik og en ny dataopdatering.` : ""}</p><details><summary>Se gemte målepunkter efter 1 og 7 dage</summary><p>Disse er særskilte observationer og er ikke grundlaget for den historiske vurdering ovenfor.</p><div className="checkpoint-grid">{[1, 7].map(day => {
+    const checkpoint = checkpointStatus(mailing, day, asOf);
+    const point = checkpoint.point;
+    const data = audience ? point?.segmentPerformance?.find((row: { name: string }) => row.name === audience) : point;
+    const label = checkpoint.status === "captured" ? data ? "Gemt måling" : "Målgruppetal ikke gemt" : checkpoint.status === "historical" ? "Før målepunktsarkivet / afsendelsestid ukendt" : checkpoint.status === "waiting" ? "Afventer tidspunktet" : checkpoint.status === "due" ? "Målevindue åbent · endnu ikke gemt" : "Målevindue passeret · ingen måling gemt";
+    return <div key={day}><strong>{day} dag{day === 1 ? "" : "e"} · {label}</strong>{data ? <span>Åbnet {pct(data.openRate)} · Klikket {pct(data.clickRate)} · {num(data.delivered)} leverede</span> : null}{point ? <small>Observeret {measurementDate(audience ? point.segmentsObservedAt : point.capturedAt)}</small> : null}</div>;
+  })}</div></details></section>;
+}
+function Kpi({ icon, label, value, note, count }: { icon: ReactNode; label: string; value: string; note: string; count?: string }) { return <article className="kpi"><div className="kpi-icon">{icon}</div><span>{label}</span><strong>{value}</strong>{count ? <small className="kpi-count">{count}</small> : null}<small className="neutral">{note}</small></article>; }
 function PerformanceBadge({ delta }: { delta: number | null }) {
   const label = delta === null ? "Kan ikke sammenlignes" : delta >= 1 ? "Over normalt" : delta <= -1 ? "Under normalt" : "På normalt niveau";
   return <span className={`performance-badge ${delta === null ? "unknown" : delta >= 1 ? "positive" : delta <= -1 ? "negative" : "neutral"}`}>{label}</span>;
@@ -584,13 +601,9 @@ function AboutNumbers({ rows }: { rows: Mailing[] }) {
   return <div className="stack about-page"><section className="panel"><PanelHeader eyebrow="Dokumentation" title="Sådan skal tallene læses" meta="Metode og datadækning" /><MeasurementGuideContent /></section><CoverageSummary rows={rows} /><section className="panel"><PanelHeader eyebrow="Teknisk dokumentation" title="Datakilde og metode" meta="For udvikling og kontrol" /><p>Dashboardet viser dataminimerede og aggregerede resultater fra Ungapped. Ingen kontaktdata publiceres.</p><p><a href="https://github.com/Michellelagergaard/dashboard" target="_blank" rel="noreferrer">Åbn GitHub-repository</a></p></section></div>;
 }
 function CoverageSummary({ rows }: { rows: Mailing[] }) {
-  const values = [
-    ["Udsendelsestal", rows.length],
-    ["Klik pr. nyhed", rows.filter((row) => coverageFor(row).linkPerformance).length],
-    ["Målgruppetal", rows.filter((row) => coverageFor(row).segmentPerformance).length],
-    ["Målgruppeklik pr. nyhed", rows.filter((row) => coverageFor(row).segmentLinkPerformance).length],
-  ] as const;
-  return <section className="panel coverage-panel" aria-label="Datadækning"><div><p className="eyebrow">Datadækning i perioden</p><p>Hver analyse viser kun dokumenterede data fra Ungapped.</p></div><div className="coverage-grid">{values.map(([label, value]) => <div key={label}><strong>{value} af {rows.length}</strong><span>{label}</span></div>)}</div></section>;
+  const coverage = summarizeCoverage(rows);
+  const values = [["Udsendelsestal", coverage.total], ["Dokumenterede kontaktklik pr. nyhed", coverage.links], ["Målgrupperater", coverage.segments], ["Dokumenterede målgruppekontaktklik", coverage.segmentLinks]] as const;
+  return <section className="panel coverage-panel" aria-label="Datadækning"><div><p className="eyebrow">Datadækning i perioden</p><p>{[...new Set(rows.map(row => row.type))].join(" · ")} · Kun udsendelser med det relevante målegrundlag tælles. Linkrangeringer kan dække en del af perioden.</p></div><div className="coverage-grid">{values.map(([label, value]) => <div key={label}><strong>{value} af {rows.length}</strong><span>{label}</span></div>)}</div></section>;
 }
 function MeasurementGuide() {
   return <details className="panel measurement-guide"><summary>Sådan skal tallene læses · historik og målretning</summary><MeasurementGuideContent /></details>;
@@ -600,6 +613,9 @@ function MeasurementGuideContent() {
     <p><strong>Modtagere og leveringer:</strong> Modtagere er udsendelsens målgruppe før fradrag af fejlede leveringer og bounces. Leverede er mails registreret som leveret. Summer på tværs af udgaver er ikke unikke personer.</p>
     <p><strong>Målgruppegennemsnit:</strong> Vi vægter efter leveringer, når alle udgaver i beregningen har gemte leveringstal. Ellers viser vi et uvægtet gennemsnit pr. udgave. Vi gætter ikke på historiske leveringstal.</p>
     <p><strong>Klikmål:</strong> Unikke kontakter og samlede klik vises særskilt ved hvert link. Samme person kan klikke på flere links. Når flere linkplaceringer er samlet, vises det højeste dokumenterede kontaktantal som et minimum. Historiske klikmål uden gemt feltdefinition er mærket; de indgår ikke i automatiske emnekonklusioner.</p>
+    <p><strong>Måletidspunkt:</strong> Udsendelser under syv dage mærkes foreløbige. Historiske vurderinger bruger senest registrerede tal, ikke faste syvdagesmålinger. Eventuelle gemte 1- og 7-dagesmålinger vises særskilt; manglende målepunkter genskabes ikke.</p>
+    <p><strong>Antal og rater:</strong> Registrerede åbnings- og klikantal kommer direkte fra API’et. Unikke menneskelige læsere er ikke dokumenteret. Manglende antal rekonstrueres ikke fra afrundede procenter. CTOR er klikraten divideret med åbningsraten, ikke dokumenteret læsning.</p>
+    <p><strong>Linkdækning:</strong> Importen gemmer linkresultater fra fem klik og opefter. En fraværende artikel betyder derfor ikke nul klik. Historiske måletyper uden gemt definition tælles ikke som dokumenteret kontaktdækning.</p>
     <p><strong>Rater:</strong> Udsendelsens klikrate følger API’ets registrerede klik i forhold til leverede mails. Linktabellerne viser klik pr. 100 leverede eller modtagere — ikke andelen af dem, der fik vist netop den nyhed. Raterne dokumenterer ikke menneskelige læsere eller klik renset for automatiske systemer.</p>
     <p><strong>Målretning:</strong> Målgruppeklik viser, hvem der har registrerede klik i filteret. De dokumenterer ikke, at nyheden kun blev sendt til den målgruppe. Indholdets eksponering er endnu ikke kortlagt, og målgrupper kan overlappe.</p>
     <p><strong>Historik:</strong> Det er endnu ikke bekræftet, om kontaktfiltre bruger medlemsstatus på afsendelsesdatoen eller ved opslaget. Resultaterne skal derfor ikke læses som en dokumenteret historisk medlemsbestand. Data over en måned gamle bevares som historik; seneste opdatering betyder ikke, at alle historiske tal er genberegnet.</p>
@@ -638,13 +654,12 @@ function audienceSize(audience: NonNullable<Mailing["segmentPerformance"]>[numbe
 }
 function audienceComparisonText(delta: number | null, count: number) {
   if (count < 3) return "Ikke nok sammenlignelige historiske målinger";
-  if (delta === null) return "Historisk sammenligning afventer en moden 7-dagesmåling";
+  if (delta === null) return "Udsendelsen er under syv dage gammel; sammenligningen afventer";
   if (delta >= 1) return `${formatPoint(delta)} procentpoint over eget normale niveau`;
   if (delta <= -1) return `${formatPoint(Math.abs(delta))} procentpoint under eget normale niveau`;
   return "På niveau med målgruppens tidligere udsendelser";
 }
 function subjectForAudience(mailing: Mailing, audience: string) { return mailing.segmentSubjects?.find((item) => item.audience === audience)?.subject; }
-function coverageFor(mailing: Mailing) { return mailing.dataCoverage || { linkPerformance: mailing.content.length > 0, segmentPerformance: segmentRows(mailing).length > 0, segmentSubjects: Boolean(mailing.segmentSubjects?.length), segmentLinkPerformance: segmentLinkRows(mailing).length > 0 }; }
 function displayTitle(item: { title?: string; destination: string; editorial?: EditorialMetadata }) {
   const title = item.editorial?.title || item.title;
   const genericCta = /^(tilmeld( dig)?|læs mere( og tilmeld dig)?|se mere|klik her)$/i;

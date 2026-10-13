@@ -106,3 +106,11 @@ test("uses the most descriptive title when several links share a destination", (
     occurrences: 3,
   }]);
 });
+
+test('exact overview counts preserve zero and leave missing source counts absent', () => {
+  const source = {IssueId:'counts'};
+  const result = sanitizeIssue(source,{ReceivedCount:123,OpenCount:61,ClickCount:0});
+  assert.equal(result.openCount,61); assert.equal(result.clickCount,0);
+  const missing = sanitizeIssue(source,{ReceivedCount:123});
+  assert.equal(missing.openCount,undefined); assert.equal(missing.clickCount,undefined);
+});
