@@ -391,8 +391,8 @@ function Overview({ rows, onOpen, asOf, period, onPeriodChange }: { rows: Mailin
       <div className="period-news-grid">{periodNews.length ? periodNews.map(({ item, mailing }, index) => <article key={item.destination}>
         <div className="period-news-heading"><span className="overview-rank">{index + 1}</span><TopicBadge item={item} /></div>
         <h3><a href={item.destination} target="_blank" rel="noreferrer">{displayTitle(item)}</a></h3>
-        <div className="period-news-result"><strong>{item.clickMeasurement?.aggregation === "max-per-destination" ? "≥ " : ""}{num(item.clicks)} kontakter</strong><span>{mailing.date}</span></div>
-        <button className="row-link" onClick={() => onOpen(mailing.id)}>Åbn udsendelsen <ArrowRight /></button>
+        <div className="period-news-result"><strong>{item.clickMeasurement?.aggregation === "max-per-destination" ? "≥ " : ""}{num(item.clicks)}</strong><span>kontakter klikkede</span></div>
+        <div className="period-news-footer"><time dateTime={mailing.sentAt}>{mailing.date}</time><button className="row-link" onClick={() => onOpen(mailing.id)}>Se udsendelse <ArrowRight /></button></div>
       </article>) : <DataGap title="Ingen dokumenterede nyhedsklik i perioden" text="Vælg en længere periode." />}</div>
     </section>
     <section className={`overview-verdict ${comparison.delta === null ? "pending" : comparison.delta <= -1 ? "below" : "above"}`}>
