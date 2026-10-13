@@ -10,7 +10,7 @@ import { editorialCategory, summarizeEditorialTopics } from "../config/editorial
 import { clickMeasurementLabel, isComparableLink, partitionLinkMeasurements, summarizeSegmentRates, summarizeCoverage } from "../config/measurement-methods.mjs";
 import { magazineReviewTopic, magazineTopicNames, summarizeMagazineTopics } from "../config/magazine-topics.mjs";
 import { dashboardRouteUrl, normalizeDashboardRoute, parseDashboardRoute, viewForNewsletter } from "../config/dashboard-navigation.mjs";
-import { editorialDecisionEvidence, editorialTestAction } from "../config/editorial-decisions.mjs";
+import { editorialDecisionEvidence, editorialTestAction, topPeriodNews } from "../config/editorial-decisions.mjs";
 import { normalLevel, comparisonStatus, checkpointStatus } from "../config/decision-methods.mjs";
 
 type View = "home" | "overview" | "audiences" | "mailing" | "about" | "competence" | "magazine" | "tr-amr" | "network";
@@ -373,6 +373,7 @@ function Nav({ active, onClick, icon, label, nested = false }: { active: boolean
 }
 
 function Overview({ rows, onOpen, asOf, period, onPeriodChange }: { rows: Mailing[]; onOpen: (id: string) => void; asOf: string; period: string; onPeriodChange: (period: string) => void }) {
+  const periodNews = topPeriodNews(rows);
   const latest = rows[0];
   const previous = rows[1];
   if (!latest) return <Empty title="Ingen udsendelser i perioden" text="Vælg en længere periode for at se Psykologernes Nyhedsbrev." />;
@@ -385,6 +386,15 @@ function Overview({ rows, onOpen, asOf, period, onPeriodChange }: { rows: Mailin
   const verdictNote = comparison.delta === null ? comparisonStatus(comparison).message : `Klikraten var ${formatPoint(Math.abs(comparison.delta))} procentpoint ${comparison.delta >= 0 ? "over" : "under"} niveauet for ${comparison.count} tidligere udsendelser.`;
   return <div className="stack overview-page">
     <PeriodAverageChart openRate={averageOpenRate} clickRate={averageClickRate} count={rows.length} tag="Psykologernes Nyhedsbrev" period={period} onPeriodChange={onPeriodChange} />
+    <section className="overview-section period-news" aria-labelledby="period-news-title">
+      <div className="overview-section-header"><h2 id="period-news-title">Mest klikkede nyheder i perioden</h2></div>
+      <div className="period-news-grid">{periodNews.length ? periodNews.map(({ item, mailing }, index) => <article key={item.destination}>
+        <div className="period-news-heading"><span className="overview-rank">{index + 1}</span><TopicBadge item={item} /></div>
+        <h3><a href={item.destination} target="_blank" rel="noreferrer">{displayTitle(item)}</a></h3>
+        <div className="period-news-result"><strong>{item.clickMeasurement?.aggregation === "max-per-destination" ? "≥ " : ""}{num(item.clicks)} kontakter</strong><span>{mailing.date}</span></div>
+        <button className="row-link" onClick={() => onOpen(mailing.id)}>Åbn udsendelsen <ArrowRight /></button>
+      </article>) : <DataGap title="Ingen dokumenterede nyhedsklik i perioden" text="Vælg en længere periode." />}</div>
+    </section>
     <section className={`overview-verdict ${comparison.delta === null ? "pending" : comparison.delta <= -1 ? "below" : "above"}`}>
       <div className="overview-verdict-content">
         <p className="eyebrow">Seneste udsendelse · {latest.date}</p>
