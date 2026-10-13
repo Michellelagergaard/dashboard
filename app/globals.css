@@ -191,3 +191,15 @@
 .home-measurement-note { padding:0 2px; }
 .kpi-count { color:#40506a; font-size:12px; }
 @media(max-width:650px) { .checkpoint-grid { grid-template-columns:1fr; } .measurement-context { padding:16px; } }
+
+.evidence-decisions .decision-cards { margin-top:14px; }
+.decision-examples { margin-top:12px; font:12px/1.6 Arial,sans-serif; }
+.decision-examples summary { cursor:pointer; font-weight:700; color:var(--navy); }
+.decision-examples ul { margin:10px 0 0; padding:0; list-style:none; }
+.decision-examples li { border-top:1px solid var(--line); padding:10px 0; }
+.decision-examples a { display:block; font-weight:700; color:var(--navy); overflow-wrap:anywhere; }
+.decision-examples small { display:block; color:var(--muted); margin:4px 0 6px; }
+.decision-card { min-width:0; }
+.decision-card h3,.decision-card p { overflow-wrap:anywhere; }
+.simple-dashboard button:focus-visible,.simple-dashboard summary:focus-visible,.simple-dashboard a:focus-visible,.simple-dashboard select:focus-visible { outline:3px solid #397baf; outline-offset:3px; }
+@media(max-width:650px) { .evidence-decisions .panel-header { flex-wrap:wrap; gap:8px; } .evidence-decisions .decision-cards { grid-template-columns:minmax(0,1fr); } .simple-dashboard .analysis-filters button { min-height:44px; } .decision-examples .decision-link { min-height:44px; } }

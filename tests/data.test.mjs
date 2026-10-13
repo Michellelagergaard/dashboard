@@ -108,10 +108,10 @@ test("Kompetencenyt sammenligner åbning og klik uden en samlet misvisende dom",
   assert.doesNotMatch(dashboardSource, /Udsendelsen lå under det normale niveau/);
 });
 
-test("Kompetencenyt viser Ungappeds mest besøgte links uden redaktionelt servicefilter", () => {
+test("Kompetencenyt viser dokumenterede kontaktklik uden redaktionelt servicefilter", () => {
   assert.match(dashboardSource, /item\.clickMeasurement\?\.metric === "unique-contacts"/);
   assert.doesNotMatch(dashboardSource, /latest\.content\.filter\(item => item\.editorial\?\.kind !== "service"\)/);
-  assert.match(dashboardSource, /De fem destinationslinks med flest unikke klik i Ungapped/);
+  assert.match(dashboardSource, /De fem gemte destinationslinks med flest dokumenterede kontaktklik/);
 });
 
 test("Kompetencenyt og Magasinet P viser dokumenterede klikprofiler for overlappende medlemsgrupper", () => {
