@@ -1,3 +1,4 @@
+import { isMagazineArticle, magazineTopic } from "./magazine-topics.mjs";
 import { editorialCategory, editorialTopicNames } from "./editorial-topics.mjs";
 
 export const contentKinds = { news: "Nyheder og fagligt indhold", service: "Servicelinks", unknown: "Til gennemgang" };
@@ -53,14 +54,25 @@ export function mergeCorrections(shared, local) {
 // View model only: original rows, counts and source titles are never mutated.
 export function enrichMailings(mailings, correctionFile) {
   const overrides = new Map(correctionFile.corrections.map(row => [correctionKey(row.mailingId, row.destination), row]));
+  const magazineTitles = new Map([
+    ["https://www.dp.dk/p-psykologernes-fagmagasin/artikler/hvad-goer-vi-naar-den-klassiske-behandling-ikke-raekker/", { title: "Hvad gør vi, når den klassiske behandling ikke rækker?", source: "article-title" }],
+  ]);
+  for (const mailing of [...mailings].sort((a, b) => String(b.sentAt).localeCompare(String(a.sentAt)))) {
+    if (mailing.type !== "Magasinet P") continue;
+    for (const item of mailing.editorialCatalog || []) {
+      if (isMagazineArticle(item) && !item.ambiguous && ["heading", "styled-heading"].includes(item.titleSource) && !magazineTitles.has(item.destination)) magazineTitles.set(item.destination, { title: item.title, source: "magazine-reference" });
+    }
+  }
   return mailings.map(mailing => {
     const catalog = new Map((mailing.editorialCatalog || []).map(row => [row.destination, row]));
     const decorate = item => {
       const metadata = catalog.get(item.destination);
       const correction = overrides.get(correctionKey(mailing.id, item.destination));
-      const title = correction?.title || metadata?.title || item.title || item.destination;
+      const reference = mailing.type === "Magasinet P" && isMagazineArticle(item) && (metadata?.ambiguous || !["heading", "styled-heading"].includes(metadata?.titleSource)) ? magazineTitles.get(item.destination) : null;
+      const title = correction?.title || reference?.title || metadata?.title || item.title || item.destination;
+      const magazineCategory = mailing.type === "Magasinet P" ? magazineTopic({ title, destination: item.destination }) : null;
       const kind = correction?.kind || classifyContent({ ...item, ...metadata });
-      return { ...item, editorial: { mailingId: mailing.id, title, kind, category: correction?.category || editorialCategory({ title, destination: item.destination }), source: correction ? "editor" : metadata?.titleSource || "original", ambiguous: !correction && Boolean(metadata?.ambiguous), audienceScope: correction?.audienceScope || metadata?.audienceScope || "unknown", audiences: correction?.audiences || metadata?.audiences || [] } };
+      return { ...item, editorial: { mailingId: mailing.id, title, kind, category: magazineCategory || correction?.category || editorialCategory({ title, destination: item.destination }), source: correction ? "editor" : reference?.source || metadata?.titleSource || "original", ambiguous: !correction && !reference && Boolean(metadata?.ambiguous), audienceScope: correction?.audienceScope || metadata?.audienceScope || "unknown", audiences: correction?.audiences || metadata?.audiences || [] } };
     };
     return { ...mailing, content: mailing.content.map(decorate), links: mailing.links.map(decorate), segmentLinkPerformance: (mailing.segmentLinkPerformance || []).map(decorate) };
   });

@@ -104,3 +104,14 @@ test("the complete pre-change archive keeps all 42 issues and their saved rows",
     for(const field of ['content','links','segmentPerformance','segmentSubjects','segmentLinkPerformance']) assert.deepEqual(merged[field].map(JSON.stringify).sort(),old[field].map(JSON.stringify).sort());
   }
 });
+
+import { partitionLinkMeasurements } from '../config/measurement-methods.mjs';
+test('contact rankings exclude events and historical measurements without changing source rows', () => {
+  const rows = [{ title:'old',clicks:999 },{ title:'events',clicks:800,clickMeasurement:{metric:'total-clicks'} },{ title:'lower-bound',clicks:30,clickMeasurement:{metric:'unique-contacts',aggregation:'max-per-destination'} },{ title:'contact',clicks:50,clickMeasurement:{metric:'unique-contacts'} }];
+  const before = JSON.stringify(rows); const groups = partitionLinkMeasurements(rows);
+  assert.deepEqual(groups.contacts.map(row=>row.title),['contact','lower-bound']);
+  assert.deepEqual(groups.events.map(row=>row.title),['events']);
+  assert.deepEqual(groups.historical.map(row=>row.title),['old']);
+  assert.equal(groups.contacts[1].clickMeasurement.aggregation,'max-per-destination');
+  assert.equal(JSON.stringify(rows),before);
+});

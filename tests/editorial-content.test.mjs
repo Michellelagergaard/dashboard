@@ -132,3 +132,19 @@ test("magazine retains lower-bound measurement flags and uncategorized article r
   assert.equal(result.topics.find(row => row.topic === "Autisme og ADHD").lowerBound, true);
   assert.equal(result.topics.find(row => row.topic === "Til emnegennemgang").clicks, 10);
 });
+
+test('magazine topics stay consistent across overview and article rows while PN keeps its own taxonomy', () => {
+  const row = magazineLink('naar-autistiske-karakteristika-ikke-noedvendigvis-er-autisme');
+  const result = enrichMailings([{ id:'mag',type:'Magasinet P',content:[row],links:[row],segmentLinkPerformance:[row] },{ id:'pn',type:'Psykologernes Nyhedsbrev',content:[row],links:[],segmentLinkPerformance:[] }],{version:1,corrections:[]});
+  assert.equal(result[0].content[0].editorial.category,'Autisme og ADHD');
+  assert.equal(result[0].links[0].editorial.category,'Autisme og ADHD');
+  assert.notEqual(result[1].content[0].editorial.category,'Autisme og ADHD');
+});
+test('known misleading magazine link text uses verified article headline without rewriting measurements', () => {
+  const row={...magazineLink('hvad-goer-vi-naar-den-klassiske-behandling-ikke-raekker',30),title:'overgangsalder'};
+  const source=[{id:'mag',type:'Magasinet P',content:[row],links:[row],segmentLinkPerformance:[]}];const before=JSON.stringify(source);
+  const result=enrichMailings(source,{version:1,corrections:[]});
+  assert.equal(result[0].content[0].editorial.title,'Hvad gør vi, når den klassiske behandling ikke rækker?');
+  assert.equal(result[0].content[0].editorial.source,'article-title');
+  assert.equal(result[0].content[0].clicks,30);assert.equal(JSON.stringify(source),before);
+});

@@ -66,7 +66,7 @@ test("historiske nyhedsbreve i den valgte 12-månedersperiode får aktuelle link
 });
 
 test("dashboardet forklarer grænsen mellem fælles og målgruppefordelte resultater", () => {
-  assert.match(dashboardSource, /Samlede klik i hele udsendelsen uden målgruppefilter/);
+  assert.match(dashboardSource, /Dokumenterede kontaktmål for hele udsendelsen uden målgruppefilter/);
   assert.match(dashboardSource, /dokumenterer, hvem der klikkede/);
   assert.match(dashboardSource, /dokumenterer ikke, hvorfor medlemmerne klikkede/);
   assert.match(dashboardSource, /kunne ikke kategoriseres sikkert og står som Andet/);
@@ -127,4 +127,28 @@ test("generiske CTA-tekster erstattes af en læsbar destinationstitel", () => {
   assert.match(dashboardSource, /genericCta = \/\^\(tilmeld/);
   assert.match(dashboardSource, /readableDestinationTitle\(item\.destination\)/);
   assert.match(dashboardSource, /replace\(\/\\bboern\\b\/gi, "børn"\)/);
+});
+
+import { dashboardRouteUrl, parseDashboardRoute, viewForNewsletter } from '../config/dashboard-navigation.mjs';
+test('analysis links round-trip period, issue and audience and ignore arbitrary parameters', () => {
+  const route = { view: 'audiences', period: 'Seneste 6 måneder', mailingId: 'issue-1', audience: 'Kommunalt ansatte' };
+  const url = dashboardRouteUrl('https://example.com/dashboard/?email=private@example.com&v=5308aa2', route);
+  assert.equal(url.includes('email'), false);
+  assert.equal(url.includes('5308aa2'), true);
+  const restored = parseDashboardRoute(new URL(url, 'https://example.com').search);
+  for (const key of ['view','period','mailingId','audience']) assert.equal(restored[key], route[key]);
+});
+test('magazine links round-trip primary topic and rate ranking', () => {
+  const route = { view: 'magazine', period: 'Alle år', mailingId: 'mag-1', topic: 'Spiseforstyrrelser', ranking: 'rate' };
+  const restored = parseDashboardRoute(new URL(dashboardRouteUrl('https://example.com/dashboard/', route), 'https://example.com').search);
+  for (const key of ['view','period','mailingId','topic','ranking']) assert.equal(restored[key], route[key]);
+  assert.equal(parseDashboardRoute('?page=bad&period=100m&audience=bad&topic=bad').view, 'home');
+  assert.equal(parseDashboardRoute('?page=bad&period=100m').period, 'Seneste 12 måneder');
+});
+test('individual newsletter navigation selects its actual analysis page', () => {
+  assert.equal(viewForNewsletter('Psykologernes Nyhedsbrev'), 'mailing');
+  assert.equal(viewForNewsletter('Magasinet P'), 'magazine');
+  assert.equal(viewForNewsletter('Kompetencenyt'), 'competence');
+  assert.equal(viewForNewsletter('TR/AMR Nyt'), 'tr-amr');
+  assert.equal(viewForNewsletter('Netværksnyt'), 'network');
 });

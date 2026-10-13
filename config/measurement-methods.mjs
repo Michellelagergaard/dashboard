@@ -21,3 +21,15 @@ export function clickMeasurementLabel(item) {
 export function isComparableLink(item) {
   return item.clickMeasurement?.metric === "unique-contacts";
 }
+
+// Rankings compare one documented measurement type at a time.
+export function partitionLinkMeasurements(rows) {
+  const contacts = [], events = [], historical = [];
+  for (const row of rows) {
+    if (row.clickMeasurement?.metric === 'unique-contacts') contacts.push(row);
+    else if (row.clickMeasurement?.metric === 'total-clicks') events.push(row);
+    else historical.push(row);
+  }
+  const descending = (a, b) => b.clicks - a.clicks;
+  return { contacts: contacts.sort(descending), events: events.sort(descending), historical };
+}
