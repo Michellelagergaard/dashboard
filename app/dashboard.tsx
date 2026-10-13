@@ -385,9 +385,10 @@ function Overview({ rows, onOpen, asOf, period, onPeriodChange }: { rows: Mailin
   const verdict = comparison.delta === null ? "Resultatet kan endnu ikke sammenlignes" : comparison.delta >= 1 ? "Klikraten er højere end det tidligere niveau" : comparison.delta <= -1 ? "Klikraten er lavere end det tidligere niveau" : "Klikraten er på niveau med tidligere udsendelser";
   const verdictNote = comparison.delta === null ? comparisonStatus(comparison).message : `Klikraten var ${formatPoint(Math.abs(comparison.delta))} procentpoint ${comparison.delta >= 0 ? "over" : "under"} niveauet for ${comparison.count} tidligere udsendelser.`;
   return <div className="stack overview-page">
+    <div className="period-overview-group">
     <PeriodAverageChart openRate={averageOpenRate} clickRate={averageClickRate} count={rows.length} tag="Psykologernes Nyhedsbrev" period={period} onPeriodChange={onPeriodChange} />
     <section className="overview-section period-news" aria-labelledby="period-news-title">
-      <div className="overview-section-header"><h2 id="period-news-title">Mest klikkede nyheder i perioden</h2></div>
+      <div className="overview-section-header"><h2 id="period-news-title">Mest klikkede nyheder</h2><span className="period-news-scope" aria-live="polite">{period}</span></div>
       <div className="period-news-grid">{periodNews.length ? periodNews.map(({ item, mailing }, index) => <article key={item.destination}>
         <div className="period-news-heading"><span className="overview-rank">{index + 1}</span><TopicBadge item={item} /></div>
         <h3><a href={item.destination} target="_blank" rel="noreferrer">{displayTitle(item)}</a></h3>
@@ -395,6 +396,7 @@ function Overview({ rows, onOpen, asOf, period, onPeriodChange }: { rows: Mailin
         <div className="period-news-footer"><time dateTime={mailing.sentAt}>{mailing.date}</time><button className="row-link" onClick={() => onOpen(mailing.id)}>Se udsendelse <ArrowRight /></button></div>
       </article>) : <DataGap title="Ingen dokumenterede nyhedsklik i perioden" text="Vælg en længere periode." />}</div>
     </section>
+    </div>
     <section className={`overview-verdict ${comparison.delta === null ? "pending" : comparison.delta <= -1 ? "below" : "above"}`}>
       <div className="overview-verdict-content">
         <p className="eyebrow">Seneste udsendelse · {latest.date}</p>
