@@ -144,7 +144,7 @@ function HomeOverview({ rows, period, onPeriodChange, asOf, onNavigate }: { rows
 
     <BenchmarkOverview grouped={grouped} />
 
-    <HomeRecommendations grouped={grouped} />
+    <HomeRecommendations grouped={grouped} onNavigate={onNavigate} />
 
     <section className="panel table-panel home-recent" aria-labelledby="home-recent-title">
       <div className="overview-section-header"><div><h2 id="home-recent-title">Seneste udsendelser på tværs</h2><p>De fem seneste udsendelser i den valgte periode.</p></div></div>
@@ -166,9 +166,8 @@ function BenchmarkOverview({ grouped }: { grouped: Array<(typeof newsletterViews
     { label: "Klikrate", dp: dpClick, benchmark: externalBenchmarks.associations.clickRate, primary: true },
     { label: "Åbningsrate", dp: dpOpen, benchmark: externalBenchmarks.associations.openRate, primary: false },
   ];
-  return <section className="panel benchmark-panel" aria-labelledby="benchmark-title">
-    <div className="benchmark-header"><div><p className="eyebrow">Eksternt benchmark</p><h2 id="benchmark-title">Sammenlignet med andre</h2><p>DP holdt op mod foreninger og medlemsorganisationer i Higher Logics internationale benchmark.</p></div><span className="benchmark-verdict">{clickDelta >= 0 ? `+${formatPoint(clickDelta)} procentpoint i klikrate` : `${formatPoint(clickDelta)} procentpoint i klikrate`}</span></div>
-    <div className="benchmark-chip">Foreninger og medlemsorganisationer</div>
+  return <section className="panel benchmark-panel benchmark-compact" aria-labelledby="benchmark-title">
+    <div className="benchmark-header"><div><p className="eyebrow">Eksternt benchmark</p><h2 id="benchmark-title">Hvordan ligger DP?</h2><p>Periodens gennemsnit sammenlignet med foreninger og medlemsorganisationer.</p></div><span className="benchmark-verdict">{clickDelta >= 0 ? `+${formatPoint(clickDelta)} procentpoint i klikrate` : `${formatPoint(clickDelta)} procentpoint i klikrate`}</span></div>
     <div className="benchmark-bars">
       {benchmarkRows.map((row) => {
         const scale = Math.max(row.dp, row.benchmark) * 1.08 || 1;
@@ -181,37 +180,34 @@ function BenchmarkOverview({ grouped }: { grouped: Array<(typeof newsletterViews
         </article>;
       })}
     </div>
-    <details className="benchmark-breakdown"><summary>Se forskelle mellem DP’s nyhedsbreve</summary><div className="benchmark-table-wrap"><table className="benchmark-table"><thead><tr><th>Nyhedsbrev</th><th>Udsendelser</th><th>Åbnet</th><th>Klikket</th><th>Mod andre</th></tr></thead><tbody>{grouped.map((group) => {
+    <details className="benchmark-breakdown"><summary>Se nyhedsbreve, kilde og sammenligningsgrundlag</summary><div className="benchmark-table-wrap"><table className="benchmark-table"><thead><tr><th>Nyhedsbrev</th><th>Udsendelser</th><th>Åbnet</th><th>Klikket</th><th>Mod andre</th></tr></thead><tbody>{grouped.map((group) => {
       const openRate = average(group.issues.map((row) => row.openRate));
       const clickRate = average(group.issues.map((row) => row.clickRate));
       const delta = clickRate - externalBenchmarks.associations.clickRate;
       return <tr key={group.name}><td><strong>{group.name}</strong></td><td>{num(group.issues.length)}</td><td>{group.issues.length ? pct(openRate) : "—"}</td><td><b>{group.issues.length ? pct(clickRate) : "—"}</b></td><td>{group.issues.length ? <span className={delta >= 0 ? "benchmark-positive" : "benchmark-negative"}>{delta >= 0 ? "+" : ""}{formatPoint(delta)} pp.</span> : "—"}</td></tr>;
-    })}</tbody></table></div></details>
-    <div className="benchmark-source"><p><strong>Kilde:</strong> Higher Logic, <em>Association Email Benchmark Report 2025–2026</em>. Ca. 1.500 foreninger og nonprofits og mere end 2 mia. mails sendt i 2025.</p><p>DP-tallene er almindelige gennemsnit af {num(allIssues.length)} udsendelser i den valgte periode. Klik er det mest robuste sammenligningsmål, men platformenes målemetoder kan variere.</p><a href="https://www.higherlogic.com/news/higher-logic-releases-2025-2026-association-email-benchmark-report/" target="_blank" rel="noreferrer">Se benchmarkrapporten</a></div>
+    })}</tbody></table></div>
+    <div className="benchmark-source"><p><strong>Kilde:</strong> Higher Logic, <em>Association Email Benchmark Report 2025–2026</em>. Ca. 1.500 foreninger og nonprofits og mere end 2 mia. mails sendt i 2025.</p><p>DP-tallene er almindelige gennemsnit af {num(allIssues.length)} udsendelser i den valgte periode. Klik er det mest robuste sammenligningsmål, men platformenes målemetoder kan variere.</p><a href="https://www.higherlogic.com/news/higher-logic-releases-2025-2026-association-email-benchmark-report/" target="_blank" rel="noreferrer">Se benchmarkrapporten</a></div></details>
   </section>;
 }
 
-function HomeRecommendations({ grouped }: { grouped: Array<{ name: Mailing["type"]; issues: Mailing[]; latest?: Mailing; clickLevel: { delta: number } | null }> }) {
-  const available = grouped.filter((group) => group.issues.length > 0);
-  const allIssues = available.flatMap((group) => group.issues);
-  if (!allIssues.length) return null;
-  const dpClick = average(allIssues.map((row) => row.clickRate));
-  const benchmarkDelta = dpClick - externalBenchmarks.associations.clickRate;
-  const leader = [...available].sort((a, b) => average(b.issues.map((row) => row.clickRate)) - average(a.issues.map((row) => row.clickRate)))[0];
-  const leaderRate = average(leader.issues.map((row) => row.clickRate));
-  const comparable = available.filter((group) => group.latest && group.clickLevel).sort((a, b) => (a.clickLevel?.delta || 0) - (b.clickLevel?.delta || 0));
-  const attention = comparable[0];
-  const attentionDelta = attention?.clickLevel?.delta ?? null;
-  const target = attentionDelta !== null && attentionDelta < -1 ? attention : [...available].sort((a, b) => average(a.issues.map((row) => row.clickRate)) - average(b.issues.map((row) => row.clickRate)))[0];
-  const targetRate = target.latest?.clickRate ?? average(target.issues.map((row) => row.clickRate));
-  const targetBaseline = targetRate - (target.clickLevel?.delta ?? 0);
-  return <section className="panel recommendation-panel" aria-labelledby="recommendation-title">
-    <div className="overview-section-header"><div><p className="eyebrow">Beslutningsstøtte</p><h2 id="recommendation-title">Hvad tager vi med videre?</h2><p>Observation, anbefalet handling og beslutningsregel er adskilt, så en sammenhæng ikke bliver præsenteret som en dokumenteret årsag.</p></div></div>
-    <div className="recommendation-grid">
-      <article className="strength"><span className="recommendation-icon"><TrendingUp /></span><div><p>Porteføljebeslutning</p><h3>Styr efter klik — men sæt ikke samme mål for alle nyhedsbreve</h3><dl><div><dt>Observation</dt><dd>DP ligger {formatPoint(Math.abs(benchmarkDelta))} procentpoint {benchmarkDelta >= 0 ? "over" : "under"} foreningsbenchmarken. {leader.name} ligger højest med {pct(leaderRate)} i gennemsnit på tværs af {num(leader.issues.length)} udsendelser.</dd></div><div><dt>Handling</dt><dd>Brug klikrate som fælles hovedmål, men vurder hvert nyhedsbrev mod dets egen historik. Kortlæg de tre mest klikkede historier i {leader.name} og noter én overførbar egenskab: behov, vinkel eller CTA.</dd></div><div><dt>Beslutningsregel</dt><dd>Overfør kun mønstret til andre nyhedsbreve, hvis det gentager sig i mindst to udsendelser; målgruppernes størrelse og behov er forskellige.</dd></div></dl></div></article>
-      <article className="attention"><span className="recommendation-icon"><AlertCircle /></span><div><p>Prioriteret indsats</p><h3>{attentionDelta !== null && attentionDelta < -1 ? `Genopret klikniveauet i ${target.name}` : `Undersøg klikspredningen i ${target.name}`}</h3><dl><div><dt>Observation</dt><dd>{attentionDelta !== null && attentionDelta < -1 && target.latest ? `Seneste udsendelse fik ${pct(target.latest.clickRate)} — ${formatPoint(Math.abs(attentionDelta))} procentpoint under et normalt niveau på ca. ${pct(targetBaseline)}.` : `${target.name} har periodens laveste gennemsnitlige klikrate. Det er ikke i sig selv dokumentation for lav kvalitet.`}</dd></div><div><dt>Handling</dt><dd>Gennemgå første skærmbillede og de tre mest klikkede links i den seneste og en normal udsendelse. Se efter forskelle i prioritering, konkret medlemsnytte og om CTA’en lover det samme som landingssiden leverer.</dd></div><div><dt>Beslutningsregel</dt><dd>Prioritér en ændring, hvis den samme svaghed findes i mindst to af de tre områder. Ellers behandles resultatet som almindelig variation.</dd></div></dl></div></article>
-      <article className="test"><span className="recommendation-icon"><MousePointerClick /></span><div><p>Kontrolleret redaktionel test</p><h3>Test én ændring over de næste to {target.name}-udsendelser</h3><dl><div><dt>Hypotese</dt><dd>En skarpere prioritering af den første historie kan løfte klikraten uden at øge antallet af historier.</dd></div><div><dt>Testdesign</dt><dd>Ændr kun én ting: formulér første histories rubrik som konkret medlemsudbytte. Bevar så vidt muligt placering, CTA-type, udsendelsesdag og målgruppe, så resultatet bliver mere fortolkeligt.</dd></div><div><dt>Succeskriterium</dt><dd>Mindst {pct(targetBaseline)} i klikrate i én af de næste to udsendelser — og ingen tydelig forværring i den anden. Hvis målet ikke nås, forkastes hypotesen frem for at gentage ændringen automatisk.</dd></div></dl></div></article>
+function HomeRecommendations({ grouped, onNavigate }: { grouped: Array<(typeof newsletterViews)[number] & { issues: Mailing[]; latest?: Mailing; clickLevel: { delta: number | null; baseline?: number | null } | null }>; onNavigate: (view: View) => void }) {
+  const available = grouped.filter(group => group.issues.length > 0);
+  if (!available.length) return null;
+  const leader = [...available].sort((a, b) => average(b.issues.map(row => row.clickRate)) - average(a.issues.map(row => row.clickRate)))[0];
+  const leaderRate = average(leader.issues.map(row => row.clickRate));
+  const below = available.filter(group => group.clickLevel?.delta !== null && group.clickLevel && group.clickLevel.delta < -1).sort((a, b) => (a.clickLevel?.delta || 0) - (b.clickLevel?.delta || 0));
+  const target = below[0] || [...available].sort((a, b) => average(a.issues.map(row => row.clickRate)) - average(b.issues.map(row => row.clickRate)))[0];
+  const delta = target.clickLevel?.delta ?? null;
+  const isBelow = delta !== null && delta < -1;
+  const baseline = target.clickLevel?.baseline ?? null;
+  return <section className="panel recommendation-panel recommendation-compact" aria-labelledby="recommendation-title">
+    <div className="overview-section-header"><div><p className="eyebrow">Beslutningsstøtte</p><h2 id="recommendation-title">Hvor skal vi sætte ind?</h2><p>To konkrete steder at starte. Vurder forslagene sammen med indholdet.</p></div></div>
+    <div className="decision-cards">
+      <article className="decision-card attention"><div className="decision-card-top"><span className="decision-icon"><AlertCircle /></span><span className="decision-kicker">Start her</span></div><h3>{isBelow ? "Undersøg faldet i klik" : "Find muligheder for flere klik"}</h3><p className="decision-newsletter">{target.name}</p><p className="decision-evidence">{isBelow ? `${formatPoint(Math.abs(delta!))} procentpoint under eget normale niveau i seneste sammenlignelige måling.` : `${pct(average(target.issues.map(row => row.clickRate)))} i gennemsnit i perioden. Forskellige nyhedsbreve har forskellige formål.`}</p>
+      <p className="decision-action"><strong>Næste skridt</strong>Sammenlign de tre mest klikkede historier i seneste udsendelse med en tidligere udsendelse. Se efter forskelle i rubrik, placering og konkret medlemsudbytte.</p><button className="decision-link" onClick={() => onNavigate(target.view)}>Åbn {target.name} <ArrowRight /></button></article>
+      <article className="decision-card strength"><div className="decision-card-top"><span className="decision-icon"><TrendingUp /></span><span className="decision-kicker">Hent inspiration</span></div><h3>Undersøg, hvad der får klik</h3><p className="decision-newsletter">{leader.name}</p><p className="decision-evidence">{pct(leaderRate)} i gennemsnit over {num(leader.issues.length)} udsendelser — højest blandt nyhedsbrevene i perioden.</p><p className="decision-action"><strong>Næste skridt</strong>Find én tilbagevendende egenskab ved de mest klikkede historier: emne, vinkel eller tilbud. Afprøv den kun, hvis den også er relevant for den anden målgruppe.</p><button className="decision-link" onClick={() => onNavigate(leader.view)}>Åbn {leader.name} <ArrowRight /></button></article>
     </div>
+    <details className="decision-test"><summary><span className="decision-test-icon"><MousePointerClick /></span><span>Sådan afprøver I en ændring</span><ChevronDown /></summary><ol><li><strong>Vælg ét greb</strong><p>Formulér fx den første histories rubrik med et tydeligt medlemsudbytte. Hold så vidt muligt placering, udsendelsesdag og øvrigt indhold ens.</p></li><li><strong>Følg de næste to udsendelser</strong><p>Sammenlign klikraten på samme tidspunkt efter udsendelse, og se også på den konkrete histories klik.</p></li><li><strong>Vurder, om det er værd at gentage</strong><p>{baseline !== null ? `Brug nyhedsbrevets eget normale niveau på ${pct(baseline)} som reference.` : "Fastlæg en reference fra nyhedsbrevets egen historik før testen."} To udsendelser er en indledende afprøvning; de dokumenterer ikke alene, at ændringen gav resultatet.</p></li></ol><p className="method-note">Forslagene bygger på registrerede klik. Et lavere gennemsnit på tværs af nyhedsbrevstyper dokumenterer ikke lavere kvalitet, og tallene forklarer ikke, hvorfor medlemmerne klikkede.</p></details>
   </section>;
 }
 
