@@ -26,8 +26,8 @@ function DashboardContent({ liveData }: { liveData: LiveDashboardData }) {
   const [view, setView] = useState<View>("home");
   const [period, setPeriod] = useState("Seneste 12 måneder");
   const mailings = useMemo(
-    () => [...liveData.mailings].filter((mailing) => inPeriod(mailing, period)).sort((a, b) => sentTime(b) - sentTime(a)),
-    [liveData.mailings, period],
+    () => [...liveData.mailings].filter((mailing) => inPeriod(mailing, period, liveData.updatedAt || new Date().toISOString())).sort((a, b) => sentTime(b) - sentTime(a)),
+    [liveData.mailings, liveData.updatedAt, period],
   );
   const newsletterMailings = useMemo(() => mailings.filter((mailing) => mailing.type === "Psykologernes Nyhedsbrev"), [mailings]);
   const competenceMailings = useMemo(() => mailings.filter((mailing) => mailing.type === "Kompetencenyt"), [mailings]);
@@ -42,6 +42,12 @@ function DashboardContent({ liveData }: { liveData: LiveDashboardData }) {
   const updated = liveData.updatedAt
     ? new Intl.DateTimeFormat("da-DK", { dateStyle: "medium", timeStyle: "short", timeZone: "Europe/Copenhagen" }).format(new Date(liveData.updatedAt))
     : "Ikke tilgængelig";
+
+  function changePeriod(value: string) {
+    setPeriod(value);
+    setAudienceMailingId("");
+    setSelectedId("");
+  }
 
   function openMailing(id?: string) {
     if (id) setSelectedId(id);
@@ -70,11 +76,21 @@ function DashboardContent({ liveData }: { liveData: LiveDashboardData }) {
     </aside>
     <main id="main" className="main">
       <header className="topbar"><div><p className="eyebrow">Analyse af medlemskommunikation</p><h1>{view === "home" ? "Samlet overblik" : view === "overview" ? "Psykologernes Nyhedsbrev" : view === "audiences" ? "Målgrupper" : view === "mailing" ? "Redaktionel analyse" : view === "competence" ? "Kompetencenyt" : view === "magazine" ? "Magasinet P" : view === "tr-amr" ? "TR/AMR Nyt" : view === "network" ? "Netværksnyt" : "Om tallene"}</h1></div><div className="sync-box"><div><span>Senest opdateret</span><strong>{updated}</strong></div></div></header>
-      {view !== "overview" && view !== "home" ? <section className="filters simple-filters" aria-label="Filtre"><div className="filter-main" style={view === "audiences" ? { gridTemplateColumns: "minmax(0, 1fr)" } : undefined}><label><span>Periode</span><select value={period} onChange={(event) => setPeriod(event.target.value)}><option>Seneste 12 måneder</option><option>Seneste 6 måneder</option><option>Alle år</option></select></label>{view === "audiences" ? <label><span>Udsendelse</span><select value={audienceIssueId} onChange={(event) => setAudienceMailingId(event.target.value)}><option value="">Alle udsendelser i perioden</option>{newsletterMailings.map(mailing => <option key={mailing.id} value={mailing.id}>{mailing.date} · {mailing.subject || mailing.title}</option>)}</select></label> : null}</div><p className="filter-result"><strong>{num(view === "competence" ? competenceMailings.length : view === "magazine" ? magazineMailings.length : view === "tr-amr" ? trAmrMailings.length : view === "network" ? networkMailings.length : view === "audiences" ? audienceMailings.length : newsletterMailings.length)}</strong> udsendelser med tagget {view === "competence" ? "Kompetencenyt" : view === "magazine" ? "Magasinet P" : view === "tr-amr" ? "TR/AMR Nyt" : view === "network" ? "Netværksnyt" : "Psykologernes Nyhedsbrev"}</p></section> : null}
+      {view !== "overview" && view !== "home" ? <section className="filters analysis-filters" aria-label="Analysefiltre">
+        <div className="analysis-filter-controls">
+          <fieldset className="period-toggle"><legend>Periode</legend><div>{["Seneste 6 måneder", "Seneste 12 måneder", "Alle år"].map(value => <button key={value} type="button" aria-pressed={period === value} onClick={() => changePeriod(value)}>{value === "Alle år" ? "Alle år" : value === "Seneste 6 måneder" ? "6 måneder" : "12 måneder"}</button>)}</div></fieldset>
+          {view === "audiences" || view === "mailing" ? <label className="issue-filter"><span>Udsendelse</span><select value={view === "audiences" ? audienceIssueId : selected?.id || ""} onChange={event => view === "audiences" ? setAudienceMailingId(event.target.value) : setSelectedId(event.target.value)}>
+            {view === "audiences" ? <option value="">Alle udsendelser i perioden</option> : null}
+            {view === "mailing" && !newsletterMailings.length ? <option value="">Ingen udsendelser i perioden</option> : null}
+            {newsletterMailings.map(mailing => <option key={mailing.id} value={mailing.id}>{mailing.date} · {mailing.subject || mailing.title}</option>)}
+          </select></label> : null}
+        </div>
+        <p className="filter-result" aria-live="polite"><strong>{num(view === "competence" ? competenceMailings.length : view === "magazine" ? magazineMailings.length : view === "tr-amr" ? trAmrMailings.length : view === "network" ? networkMailings.length : newsletterMailings.length)}</strong> udsendelser i {period === "Alle år" ? "hele historikken" : period === "Seneste 6 måneder" ? "de seneste 6 måneder" : "de seneste 12 måneder"}{view === "audiences" && audienceIssueId ? " · Viser én valgt udsendelse" : view === "mailing" && selected ? ` · Viser ${selected.date}` : ""}</p>
+      </section> : null}
       {view === "audiences" ? <MeasurementGuide /> : null}
       {liveData.status === "unavailable" ? <Empty title="Data er ikke tilgængelige" text="Den seneste dataopdatering kunne ikke læses. Prøv igen senere." /> : null}
-      {liveData.status !== "unavailable" && view === "home" ? <HomeOverview rows={mailings} period={period} onPeriodChange={setPeriod} asOf={liveData.updatedAt || new Date().toISOString()} onNavigate={setView} /> : null}
-      {liveData.status !== "unavailable" && view === "overview" ? <Overview rows={newsletterMailings} onOpen={openMailing} asOf={liveData.updatedAt || new Date().toISOString()} period={period} onPeriodChange={setPeriod} /> : null}
+      {liveData.status !== "unavailable" && view === "home" ? <HomeOverview rows={mailings} period={period} onPeriodChange={changePeriod} asOf={liveData.updatedAt || new Date().toISOString()} onNavigate={setView} /> : null}
+      {liveData.status !== "unavailable" && view === "overview" ? <Overview rows={newsletterMailings} onOpen={openMailing} asOf={liveData.updatedAt || new Date().toISOString()} period={period} onPeriodChange={changePeriod} /> : null}
       {liveData.status !== "unavailable" && view === "audiences" ? <AudienceView rows={audienceMailings} comparisonRows={newsletterMailings} singleIssue={Boolean(audienceIssueId)} onOpen={openMailing} asOf={liveData.updatedAt || new Date().toISOString()} /> : null}
       {liveData.status !== "unavailable" && view === "mailing" ? <MailingView rows={newsletterMailings} selected={selected} onChange={setSelectedId} asOf={liveData.updatedAt || new Date().toISOString()} /> : null}
       {liveData.status !== "unavailable" && view === "about" ? <AboutNumbers rows={newsletterMailings} /> : null}
@@ -449,7 +465,6 @@ function MailingView({ rows, selected, onChange, asOf }: { rows: Mailing[]; sele
   const verdict = level.delta === null ? "Resultatet kan endnu ikke sammenlignes" : level.delta >= 1 ? "Udsendelsen klarede sig bedre end normalt" : level.delta <= -1 ? "Udsendelsen lå under sit normale niveau" : "Udsendelsen lå på sit normale niveau";
   const verdictNote = level.delta === null ? "Der er endnu ikke nok sammenlignelige udsendelser." : `Klikraten var ${formatPoint(Math.abs(level.delta))} procentpoint ${level.delta >= 1 ? "over" : level.delta <= -1 ? "under" : "fra"} medianen for ${level.count} tidligere udsendelser.`;
   return <div className="stack mailing-page">
-    <Selection selected={selected} rows={rows} onChange={onChange} />
     <section className={`mailing-verdict ${level.delta !== null && level.delta < -1 ? "below" : "above"}`}><div><p className="eyebrow">{selected.date} · Psykologernes Nyhedsbrev</p><h2>{verdict}</h2><p>{verdictNote}</p></div><PerformanceBadge delta={level.delta} /></section>
     <section className="panel mailing-summary"><PanelHeader eyebrow="Denne udsendelse" title={selected.title} meta={selected.date} /><p className="subject-line"><span>Emnefelt</span>{selected.subject}</p><div className="kpi-grid compact mailing-kpis"><Kpi icon={<Mail />} label="Leverede" value={num(selected.delivered)} note="Mails registreret som leveret" /><Kpi icon={<Activity />} label="Åbningsrate" value={pct(selected.openRate)} note="Registrerede åbninger" /><Kpi icon={<MousePointerClick />} label="Klikrate" value={pct(selected.clickRate)} note={levelText(level.delta)} /><Kpi icon={<TrendingUp />} label="CTOR" value={pct(ctor)} note="Klik blandt registrerede åbninger" /><Kpi icon={<Users />} label="Afmeldinger" value={num(selected.unsubscribes || 0)} note="Registreret efter udsendelsen" /></div></section>
     <MailingTrend rows={rows} selected={selected} baseline={level.baseline} />
@@ -477,9 +492,6 @@ function MailingTakeaways({ selected, level, topStory, performance }: { selected
   return <section className="panel automatic-takeaways mailing-takeaways"><div className="panel-header"><div><p className="eyebrow">Automatisk redaktionel vurdering</p><h2>Hvad tager vi med videre?</h2></div><span>{selected.date}</span></div><div className="takeaway-grid"><article><span>Det ser ud til at virke</span><h3>{topStory ? displayTitle(topStory) : "Afventer linkdata"}</h3><p>{topStory ? `Udsendelsens mest klikkede redaktionelle historie fik ${num(topStory.clicks)} registrerede klik.` : "Der er ikke et sikkert linkresultat at fremhæve."}</p></article><article><span>Hold øje med</span><h3>{weakest ? `Reaktionen hos ${weakest.name}` : "Sammenligningsgrundlaget"}</h3><p>{weakest ? `${weakest.name} havde den laveste klikrate: ${pct(weakest.clickRate)}. ${result}` : result}</p></article><article><span>Redaktionelt forslag</span><h3>Gentag det stærkeste greb</h3><p>{topStory ? `Afprøv en ny, konkret historie om samme emne som “${displayTitle(topStory)}”, og sammenlign med normalniveauet.` : strongest ? `Undersøg, hvad der gjorde udsendelsen relevant for ${strongest.name}, og afprøv grebet igen.` : "Afprøv én tydelig servicehistorie højt i næste udsendelse."}</p></article></div><p className="method-note">Vurderingen beskriver mønstre i tallene og dokumenterer ikke årsagen til medlemmernes adfærd.</p></section>;
 }
 
-function Selection({ selected, rows, onChange }: { selected: Mailing; rows: Mailing[]; onChange: (id: string) => void }) {
-  return <section className="panel selection-panel"><label><span>Vælg udsendelse</span><select value={selected.id} onChange={(event) => onChange(event.target.value)}>{rows.map((mailing) => <option key={mailing.id} value={mailing.id}>{mailing.date} · {mailing.title}</option>)}</select></label><div><strong>Psykologernes Nyhedsbrev</strong><span>{num(selected.delivered)} leverede · {pct(selected.clickRate)} klikrate</span></div></section>;
-}
 
 function AudienceExposure({ item }: { item: Mailing["content"][number] }) {
   const scope = item.editorial?.audienceScope;
@@ -590,7 +602,18 @@ function readableDestinationTitle(destination: string) {
   } catch { return ""; }
 }
 function sentTime(mailing: Mailing) { return mailing.sentAt ? new Date(mailing.sentAt).getTime() : 0; }
-function inPeriod(mailing: Mailing, period: string) { if (period === "Alle år" || !mailing.sentAt) return true; const cutoff = new Date(); cutoff.setUTCMonth(cutoff.getUTCMonth() - (period.includes("6") ? 6 : 12)); return new Date(mailing.sentAt) >= cutoff; }
+function inPeriod(mailing: Mailing, period: string, asOf: string) {
+  if (period === "Alle år") return true;
+  if (!mailing.sentAt) return false;
+  const cutoff = new Date(asOf);
+  const months = period === "Seneste 6 måneder" ? 6 : 12;
+  const day = cutoff.getUTCDate();
+  cutoff.setUTCDate(1);
+  cutoff.setUTCMonth(cutoff.getUTCMonth() - months);
+  const lastDay = new Date(Date.UTC(cutoff.getUTCFullYear(), cutoff.getUTCMonth() + 1, 0)).getUTCDate();
+  cutoff.setUTCDate(Math.min(day, lastDay));
+  return new Date(mailing.sentAt) >= cutoff;
+}
 function signed(value: number) { return `${value >= 0 ? "+" : ""}${num(value)}`; }
 function formatPoint(value: number) { return value.toLocaleString("da-DK", { maximumFractionDigits: 1 }); }
 function levelText(delta: number | null) { return delta === null ? "Kan endnu ikke sammenlignes" : delta >= 1 ? `${formatPoint(delta)} procentpoint over normalt` : delta <= -1 ? `${formatPoint(Math.abs(delta))} procentpoint under normalt` : "På normalt niveau"; }
