@@ -104,3 +104,31 @@ test("the complete archive survives editorial enrichment with all original field
     assert.deepEqual(restored,source[i]);
   }
 });
+
+
+// Magazine topic summaries keep repeat exposures separate from distinct articles.
+import { magazineTopic, summarizeMagazineTopics } from "../config/magazine-topics.mjs";
+const magazineLink = (slug, clicks = 10, metric = "unique-contacts") => ({ destination: `https://www.dp.dk/p-psykologernes-fagmagasin/artikler/${slug}/`, title: slug, clicks, clickMeasurement: { metric, aggregation: "single-link" } });
+test("magazine topics identify subject-specific and verified ambiguous headlines", () => {
+  assert.equal(magazineTopic(magazineLink("adhd-det-misforstaaede-barn")), "Autisme og ADHD");
+  assert.equal(magazineTopic(magazineLink("naar-det-sociale-bliver-kropsligt")), "Autisme og ADHD");
+  assert.equal(magazineTopic(magazineLink("hvad-goer-vi-naar-den-klassiske-behandling-ikke-raekker")), "Spiseforstyrrelser");
+  assert.equal(magazineTopic(magazineLink("ukendt-emne")), "Til emnegennemgang");
+  assert.equal(magazineTopic({ destination: "https://www.dp.dk/medlemskab/", title: "ADHD" }), null);
+});
+test("magazine aggregates distinguish distinct articles and repeat mailings and weight delivery bases", () => {
+  const a = magazineLink("autisme", 10), b = magazineLink("autisme", 20);
+  const rows = [{ id: "one", date: "one", delivered: 100, content: [a, { ...a, clicks: 5 }] }, { id: "two", date: "two", delivered: 200, content: [b] }];
+  const before = JSON.stringify(rows); const result = summarizeMagazineTopics(rows); const topic = result.topics[0];
+  assert.equal(topic.uniqueArticles, 1); assert.equal(topic.appearances, 2); assert.equal(topic.clicks, 30); assert.equal(topic.averageClicks, 15); assert.equal(topic.clickRate, 10); assert.equal(topic.mailings, 2);
+  assert.equal(JSON.stringify(rows), before);
+});
+test("magazine excludes utility links, non-contact metrics and unusable denominators", () => {
+  const result = summarizeMagazineTopics([{ id: "one", delivered: 100, content: [magazineLink("autisme", 10, "total-clicks"), { destination: "https://www.dp.dk/", clicks: 999, clickMeasurement: { metric: "unique-contacts" } }] }, { id: "two", delivered: 0, content: [magazineLink("autisme")] }]);
+  assert.equal(result.topics.length, 0); assert.equal(result.unmeasured, 2);
+});
+test("magazine retains lower-bound measurement flags and uncategorized article results", () => {
+  const result = summarizeMagazineTopics([{ id: "one", delivered: 100, content: [{ ...magazineLink("autisme"), clickMeasurement: { metric: "unique-contacts", aggregation: "max-per-destination" } }, magazineLink("ukendt-emne")] }]);
+  assert.equal(result.topics.find(row => row.topic === "Autisme og ADHD").lowerBound, true);
+  assert.equal(result.topics.find(row => row.topic === "Til emnegennemgang").clicks, 10);
+});

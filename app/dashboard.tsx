@@ -8,6 +8,7 @@ import { enrichMailings } from "../config/editorial-content.mjs";
 import { memberSegmentNames } from "../config/member-segments.mjs";
 import { editorialCategory, summarizeEditorialTopics } from "../config/editorial-topics.mjs";
 import { clickMeasurementLabel, isComparableLink } from "../config/measurement-methods.mjs";
+import { magazineReviewTopic, summarizeMagazineTopics } from "../config/magazine-topics.mjs";
 import { normalLevel } from "../config/decision-methods.mjs";
 
 type View = "home" | "overview" | "audiences" | "mailing" | "about" | "competence" | "magazine" | "tr-amr" | "network";
@@ -256,12 +257,36 @@ function UnsegmentedNewsletterOverview({ rows, asOf, name }: { rows: Mailing[]; 
       <Kpi icon={<TrendingUp />} label="CTOR" value={latest.openRate > 0 ? pct(latest.clickRate / latest.openRate * 100) : "—"} note="Klik blandt registrerede åbninger" />
       <Kpi icon={<Users />} label="Afmeldinger" value={num(latest.unsubscribes || 0)} note="Registreret efter udsendelsen" />
     </section>
+    {name === "Magasinet P" ? <MagazineTopics rows={rows} /> : null}
     <section className="overview-section"><div className="overview-section-header"><div><h2>Mest besøgte links</h2><p>De fem destinationslinks med flest unikke klik i Ungapped.</p></div></div><div className="overview-stories">{topLinks.length ? topLinks.map((item, index) => <article key={`${item.destination}-${index}`}><span className="overview-rank">{index + 1}</span><div><strong>{displayTitle(item)}</strong><span>{String(editorialCategory(item))}</span></div><div><strong>{num(item.clicks)} unikke klik</strong><span>{formatPoint(item.rate)} pr. 100 leverede</span></div></article>) : <DataGap title="Ingen dokumenterede linkresultater" text="Ungapped leverede ikke brugbare unikke klik pr. link for denne udsendelse." />}</div></section>
     {name === "Kompetencenyt" || name === "Magasinet P" ? <UnsegmentedAudienceClicks rows={rows} name={name} /> : null}
     <OverviewTrend rows={rows} latest={latest} baseline={comparison.baseline} />
     <section className="panel table-panel overview-recent"><div className="overview-section-header"><div><h2>Seneste udsendelser</h2><p>Udviklingen i {name} måned for måned. Sammenligningen viser hver måling i forhold til op til fem tidligere udsendelser.</p></div></div><div className="table-scroll"><table><thead><tr><th>Dato og emnefelt</th><th>Sammenligning med tidligere</th><th>Leverede</th><th>Åbnet</th><th>Klikket</th><th>CTOR</th></tr></thead><tbody>{rows.slice(0, 12).map((row) => { const clickLevel = normalLevel(rows, row, { metric: "clickRate", asOf }); const rowOpenLevel = normalLevel(rows, row, { metric: "openRate", asOf }); return <tr key={row.id}><td><strong>{row.date} · {row.subject || row.title}</strong></td><td><CompetenceComparison openDelta={rowOpenLevel.delta} clickDelta={clickLevel.delta} /></td><td>{num(row.delivered)}</td><td>{pct(row.openRate)}</td><td><b>{pct(row.clickRate)}</b></td><td>{row.openRate > 0 ? pct(row.clickRate / row.openRate * 100) : "—"}</td></tr>; })}</tbody></table></div></section>
     <details className="panel overview-method"><summary>Om tallene og datagrundlaget</summary><p>Visningen omfatter kun sendte udsendelser med Ungapped-tagget <strong>{name}</strong>. Nyhedsbrevet segmenteres ikke, og derfor vises ingen målgruppeanalyse.</p><MeasurementGuideContent /></details>
   </div>;
+}
+
+
+function MagazineTopics({ rows }: { rows: Mailing[] }) {
+  const [ranking, setRanking] = useState("clicks");
+  const [topicFilter, setTopicFilter] = useState("");
+  const summary = summarizeMagazineTopics(rows);
+  const topics = summary.topics.filter(topic => topic.topic !== magazineReviewTopic).sort((a, b) => ranking === "rate" ? b.clickRate - a.clickRate : b.clicks - a.clicks);
+  const review = summary.topics.find(topic => topic.topic === magazineReviewTopic);
+  const leader = topics[0];
+  const selectedTopic = topics.some(topic => topic.topic === topicFilter) || (review && topicFilter === magazineReviewTopic) ? topicFilter : "";
+  const articles = summary.measured.filter(item => !selectedTopic || item.topic === selectedTopic).sort((a, b) => b.clicks - a.clicks);
+  const max = Math.max(1, ...topics.map(topic => ranking === "rate" ? topic.clickRate : topic.clicks));
+  return <section className="panel magazine-topics" aria-labelledby="magazine-topic-title">
+    <div className="overview-section-header"><div><p className="eyebrow">Magasinet P · Emneanalyse</p><h2 id="magazine-topic-title">Hvilke emner får flest klik?</h2><p>Artikler grupperet efter deres primære emne i den valgte periode.</p></div><fieldset className="period-toggle"><legend>Sammenlign efter</legend><div><button type="button" aria-pressed={ranking === "clicks"} onClick={() => setRanking("clicks")}>Samlede klik</button><button type="button" aria-pressed={ranking === "rate"} onClick={() => setRanking("rate")}>Klikrate pr. artikel</button></div></fieldset></div>
+    <p className="magazine-coverage"><strong>{summary.uniqueArticles} forskellige artikler</strong> med målbare linkresultater · {summary.measured.length} forekomster i {summary.coveredMailings} af {rows.length} udsendelser.</p>
+    {leader ? <div className="insight neutral"><TrendingUp /><div><strong>{ranking === "rate" ? "Højeste klikrate pr. artikel" : "Flest registrerede klik"}: {leader.topic}</strong><p>{leader.lowerBound ? "Mindst " : ""}{num(leader.clicks)} klik på {leader.uniqueArticles} forskellige artikler i {leader.appearances} forekomster. Klikrate pr. artikel: {leader.lowerBound ? "≥ " : ""}{pct(leader.clickRate)}.{leader.uniqueArticles < 3 ? " Resultatet bygger på færre end tre forskellige artikler og er et spinkelt grundlag." : ""}</p></div></div> : <DataGap title="Ingen målbare emner endnu" text="Der mangler dokumenterede kontaktmål for artiklerne i denne periode." />}
+    <div className="table-scroll"><table><thead><tr><th>Emne</th><th>Registrerede klik</th><th>Forskellige artikler</th><th>Forekomster i nyhedsbreve</th><th>Klik pr. forekomst</th><th>Klikrate pr. artikel</th></tr></thead><tbody>{topics.map(topic => <tr key={topic.topic}><td><button className="row-link" onClick={() => setTopicFilter(topic.topic)}>{topic.topic}</button><div className="magazine-topic-bar"><span style={{ width: `${(ranking === "rate" ? topic.clickRate : topic.clicks) / max * 100}%` }} /></div></td><td><b>{topic.lowerBound ? "≥ " : ""}{num(topic.clicks)}</b></td><td>{topic.uniqueArticles}</td><td>{topic.appearances}</td><td>{topic.lowerBound ? "≥ " : ""}{num(Math.round(topic.averageClicks))}</td><td>{topic.lowerBound ? "≥ " : ""}{pct(topic.clickRate)}</td></tr>)}</tbody></table></div>
+    {review || summary.unmeasured ? <p className="method-note">{review ? `${review.uniqueArticles} artikler står til emnegennemgang og indgår ikke i emnerangeringen. ` : ""}{summary.unmeasured ? `${summary.unmeasured} artikelresultater mangler et sammenligneligt kontaktmål og indgår ikke.` : ""}</p> : null}
+    <details className="magazine-article-details" open={Boolean(selectedTopic) || undefined}><summary>Se artiklerne bag emnerne</summary><label className="issue-filter"><span>Emne</span><select value={selectedTopic} onChange={event => setTopicFilter(event.target.value)}><option value="">Alle emner</option>{summary.topics.map(topic => <option key={topic.topic}>{topic.topic}</option>)}</select></label><div className="table-scroll"><table><thead><tr><th>Artikel</th><th>Emneforslag</th><th>Udsendelse</th><th>Registrerede klik</th><th>Klik pr. 100 leverede</th></tr></thead><tbody>{articles.map(item => <tr key={`${item.mailingId}-${item.destination}`}><td><ContentCell item={item} /></td><td>{item.topic}</td><td>{item.date}</td><td><LinkClicks item={item} /></td><td>{item.lowerBound ? "≥ " : ""}{pct(item.rate)}</td></tr>)}</tbody></table></div></details>
+    <p className="method-note">Emnerne er redaktionelle forslag; hver artikel får ét primært emne. En forekomst er én artikel i én udsendelse. En artikel sendt flere gange tæller som flere forekomster, men kun én forskellig artikel. Klikrate pr. artikel beregnes som summen af artikelklik divideret med summen af leverede mails for de målbare forekomster. Samlede klik er ikke unikke læsere på tværs af artikler eller udsendelser. Klik dokumenterer interesse, ikke læsning. Placering, rubrik og gentagelser kan påvirke resultatet.</p>
+    <p className="method-note">Dækningen omfatter kun artikler med gemte, sammenlignelige linkresultater. Den aktuelle import gemmer resultater med mindst fem klik; artikler med få eller ingen klik og udsendelser uden linkdata indgår ikke. Derfor beskriver tallene de målbare artikler og er ikke et gennemsnit af alt udsendt indhold.</p>
+  </section>;
 }
 
 function UnsegmentedAudienceClicks({ rows, name }: { rows: Mailing[]; name: "Kompetencenyt" | "Magasinet P" }) {
