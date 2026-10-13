@@ -104,7 +104,7 @@ function DashboardContent({ liveData }: { liveData: LiveDashboardData }) {
       <div className="sidebar-footer"><div className="sidebar-note"><span className="status-dot" />{liveData.status === "live" ? "Opdateres fra Ungapped" : "Seneste tilgængelige data"}<span className="sidebar-updated">{updated}</span></div></div>
     </aside>
     <main id="main" className="main">
-      <header className="topbar"><div><p className="eyebrow">Analyse af medlemskommunikation</p><h1>{view === "home" ? "Samlet overblik" : view === "overview" ? "Psykologernes Nyhedsbrev" : view === "audiences" ? "Målgrupper" : view === "mailing" ? "Redaktionel analyse" : view === "competence" ? "Kompetencenyt" : view === "magazine" ? "Magasinet P" : view === "tr-amr" ? "TR/AMR Nyt" : view === "network" ? "Netværksnyt" : "Om tallene"}</h1></div><div className="sync-box"><div><span>Senest opdateret</span><strong>{updated}</strong></div><button className="share-analysis-button" onClick={() => setSharing(value => !value)} aria-expanded={sharing}>Del analyse</button></div></header>
+      <header className="topbar"><div><p className="eyebrow">{view === "home" ? "DP’s nyhedsbreve" : "Analyse af medlemskommunikation"}</p><h1>{view === "home" ? "Overblik over nyhedsbrevene" : view === "overview" ? "Psykologernes Nyhedsbrev" : view === "audiences" ? "Målgrupper" : view === "mailing" ? "Redaktionel analyse" : view === "competence" ? "Kompetencenyt" : view === "magazine" ? "Magasinet P" : view === "tr-amr" ? "TR/AMR Nyt" : view === "network" ? "Netværksnyt" : "Om tallene"}</h1></div><div className="sync-box"><div><span>Senest opdateret</span><strong>{updated}</strong></div><button className="share-analysis-button" onClick={() => setSharing(value => !value)} aria-expanded={sharing}>Del analyse</button></div></header>
       {sharing ? <section className="panel share-analysis"><label><span>Link til denne analyse</span><input readOnly value={shareUrl} onFocus={event => event.target.select()} /></label><button onClick={async () => { try { await navigator.clipboard.writeText(shareUrl); setShareMessage("Linket er kopieret med dine analysevalg."); } catch { setShareMessage("Markér og kopiér linket fra feltet."); } }}>Kopiér link</button><p role="status">{shareMessage || "Linket bevarer side, periode, udsendelse og målgruppe samt emnevalg i Magasinet P."}</p></section> : null}
       {view !== "overview" && view !== "home" ? <section className="filters analysis-filters" aria-label="Analysefiltre">
         <div className="analysis-filter-controls">
@@ -159,13 +159,13 @@ function HomeOverview({ rows, period, onPeriodChange, asOf, onNavigate, onOpen }
 
   return <div className="stack home-page">
     <section className="home-intro panel">
-      <div><p className="eyebrow">Forside</p><h2>Det vigtigste på tværs af udsendelser</h2><p>Se den seneste udvikling for DP&apos;s fem redaktionelle nyhedsbreve, og gå videre til den analyse, du har brug for.</p></div>
+      <div><h2>Hvordan går det med nyhedsbrevene?</h2><p>Se åbninger og klik på tværs af DP’s fem nyhedsbreve. Vælg en periode, eller gå videre til et nyhedsbrev for at undersøge udsendelser, målgrupper og indhold.</p></div>
       <label className="home-period"><span>Periode</span><select value={period} onChange={(event) => onPeriodChange(event.target.value)}><option>Seneste 12 måneder</option><option>Seneste 6 måneder</option><option>Alle år</option></select></label>
       <div className="home-coverage"><strong>{num(issueCount)}</strong><span>udsendelser i perioden</span></div>
     </section>
 
     <section className="home-status" aria-labelledby="home-status-title">
-      <div className="overview-section-header"><div><h2 id="home-status-title">Status for nyhedsbrevene</h2><p>Seneste udsendelse vurderet i forhold til samme nyhedsbrevs tidligere niveau.</p></div></div>
+      <div className="overview-section-header"><div><h2 id="home-status-title">Seneste udsendelse fra hvert nyhedsbrev</h2><p>Se de seneste resultater og hvordan klikraten ligger i forhold til nyhedsbrevets tidligere niveau.</p></div></div>
       <div className="home-status-grid">{grouped.map((group) => group.latest ? <article className={"home-status-card " + group.className} key={group.name}>
         <div className="home-card-heading"><span className="home-card-icon">{group.icon}</span><div><h3>{group.name}</h3><p>Senest udsendt {group.latest.date}</p></div></div>
         <div className="home-card-metrics"><div><span>Åbningsrate</span><strong>{pct(group.latest.openRate)}</strong><small>{countLabel(group.latest.openCount, "åbninger")}</small><small>{levelText(group.openLevel?.delta ?? null)}</small></div><div><span>Klikrate</span><strong>{pct(group.latest.clickRate)}</strong><small>{countLabel(group.latest.clickCount, "klik")}</small><small>{levelText(group.clickLevel?.delta ?? null)}</small></div></div>
