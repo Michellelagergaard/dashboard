@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { Activity, AlertCircle, ArrowRight, BookOpen, ChevronDown, ChevronRight, ChevronUp, CircleHelp, ClipboardList, LayoutDashboard, Mail, MousePointerClick, Network, Send, TrendingUp, Users } from "lucide-react";
 import type { ClickMeasurement, EditorialMetadata, LiveDashboardData, LiveMailing } from "./live-data";
 import { EditorialProvider } from "./editorial-editor";
@@ -25,7 +25,13 @@ export function Dashboard({ liveData }: { liveData: LiveDashboardData }) {
 }
 
 function DashboardContent({ liveData }: { liveData: LiveDashboardData }) {
-  const [route, setRoute] = useState(() => parseDashboardRoute(typeof window === "undefined" ? "" : window.location.search));
+  const [route, setRoute] = useState(() => {
+    const initial = parseDashboardRoute(typeof window === "undefined" ? "" : window.location.search);
+    if (initial.view === "mailing" && !initial.mailingId) {
+      initial.mailingId = [...liveData.mailings].filter(mailing => mailing.type === "Psykologernes Nyhedsbrev" && inPeriod(mailing, initial.period, liveData.updatedAt || new Date().toISOString())).sort((a, b) => sentTime(b) - sentTime(a))[0]?.id || "";
+    }
+    return initial;
+  });
   const view = route.view as View;
   const period = route.period;
   const [sharing, setSharing] = useState(false);
@@ -35,6 +41,10 @@ function DashboardContent({ liveData }: { liveData: LiveDashboardData }) {
     window.addEventListener("popstate", restore);
     return () => window.removeEventListener("popstate", restore);
   }, []);
+  useEffect(() => {
+    const url = dashboardRouteUrl(window.location.href, route);
+    if (window.location.pathname + window.location.search !== url) window.history.replaceState(null, "", url);
+  }, [route]);
   function navigate(patch: Partial<typeof route>) {
     const next = normalizeDashboardRoute({ ...route, ...patch });
     const url = dashboardRouteUrl(window.location.href, next);
@@ -44,15 +54,12 @@ function DashboardContent({ liveData }: { liveData: LiveDashboardData }) {
   const setView = (next: View) => navigate({ view: next, mailingId: next === "mailing" ? newsletterMailings[0]?.id || "" : "", topic: "" });
   const setSelectedId = (id: string) => navigate({ mailingId: id });
   const setAudienceMailingId = setSelectedId;
-  const mailings = useMemo(
-    () => [...liveData.mailings].filter((mailing) => inPeriod(mailing, period, liveData.updatedAt || new Date().toISOString())).sort((a, b) => sentTime(b) - sentTime(a)),
-    [liveData.mailings, liveData.updatedAt, period],
-  );
-  const newsletterMailings = useMemo(() => mailings.filter((mailing) => mailing.type === "Psykologernes Nyhedsbrev"), [mailings]);
-  const competenceMailings = useMemo(() => mailings.filter((mailing) => mailing.type === "Kompetencenyt"), [mailings]);
-  const magazineMailings = useMemo(() => mailings.filter((mailing) => mailing.type === "Magasinet P"), [mailings]);
-  const trAmrMailings = useMemo(() => mailings.filter((mailing) => mailing.type === "TR/AMR Nyt"), [mailings]);
-  const networkMailings = useMemo(() => mailings.filter((mailing) => mailing.type === "Netværksnyt"), [mailings]);
+  const mailings = [...liveData.mailings].filter(mailing => inPeriod(mailing, period, liveData.updatedAt || new Date().toISOString())).sort((a, b) => sentTime(b) - sentTime(a));
+  const newsletterMailings = mailings.filter(mailing => mailing.type === "Psykologernes Nyhedsbrev");
+  const competenceMailings = mailings.filter(mailing => mailing.type === "Kompetencenyt");
+  const magazineMailings = mailings.filter(mailing => mailing.type === "Magasinet P");
+  const trAmrMailings = mailings.filter(mailing => mailing.type === "TR/AMR Nyt");
+  const networkMailings = mailings.filter(mailing => mailing.type === "Netværksnyt");
   const audienceIssueId = view === "audiences" ? route.mailingId : "";
   const audienceMailings = audienceIssueId ? newsletterMailings.filter(mailing => mailing.id === audienceIssueId) : newsletterMailings;
   const selected = route.mailingId ? newsletterMailings.find(mailing => mailing.id === route.mailingId) : newsletterMailings[0];
@@ -61,13 +68,6 @@ function DashboardContent({ liveData }: { liveData: LiveDashboardData }) {
   const selectionError = Boolean(route.mailingId && ["mailing", "audiences", ...otherViews].includes(view) && !viewMailings.some(mailing => mailing.id === route.mailingId));
   const missingIssue = liveData.mailings.find(mailing => mailing.id === route.mailingId);
   const shareUrl = typeof window === "undefined" ? "" : new URL(dashboardRouteUrl(window.location.href, view === "mailing" && selected ? { ...route, mailingId: selected.id } : route), window.location.origin).href;
-  useEffect(() => {
-    if (view === "mailing" && !route.mailingId && selected) {
-      const next = normalizeDashboardRoute({ ...route, mailingId: selected.id });
-      window.history.replaceState(null, "", dashboardRouteUrl(window.location.href, next));
-      setRoute(next);
-    }
-  }, [view, route, selected]);
   const updated = liveData.updatedAt
     ? new Intl.DateTimeFormat("da-DK", { dateStyle: "medium", timeStyle: "short", timeZone: "Europe/Copenhagen" }).format(new Date(liveData.updatedAt))
     : "Ikke tilgængelig";
@@ -123,7 +123,7 @@ function DashboardContent({ liveData }: { liveData: LiveDashboardData }) {
       {liveData.status !== "unavailable" && !selectionError && view === "home" ? <HomeOverview onOpen={openMailing} rows={mailings} period={period} onPeriodChange={changePeriod} asOf={liveData.updatedAt || new Date().toISOString()} onNavigate={setView} /> : null}
       {liveData.status !== "unavailable" && !selectionError && view === "overview" ? <Overview rows={newsletterMailings} onOpen={openMailing} asOf={liveData.updatedAt || new Date().toISOString()} period={period} onPeriodChange={changePeriod} /> : null}
       {liveData.status !== "unavailable" && !selectionError && view === "audiences" ? <AudienceView audience={route.audience} onAudienceChange={audience => navigate({ audience })} rows={audienceMailings} comparisonRows={newsletterMailings} singleIssue={Boolean(audienceIssueId)} onOpen={openMailing} asOf={liveData.updatedAt || new Date().toISOString()} /> : null}
-      {liveData.status !== "unavailable" && !selectionError && view === "mailing" ? <MailingView rows={newsletterMailings} selected={selected} onChange={setSelectedId} asOf={liveData.updatedAt || new Date().toISOString()} /> : null}
+      {liveData.status !== "unavailable" && !selectionError && view === "mailing" ? <MailingView rows={newsletterMailings} selected={selected} asOf={liveData.updatedAt || new Date().toISOString()} /> : null}
       {liveData.status !== "unavailable" && !selectionError && view === "about" ? <AboutNumbers rows={newsletterMailings} /> : null}
       {liveData.status !== "unavailable" && !selectionError && view === "competence" ? <CompetenceOverview selectedId={route.mailingId} onSelect={setSelectedId} rows={competenceMailings} asOf={liveData.updatedAt || new Date().toISOString()} /> : null}
       {liveData.status !== "unavailable" && !selectionError && view === "magazine" ? <MagazineOverview selectedId={route.mailingId} onSelect={setSelectedId} magazineState={{ ranking: route.ranking, topicFilter: route.topic, onRankingChange: ranking => navigate({ ranking }), onTopicChange: topic => navigate({ topic }) }} rows={magazineMailings} asOf={liveData.updatedAt || new Date().toISOString()} /> : null}
@@ -180,7 +180,6 @@ function HomeOverview({ rows, period, onPeriodChange, asOf, onNavigate, onOpen }
       <div className="overview-section-header"><div><h2 id="home-recent-title">Seneste udsendelser på tværs</h2><p>De fem seneste udsendelser i den valgte periode.</p></div></div>
       {recent.length ? <div className="table-scroll"><table><thead><tr><th>Dato og nyhedsbrev</th><th>Emnefelt</th><th>Åbnet</th><th>Klikket</th><th></th></tr></thead><tbody>{recent.map((row) => {
         const item = newsletterViews.find((candidate) => candidate.name === row.type);
-        const destination = item?.view || "home";
         return <tr key={row.type + "-" + row.id}><td><span className={"home-type-badge " + (item?.className || "")}>{row.type}</span><small>{row.date}</small></td><td><strong>{row.subject || row.title}</strong></td><td>{pct(row.openRate)}</td><td><b>{pct(row.clickRate)}</b></td><td><button className="row-link" onClick={() => onOpen(row.id)}>Åbn</button></td></tr>;
       })}</tbody></table></div> : <DataGap title="Ingen udsendelser i perioden" text="Vælg en længere periode for at se tidligere udsendelser." />}
     </section>
@@ -503,7 +502,7 @@ function AudienceTakeaways({ audience, level, top }: { audience: string; level: 
   return <section className="panel automatic-takeaways audience-takeaways"><div className="panel-header"><div><p className="eyebrow">Automatisk redaktionel vurdering</p><h2>Hvad tager vi med videre?</h2></div><span>{audience}</span></div><div className="takeaway-grid"><article><span>Det ser ud til at virke</span><h3>{top ? displayTitle(top) : "Afventer linkdata"}</h3><p>{top ? `Historien har flest registrerede klik hos ${audience} i den valgte periode: ${num(top.clicks)}.` : "Der er endnu ikke dokumenterede målgruppeklik at fremhæve."}</p></article><article><span>Hold øje med</span><h3>Er niveauet stabilt?</h3><p>{comparison}</p></article><article><span>Redaktionelt forslag</span><h3>Afprøv det stærkeste greb igen</h3><p>{top ? "Prioritér en ny, konkret historie om samme emne højt, og sammenlign resultatet med målgruppens normale niveau." : "Afprøv én tydelig servicehistorie højt og sammenlign med målgruppens normale niveau."}</p></article></div><p className="method-note">Vurderingen genereres automatisk og beskriver mønstre i tallene. Den dokumenterer ikke årsagen til medlemmernes adfærd.</p></section>;
 }
 
-function MailingView({ rows, selected, onChange, asOf }: { rows: Mailing[]; selected?: Mailing; onChange: (id: string) => void; asOf: string }) {
+function MailingView({ rows, selected, asOf }: { rows: Mailing[]; selected?: Mailing; asOf: string }) {
   if (!selected) return <Empty title="Ingen udsendelser i perioden" text="Vælg en længere periode." />;
   const content = partitionLinkMeasurements(selected.content).contacts;
   const news = content.filter((item) => item.editorial?.kind === "news");
