@@ -88,3 +88,8 @@ Der er ikke ændret på medlemsdata for at teste dette.
 
 Officiel baggrund om sporing:
 https://ungapped.com/support/user-manuals/manual-for-mailings-newsletters/tracking-opens-clicks/
+
+
+## Periode og udsendelse i analysevisningerne
+
+Målgrupper og Redaktionel analyse bruger den samme filterbjælke. Vælg 6 måneder, 12 måneder eller Alle år; antallet af udsendelser i perioden vises under filtrene. Datoperioden regnes fra dashboardets seneste dataopdatering. Ved periodeskift nulstilles et enkelt udsendelsesvalg: Målgrupper viser igen alle udsendelser i perioden, og Redaktionel analyse vælger den seneste tilgængelige udsendelse. Udsendelseslisten viser kun udsendelser i den valgte periode. Målgruppetal og linkresultater afgrænses til den valgte udsendelse, når en enkelt udgave vælges.
