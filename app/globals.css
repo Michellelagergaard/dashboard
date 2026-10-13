@@ -203,3 +203,6 @@
 .decision-card h3,.decision-card p { overflow-wrap:anywhere; }
 .simple-dashboard button:focus-visible,.simple-dashboard summary:focus-visible,.simple-dashboard a:focus-visible,.simple-dashboard select:focus-visible { outline:3px solid #397baf; outline-offset:3px; }
 @media(max-width:650px) { .evidence-decisions .panel-header { flex-wrap:wrap; gap:8px; } .evidence-decisions .decision-cards { grid-template-columns:minmax(0,1fr); } .simple-dashboard .analysis-filters button { min-height:44px; } .decision-examples .decision-link { min-height:44px; } }
+
+.simple-dashboard .overview-verdict.pending,.simple-dashboard .audience-verdict.pending,.simple-dashboard .mailing-verdict.pending { background:#f3f6f9; border-color:#b5c3d1; }
+.simple-dashboard .overview-verdict.pending > strong,.simple-dashboard .audience-verdict.pending > strong,.simple-dashboard .mailing-verdict.pending .performance-badge { background:#e5ebf1; color:#485b70; }
