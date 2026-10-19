@@ -5,7 +5,7 @@ import { mergeCorrections, validateCorrections } from "./editorial-content.mjs";
 export function resolveLegacyCorrections(shared, stored) {
   const fallback = { file: shared, localCount: 0, raw: null, error: "" };
   if (stored === null || stored === "") return fallback;
-  if (stored === "unavailable") return { ...fallback, error: "Browserens gemte rettelser kunne ikke læses. Fælles rettelser vises; eventuelle lokale rettelser kan ikke anvendes, mens lagringen er blokeret." };
+  if (stored === undefined) return { ...fallback, error: "Browserens gemte rettelser kunne ikke læses. Fælles rettelser vises; eventuelle lokale rettelser kan ikke anvendes, mens lagringen er blokeret." };
   try {
     const local = validateCorrections(JSON.parse(stored));
     return { file: mergeCorrections(shared, local), localCount: local.corrections.length, raw: stored, error: "" };

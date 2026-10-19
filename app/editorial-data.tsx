@@ -12,7 +12,7 @@ function subscribe(callback: () => void) {
 }
 function storageSnapshot() {
   try { return localStorage.getItem(correctionStorageKey) || ""; }
-  catch { return "unavailable"; }
+  catch { return undefined; }
 }
 
 export function EditorialData({ children }: { children: (file: CorrectionFile) => ReactNode }) {

@@ -39,13 +39,13 @@ test("legacy precedence and audience fields survive without rewriting source or 
 });
 
 test("invalid legacy files remain recoverable verbatim and never partially override shared corrections", () => {
-  for (const raw of ['{broken', 'null', JSON.stringify({version:1,corrections:[row, {...row,mailingId:"two",kind:"invalid"}]})]) {
+  for (const raw of ['unavailable', '{broken', 'null', JSON.stringify({version:1,corrections:[row, {...row,mailingId:"two",kind:"invalid"}]})]) {
     const result = resolveLegacyCorrections(shared, raw);
     assert.deepEqual(result.file, shared);
     assert.equal(result.raw, raw);
     assert.match(result.error, /ikke slettet/);
   }
-  const result = resolveLegacyCorrections(shared, "unavailable");
+  const result = resolveLegacyCorrections(shared, undefined);
   assert.deepEqual(result.file, shared);
   assert.equal(result.raw, null);
   assert.match(result.error, /blokeret/);
