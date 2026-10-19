@@ -3,7 +3,7 @@
 import { useEffect, useState, type ReactNode } from "react";
 import { Activity, ArrowRight, BookOpen, ChevronDown, ChevronRight, ChevronUp, CircleHelp, ClipboardList, LayoutDashboard, Mail, MousePointerClick, Network, Send, TrendingUp, Users } from "lucide-react";
 import type { ClickMeasurement, EditorialMetadata, LiveDashboardData, LiveMailing } from "./live-data";
-import { EditorialProvider } from "./editorial-editor";
+import { EditorialData } from "./editorial-data";
 import { enrichMailings } from "../config/editorial-content.mjs";
 import { memberSegmentNames } from "../config/member-segments.mjs";
 import { editorialCategory, summarizeEditorialTopics } from "../config/editorial-topics.mjs";
@@ -22,7 +22,7 @@ const num = (value: number) => value.toLocaleString("da-DK");
 const average = (values: number[]) => values.length ? values.reduce((sum, value) => sum + value, 0) / values.length : 0;
 
 export function Dashboard({ liveData }: { liveData: LiveDashboardData }) {
-  return <EditorialProvider>{corrections => <DashboardContent liveData={{ ...liveData, mailings: enrichMailings(liveData.mailings, corrections) }} />}</EditorialProvider>;
+  return <EditorialData>{corrections => <DashboardContent liveData={{ ...liveData, mailings: enrichMailings(liveData.mailings, corrections) }} />}</EditorialData>;
 }
 
 function DashboardContent({ liveData }: { liveData: LiveDashboardData }) {
