@@ -4,6 +4,7 @@ import { useEffect, useState, type ReactNode } from "react";
 import { Activity, ArrowRight, BookOpen, ChevronDown, ChevronRight, ChevronUp, CircleHelp, ClipboardList, LayoutDashboard, Mail, MousePointerClick, Network, Send, TrendingUp, Users } from "lucide-react";
 import type { ClickMeasurement, EditorialMetadata, LiveDashboardData, LiveMailing } from "./live-data";
 import { EditorialData } from "./editorial-data";
+import { combineMailings, canonicalMailingId } from "../config/combined-mailings.mjs";
 import { enrichMailings } from "../config/editorial-content.mjs";
 import { memberSegmentNames } from "../config/member-segments.mjs";
 import { editorialCategory, summarizeEditorialTopics } from "../config/editorial-topics.mjs";
@@ -22,12 +23,13 @@ const num = (value: number) => value.toLocaleString("da-DK");
 const average = (values: number[]) => values.length ? values.reduce((sum, value) => sum + value, 0) / values.length : 0;
 
 export function Dashboard({ liveData }: { liveData: LiveDashboardData }) {
-  return <EditorialData>{corrections => <DashboardContent liveData={{ ...liveData, mailings: enrichMailings(liveData.mailings, corrections) }} />}</EditorialData>;
+  return <EditorialData>{corrections => <DashboardContent liveData={{ ...liveData, mailings: combineMailings(enrichMailings(liveData.mailings, corrections)) }} />}</EditorialData>;
 }
 
 function DashboardContent({ liveData }: { liveData: LiveDashboardData }) {
   const [route, setRoute] = useState(() => {
     const initial = parseDashboardRoute(typeof window === "undefined" ? "" : window.location.search);
+    initial.mailingId = canonicalMailingId(initial.mailingId);
     if (initial.view === "mailing" && !initial.mailingId) {
       initial.mailingId = [...liveData.mailings].filter(mailing => mailing.type === "Psykologernes Nyhedsbrev" && inPeriod(mailing, initial.period, liveData.updatedAt || new Date().toISOString())).sort((a, b) => sentTime(b) - sentTime(a))[0]?.id || "";
     }
@@ -38,7 +40,7 @@ function DashboardContent({ liveData }: { liveData: LiveDashboardData }) {
   const [sharing, setSharing] = useState(false);
   const [shareMessage, setShareMessage] = useState("");
   useEffect(() => {
-    const restore = () => { setRoute(parseDashboardRoute(window.location.search)); setShareMessage(""); };
+    const restore = () => { const restored = parseDashboardRoute(window.location.search); restored.mailingId = canonicalMailingId(restored.mailingId); setRoute(restored); setShareMessage(""); };
     window.addEventListener("popstate", restore);
     return () => window.removeEventListener("popstate", restore);
   }, []);
@@ -513,7 +515,7 @@ function MailingView({ rows, selected, asOf, onOpen }: { rows: Mailing[]; select
   return <div className="stack mailing-page">
     <section className={`mailing-verdict ${level.delta === null ? "pending" : level.delta <= -1 ? "below" : "above"}`}><div><p className="eyebrow">{selected.date} · Psykologernes Nyhedsbrev</p><h2>{verdict}</h2><p>{verdictNote}</p></div><PerformanceBadge delta={level.delta} /></section>
     <MeasurementContext mailing={selected} level={level} asOf={asOf} />
-    <section className="panel mailing-summary"><PanelHeader eyebrow="Denne udsendelse" title={selected.title} meta={selected.date} /><p className="subject-line"><span>Emnefelt</span>{selected.subject}</p><div className="kpi-grid compact mailing-kpis"><Kpi icon={<Mail />} label="Leverede" value={num(selected.delivered)} note="Mails registreret som leveret" /><Kpi icon={<Activity />} label="Åbningsrate" value={pct(selected.openRate)} count={countLabel(selected.openCount, "åbninger")} note="Registrerede åbninger" /><Kpi icon={<MousePointerClick />} label="Klikrate" value={pct(selected.clickRate)} count={countLabel(selected.clickCount, "klik")} note={levelText(level.delta)} /><Kpi icon={<TrendingUp />} label="CTOR" value={pct(ctor)} note="Klik blandt registrerede åbninger" /><Kpi icon={<Users />} label="Afmeldinger" value={num(selected.unsubscribes || 0)} note="Registreret efter udsendelsen" /></div></section>
+    <section className="panel mailing-summary"><PanelHeader eyebrow="Denne udsendelse" title={selected.title} meta={selected.date} /><p className="subject-line"><span>Emnefelt</span>{selected.subject}</p>{selected.deliveryParts?.length ? <p className="method-note">Samlet nyhedsbrev sendt i {selected.deliveryParts.length} omgange. Antal og rater er beregnet på tværs af begge udsendelser. Målgruppernes emnefelter er bevaret.</p> : null}<div className="kpi-grid compact mailing-kpis"><Kpi icon={<Mail />} label="Leverede" value={num(selected.delivered)} note="Mails registreret som leveret" /><Kpi icon={<Activity />} label="Åbningsrate" value={pct(selected.openRate)} count={countLabel(selected.openCount, "åbninger")} note="Registrerede åbninger" /><Kpi icon={<MousePointerClick />} label="Klikrate" value={pct(selected.clickRate)} count={countLabel(selected.clickCount, "klik")} note={levelText(level.delta)} /><Kpi icon={<TrendingUp />} label="CTOR" value={pct(ctor)} note="Klik blandt registrerede åbninger" /><Kpi icon={<Users />} label="Afmeldinger" value={num(selected.unsubscribes || 0)} note="Registreret efter udsendelsen" /></div></section>
     <MailingTrend rows={rows} selected={selected} baseline={level.delta === null ? null : level.baseline} />
     <section className="overview-section"><div className="overview-section-header"><div><h2>Hvad interesserede medlemmerne?</h2><p>De mest klikkede redaktionelle historier i udsendelsen.</p></div></div><div className="overview-stories mailing-stories">{topStories.length ? topStories.map((item, index) => <article key={`${item.destination}-${index}`}><span className="overview-rank">{index + 1}</span><div><strong>{displayTitle(item)}</strong><span>{contentTopic(item)}</span><AudienceExposure item={item} /></div><div><strong>{item.clickMeasurement?.aggregation === "max-per-destination" ? "≥ " : ""}{num(item.clicks)} klik</strong><span>{formatPoint(item.rate)} pr. 100 leverede</span></div></article>) : <DataGap title="Ingen dokumenterede historier" text="Der er ingen brugbare klikresultater for redaktionelle historier i denne udsendelse." />}</div></section>
     <section className="panel table-panel mailing-audiences"><PanelHeader eyebrow="Målgrupper" title="Hvordan reagerede målgrupperne?" meta={performance.length ? `${performance.length} målgrupper med data` : "Ingen målgruppedata"} /><div className="table-scroll"><table><thead><tr><th>Målgruppe</th><th>Emnefelt</th><th>Modtagere</th><th>Åbnet</th><th>Klikket</th></tr></thead><tbody>{performance.length ? performance.map((item) => <tr key={item.name}><td><strong>{item.name}</strong></td><td>{subjectForAudience(selected, item.name) || <span className="muted-cell">Samme eller ikke dokumenteret</span>}</td><td>{item.recipientsLabel}</td><td>{pct(item.openRate)}</td><td><b>{pct(item.clickRate)}</b></td></tr>) : <EmptyRow columns={5} text="Der er ingen brugbare målgrupperesultater for denne udsendelse." />}</tbody></table></div></section>
