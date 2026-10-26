@@ -23,7 +23,8 @@ test("dashboardet bruger Michelle's Motherboard-brandingen", () => {
 
 test("forsiden viser faste årsgennemsnit for hvert nyhedsbrev", () => {
   assert.match(dashboardSource, /function AnnualNewsletterAverages/);
-  assert.match(dashboardSource, /const annualYears = \[2024, 2025, 2026\]/);
+  assert.match(dashboardSource, /const annualYears = \[2025, 2026\]/);
+  assert.doesNotMatch(dashboardSource, /Åbnings- og klikrate for 2024/);
   assert.match(dashboardSource, /historyRows=\{allMailings\}/);
   assert.match(dashboardSource, /påvirkes ikke af periodevalget ovenfor/);
   assert.match(dashboardSource, /new Date\(row\.sentAt\)\.getUTCFullYear\(\) === year/);
