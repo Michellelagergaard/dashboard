@@ -57,7 +57,8 @@ function DashboardContent({ liveData }: { liveData: LiveDashboardData }) {
   const setView = (next: View) => navigate({ view: next, mailingId: next === "mailing" ? newsletterMailings[0]?.id || "" : "", topic: "" });
   const setSelectedId = (id: string) => navigate({ mailingId: id });
   const setAudienceMailingId = setSelectedId;
-  const mailings = [...liveData.mailings].filter(mailing => inPeriod(mailing, period, liveData.updatedAt || new Date().toISOString())).sort((a, b) => sentTime(b) - sentTime(a));
+  const allMailings = [...liveData.mailings].sort((a, b) => sentTime(b) - sentTime(a));
+  const mailings = allMailings.filter(mailing => inPeriod(mailing, period, liveData.updatedAt || new Date().toISOString()));
   const newsletterMailings = mailings.filter(mailing => mailing.type === "Psykologernes Nyhedsbrev");
   const competenceMailings = mailings.filter(mailing => mailing.type === "Kompetencenyt");
   const magazineMailings = mailings.filter(mailing => mailing.type === "Magasinet P");
@@ -123,7 +124,7 @@ function DashboardContent({ liveData }: { liveData: LiveDashboardData }) {
       {selectionError ? <section className="panel"><DataGap title="Den valgte udsendelse kan ikke vises" text={missingIssue ? "Udsendelsen ligger uden for perioden eller tilhører et andet nyhedsbrev. Der vises ikke en anden udsendelse i dens sted." : "Linkets udsendelse findes ikke i de tilgængelige data. Der vises ikke en anden udsendelse i dens sted."} /><button className="row-link" onClick={() => missingIssue ? navigate({ view: viewForNewsletter(missingIssue.type), period: "Alle år" }) : navigate({ mailingId: "" })}>{missingIssue ? "Vis den valgte udsendelse i hele historikken" : "Vis tilgængelige udsendelser"}</button></section> : null}
       {view === "audiences" ? <MeasurementGuide /> : null}
       {liveData.status === "unavailable" ? <Empty title="Data er ikke tilgængelige" text="Den seneste dataopdatering kunne ikke læses. Prøv igen senere." /> : null}
-      {liveData.status !== "unavailable" && !selectionError && view === "home" ? <HomeOverview onOpen={openMailing} rows={mailings} period={period} onPeriodChange={changePeriod} asOf={liveData.updatedAt || new Date().toISOString()} onNavigate={setView} /> : null}
+      {liveData.status !== "unavailable" && !selectionError && view === "home" ? <HomeOverview onOpen={openMailing} rows={mailings} historyRows={allMailings} period={period} onPeriodChange={changePeriod} asOf={liveData.updatedAt || new Date().toISOString()} onNavigate={setView} /> : null}
       {liveData.status !== "unavailable" && !selectionError && view === "overview" ? <Overview rows={newsletterMailings} onOpen={openMailing} asOf={liveData.updatedAt || new Date().toISOString()} period={period} onPeriodChange={changePeriod} /> : null}
       {liveData.status !== "unavailable" && !selectionError && view === "audiences" ? <AudienceView audience={route.audience} onAudienceChange={audience => navigate({ audience })} rows={audienceMailings} comparisonRows={newsletterMailings} singleIssue={Boolean(audienceIssueId)} onOpen={openMailing} asOf={liveData.updatedAt || new Date().toISOString()} /> : null}
       {liveData.status !== "unavailable" && !selectionError && view === "mailing" ? <MailingView onOpen={openMailing} rows={newsletterMailings} selected={selected} asOf={liveData.updatedAt || new Date().toISOString()} /> : null}
@@ -148,7 +149,7 @@ const externalBenchmarks = {
   associations: { openRate: 33.54, clickRate: 2.68 },
 };
 
-function HomeOverview({ rows, period, onPeriodChange, asOf, onNavigate, onOpen }: { onOpen: (id: string) => void; rows: Mailing[]; period: string; onPeriodChange: (period: string) => void; asOf: string; onNavigate: (view: View) => void }) {
+function HomeOverview({ rows, historyRows, period, onPeriodChange, asOf, onNavigate, onOpen }: { onOpen: (id: string) => void; rows: Mailing[]; historyRows: Mailing[]; period: string; onPeriodChange: (period: string) => void; asOf: string; onNavigate: (view: View) => void }) {
   const grouped = newsletterViews.map((item) => {
     const issues = rows.filter((row) => row.type === item.name);
     const latest = issues[0];
@@ -187,7 +188,26 @@ function HomeOverview({ rows, period, onPeriodChange, asOf, onNavigate, onOpen }
         return <tr key={row.type + "-" + row.id}><td><span className={"home-type-badge " + (item?.className || "")}>{row.type}</span><small>{row.date}</small></td><td><strong>{row.subject || row.title}</strong></td><td>{pct(row.openRate)}</td><td><b>{pct(row.clickRate)}</b></td><td><button className="row-link" onClick={() => onOpen(row.id)}>Åbn</button></td></tr>;
       })}</tbody></table></div> : <DataGap title="Ingen udsendelser i perioden" text="Vælg en længere periode for at se tidligere udsendelser." />}
     </section>
+
+    <AnnualNewsletterAverages rows={historyRows} />
   </div>;
+}
+
+const annualYears = [2024, 2025, 2026] as const;
+
+function AnnualNewsletterAverages({ rows }: { rows: Mailing[] }) {
+  const result = newsletterViews.map(newsletter => ({
+    ...newsletter,
+    years: annualYears.map(year => {
+      const issues = rows.filter(row => row.type === newsletter.name && row.sentAt && new Date(row.sentAt).getUTCFullYear() === year);
+      return { year, issues, openRate: average(issues.map(issue => issue.openRate)), clickRate: average(issues.map(issue => issue.clickRate)) };
+    }),
+  }));
+  return <section className="panel annual-averages" aria-labelledby="annual-averages-title">
+    <div className="overview-section-header"><div><p className="eyebrow">År for år</p><h2 id="annual-averages-title">Gennemsnit for hvert nyhedsbrev</h2><p>Åbnings- og klikrate for 2024, 2025 og 2026. Årsoversigten bruger hele historikken og påvirkes ikke af periodevalget ovenfor.</p></div></div>
+    <div className="table-scroll"><table><thead><tr><th>Nyhedsbrev</th>{annualYears.map(year => <th key={year}>{year}</th>)}</tr></thead><tbody>{result.map(newsletter => <tr key={newsletter.name}><td><span className={"home-type-badge " + newsletter.className}>{newsletter.name}</span></td>{newsletter.years.map(summary => <td key={summary.year}>{summary.issues.length ? <div className="annual-result"><span><small>Åbnet</small><strong>{pct(summary.openRate)}</strong></span><span><small>Klikket</small><strong>{pct(summary.clickRate)}</strong></span><em>{num(summary.issues.length)} uds.</em></div> : <div className="annual-empty"><strong>—</strong><small>Ingen udsendelser</small></div>}</td>)}</tr>)}</tbody></table></div>
+    <p className="method-note">Tallene er almindelige gennemsnit pr. udsendelse; hver udsendelse tæller lige meget uanset antal leverede. Antallet af udsendelser viser sammenligningsgrundlaget. Åbningsrater kan være påvirket af automatiske åbninger, og resultaterne er derfor pejlemærker – ikke i sig selv en vurdering af indholdets kvalitet.</p>
+  </section>;
 }
 
 function BenchmarkOverview({ grouped }: { grouped: Array<(typeof newsletterViews)[number] & { issues: Mailing[] }> }) {
