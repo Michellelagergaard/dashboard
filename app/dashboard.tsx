@@ -193,7 +193,7 @@ function HomeOverview({ rows, historyRows, period, onPeriodChange, asOf, onNavig
   </div>;
 }
 
-const annualYears = [2024, 2025, 2026] as const;
+const annualYears = [2025, 2026] as const;
 
 function AnnualNewsletterAverages({ rows }: { rows: Mailing[] }) {
   const result = newsletterViews.map(newsletter => ({
@@ -204,7 +204,7 @@ function AnnualNewsletterAverages({ rows }: { rows: Mailing[] }) {
     }),
   }));
   return <section className="panel annual-averages" aria-labelledby="annual-averages-title">
-    <div className="overview-section-header"><div><p className="eyebrow">År for år</p><h2 id="annual-averages-title">Gennemsnit for hvert nyhedsbrev</h2><p>Åbnings- og klikrate for 2024, 2025 og 2026. Årsoversigten bruger hele historikken og påvirkes ikke af periodevalget ovenfor.</p></div></div>
+    <div className="overview-section-header"><div><p className="eyebrow">År for år</p><h2 id="annual-averages-title">Gennemsnit for hvert nyhedsbrev</h2><p>Åbnings- og klikrate for 2025 og 2026. Årsoversigten bruger hele historikken og påvirkes ikke af periodevalget ovenfor.</p></div></div>
     <div className="table-scroll"><table><thead><tr><th>Nyhedsbrev</th>{annualYears.map(year => <th key={year}>{year}</th>)}</tr></thead><tbody>{result.map(newsletter => <tr key={newsletter.name}><td><span className={"home-type-badge " + newsletter.className}>{newsletter.name}</span></td>{newsletter.years.map(summary => <td key={summary.year}>{summary.issues.length ? <div className="annual-result"><span><small>Åbnet</small><strong>{pct(summary.openRate)}</strong></span><span><small>Klikket</small><strong>{pct(summary.clickRate)}</strong></span><em>{num(summary.issues.length)} uds.</em></div> : <div className="annual-empty"><strong>—</strong><small>Ingen udsendelser</small></div>}</td>)}</tr>)}</tbody></table></div>
     <p className="method-note">Tallene er almindelige gennemsnit pr. udsendelse; hver udsendelse tæller lige meget uanset antal leverede. Antallet af udsendelser viser sammenligningsgrundlaget. Åbningsrater kan være påvirket af automatiske åbninger, og resultaterne er derfor pejlemærker – ikke i sig selv en vurdering af indholdets kvalitet.</p>
   </section>;
