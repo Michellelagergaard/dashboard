@@ -21,6 +21,15 @@ test("dashboardet bruger Michelle's Motherboard-brandingen", () => {
   assert.match(dashboardSource, /favicon\.png/);
 });
 
+test("forsiden viser faste årsgennemsnit for hvert nyhedsbrev", () => {
+  assert.match(dashboardSource, /function AnnualNewsletterAverages/);
+  assert.match(dashboardSource, /const annualYears = \\[2024, 2025, 2026\\]/);
+  assert.match(dashboardSource, /historyRows=\\{allMailings\\}/);
+  assert.match(dashboardSource, /påvirkes ikke af periodevalget ovenfor/);
+  assert.match(dashboardSource, /new Date\\(row\\.sentAt\\)\\.getUTCFullYear\\(\\) === year/);
+  assert.match(dashboardSource, /Antallet af udsendelser viser sammenligningsgrundlaget/);
+});
+
 test("lange målgruppetabeller kan foldes ud", () => {
   assert.match(dashboardSource, /aria-expanded=\{expanded\}/);
   assert.match(dashboardSource, /Vis alle \{total\}/);
