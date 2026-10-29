@@ -1,3 +1,4 @@
+import { isMemberCommunication } from './dashboard-tags.mjs';
 // Explicit editorial grouping: source issues and their stored history stay intact.
 export const combinedMailingGroups = [{
   ids: ["0882c536-e05f-4276-8b12-6dcb25c77903", "3863b09d-4848-4650-a67c-3e5d086b1c4b"],
@@ -106,7 +107,7 @@ export function combineMailings(mailings) {
   let result = mailings;
   for (const group of combinedMailingGroups) {
     const parts = group.ids.map(id => result.find(mailing => mailing.id === id));
-    if (parts.some(part => !part) || parts.some(part => part.type !== "Psykologernes Nyhedsbrev")) continue;
+    if (parts.some(part => !part) || parts.some(part => part.type !== "Psykologernes Nyhedsbrev") || parts.some(isMemberCommunication)) continue;
     const merged = mergeParts(parts, group);
     result = result.filter(mailing => !group.ids.includes(mailing.id));
     result = [...result, merged];

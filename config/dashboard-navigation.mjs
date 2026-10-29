@@ -1,6 +1,6 @@
 import { memberSegmentNames } from './member-segments.mjs';
 import { magazineTopicNames, magazineReviewTopic } from './magazine-topics.mjs';
-const views = ['home','overview','audiences','mailing','about','competence','magazine','tr-amr','network'];
+const views = ['home','overview','audiences','mailing','about','competence','magazine','tr-amr','network','member-communication'];
 export const periods = { '6m': 'Seneste 6 måneder', '12m': 'Seneste 12 måneder', all: 'Alle år' };
 export const defaultDashboardRoute = { view: 'home', period: periods['12m'], mailingId: '', audience: memberSegmentNames[0], topic: '', ranking: 'clicks' };
 export function normalizeDashboardRoute(input = {}) {
@@ -16,11 +16,11 @@ export function dashboardRouteUrl(currentUrl, input) {
   if (version && /^[a-z0-9-]{1,40}$/i.test(version)) url.searchParams.set('v', version);
   url.searchParams.set('page', route.view);
   url.searchParams.set('period', Object.keys(periods).find(key => periods[key] === route.period));
-  if (route.mailingId && ['mailing','audiences','competence','magazine','tr-amr','network'].includes(route.view)) url.searchParams.set('issue', route.mailingId);
+  if (route.mailingId && ['mailing','audiences','competence','magazine','tr-amr','network','member-communication'].includes(route.view)) url.searchParams.set('issue', route.mailingId);
   if (route.view === 'audiences') url.searchParams.set('audience', route.audience);
   if (route.view === 'magazine') { if (route.topic) url.searchParams.set('topic',route.topic); if (route.ranking === 'rate') url.searchParams.set('rank','rate'); }
   return url.pathname + url.search;
 }
 export function viewForNewsletter(type) {
-  return { 'Psykologernes Nyhedsbrev': 'mailing', Kompetencenyt: 'competence', 'Magasinet P': 'magazine', 'TR/AMR Nyt': 'tr-amr', 'Netværksnyt': 'network' }[type] || 'home';
+  return { 'Psykologernes Nyhedsbrev': 'mailing', Kompetencenyt: 'competence', 'Magasinet P': 'magazine', 'TR/AMR Nyt': 'tr-amr', 'Netværksnyt': 'network', Medlemskommunikation: 'member-communication' }[type] || 'home';
 }

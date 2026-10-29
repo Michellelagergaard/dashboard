@@ -2,6 +2,25 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import fs from "node:fs";
 import { editorialCategory, editorialTopicNames, summarizeEditorialTopics } from "../config/editorial-topics.mjs";
+import { dashboardTags, matchingDashboardTags, isMemberCommunication } from "../config/dashboard-tags.mjs";
+import { combineMailings, combinedMailingGroups } from "../config/combined-mailings.mjs";
+
+test('member communication requires an explicit tag and retains multiple tags', () => {
+  assert.equal(dashboardTags.length, 6);
+  assert.deepEqual(matchingDashboardTags([' medlemskommunikation ', 'Psykologernes Nyhedsbrev']), ['Psykologernes Nyhedsbrev', 'Medlemskommunikation']);
+  assert.deepEqual(matchingDashboardTags(['Generel medlemskommunikation', 'Invitation til generalforsamling']), []);
+  assert.equal(isMemberCommunication({ type: 'Psykologernes Nyhedsbrev', dashboardTags: matchingDashboardTags(['Medlemskommunikation']) }), true);
+  assert.equal(isMemberCommunication({ type: 'Generel medlemskommunikation', subject: 'Medlemskommunikation' }), false);
+  const parts = combinedMailingGroups[0].ids.map(id => ({ id, type: 'Psykologernes Nyhedsbrev', dashboardTags: ['Medlemskommunikation'] }));
+  assert.equal(combineMailings(parts).length, 2);
+});
+
+test('member communication links retain the issue and period', () => {
+  const route = { view: 'member-communication', period: 'Alle år', mailingId: 'member-1' };
+  const restored = parseDashboardRoute(new URL(dashboardRouteUrl('https://example.com/dashboard/', route), 'https://example.com').search);
+  for (const key of ['view', 'period', 'mailingId']) assert.equal(restored[key], route[key]);
+  assert.equal(viewForNewsletter('Medlemskommunikation'), route.view);
+});
 
 const source = fs.readFileSync(new URL("../app/mock-data.ts", import.meta.url), "utf8");
 const dashboardSource = fs.readFileSync(new URL("../app/dashboard.tsx", import.meta.url), "utf8");
@@ -86,7 +105,7 @@ test("Kompetencenyt er en selvstændig, ikke-segmenteret tagvisning", () => {
   assert.match(dashboardSource, /label="Kompetencenyt"/);
   assert.match(dashboardSource, /function CompetenceOverview/);
   assert.match(dashboardSource, /Nyhedsbrevet segmenteres ikke/);
-  assert.match(generatorSource, /newsletterTags = \["Psykologernes Nyhedsbrev", "Kompetencenyt", "Magasinet P", "TR\/AMR Nyt", "Netværksnyt"\]/);
+  assert.match(generatorSource, /matchingDashboardTags\(issue.tags\)/);
   assert.match(generatorSource, /audienceProfileTypes\.has\(issue\.dashboardType\) && issue\.delivered/);
 });
 
@@ -94,21 +113,21 @@ test("Magasinet P er en selvstændig, ikke-segmenteret tagvisning", () => {
   assert.match(dashboardSource, /label="Magasinet P"/);
   assert.match(dashboardSource, /function MagazineOverview/);
   assert.match(dashboardSource, /name: "Kompetencenyt" \| "Magasinet P"/);
-  assert.match(generatorSource, /newsletterTags = \["Psykologernes Nyhedsbrev", "Kompetencenyt", "Magasinet P", "TR\/AMR Nyt", "Netværksnyt"\]/);
+  assert.match(generatorSource, /matchingDashboardTags\(issue.tags\)/);
 });
 
 test("TR/AMR Nyt er en selvstændig, ikke-segmenteret tagvisning", () => {
   assert.match(dashboardSource, /label="TR\/AMR Nyt"/);
   assert.match(dashboardSource, /function TrAmrOverview/);
   assert.match(dashboardSource, /name="TR\/AMR Nyt"/);
-  assert.match(generatorSource, /newsletterTags = \["Psykologernes Nyhedsbrev", "Kompetencenyt", "Magasinet P", "TR\/AMR Nyt", "Netværksnyt"\]/);
+  assert.match(generatorSource, /matchingDashboardTags\(issue.tags\)/);
 });
 
 test("Netværksnyt er en selvstændig, ikke-segmenteret tagvisning", () => {
   assert.match(dashboardSource, /label="Netværksnyt"/);
   assert.match(dashboardSource, /function NetworkOverview/);
   assert.match(dashboardSource, /name="Netværksnyt"/);
-  assert.match(generatorSource, /newsletterTags = \["Psykologernes Nyhedsbrev", "Kompetencenyt", "Magasinet P", "TR\/AMR Nyt", "Netværksnyt"\]/);
+  assert.match(generatorSource, /matchingDashboardTags\(issue.tags\)/);
 });
 
 test("Kompetencenyt sammenligner åbning og klik uden en samlet misvisende dom", () => {
