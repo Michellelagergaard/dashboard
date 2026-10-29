@@ -12,7 +12,7 @@ let checkpoints;
 try { checkpoints = validateCheckpointLedger(JSON.parse(await readFile(checkpointUrl, "utf8"))); }
 catch (error) { if (error.code !== "ENOENT") throw error; checkpoints = { version: 1, records: [] }; }
 
-const newsletterTags = ["Psykologernes Nyhedsbrev", "Kompetencenyt", "Magasinet P", "TR/AMR Nyt", "Netværksnyt"];
+import { dashboardTags as newsletterTags, matchingDashboardTags } from "../config/dashboard-tags.mjs";
 const historyCacheUrl = new URL("../.cache/dashboard-history.json", import.meta.url);
 const baselineUrl = new URL("../data/dashboard-history-baseline.json", import.meta.url);
 const historyCutoff = new Date();
@@ -30,7 +30,7 @@ const baselineById = await loadBaseline(baselineUrl);
 checkpoints = mergeCheckpointLedgers(checkpoints, { version: 1, records: [...historyById.values()].flatMap(mailing => mailing.checkpoints || []) });
 const issues = await fetchSentIssues(apiKey);
 const sorted = issues
-  .map((issue) => ({ ...issue, dashboardType: newsletterTags.find((name) => (issue.tags || []).some((tag) => normalize(tag) === normalize(name))) || null }))
+  .map((issue) => ({ ...issue, dashboardType: matchingDashboardTags(issue.tags)[0] || null }))
   .filter((issue) => issue.dashboardType)
   .sort((a, b) => String(b.sentAt).localeCompare(String(a.sentAt)));
 
@@ -57,6 +57,10 @@ const mailings = await mapConcurrent(sorted, 1, async (issue) => {
   const historicalMailing = historyById.has(issue.id)
     ? mergeHistoricalMailing(historyById.get(issue.id), baselineById.get(issue.id))
     : baselineById.has(issue.id) ? mergeHistoricalMailing(emptyMailing(issue), baselineById.get(issue.id)) : undefined;
+  if (historicalMailing) {
+    historicalMailing.dashboardTags = matchingDashboardTags(issue.tags);
+    historicalMailing.type = issue.dashboardType;
+  }
   if (isOlderThan(issue.sentAt, historyCutoff) && historicalMailing) {
     if (issue.dashboardType !== "Psykologernes Nyhedsbrev") {
       if (!segmentIssueIds.has(issue.id)) return historicalMailing;
@@ -155,7 +159,7 @@ console.log(`Historik bevaret: ${historyById.size} cacheudgaver, ${baselineById.
 function emptyMailing(issue) {
   return {
     id: issue.id, title: issue.name || issue.subject || "Uden titel", subject: issue.subject || "Emnefelt mangler",
-    type: issue.dashboardType || issue.category || "Ikke kategoriseret", date: formatDate(issue.sentAt), sentAt: issue.sentAt,
+    type: issue.dashboardType || issue.category || "Ikke kategoriseret", dashboardTags: matchingDashboardTags(issue.tags), date: formatDate(issue.sentAt), sentAt: issue.sentAt,
     delivered: issue.delivered, openRate: issue.openRate ?? 0, clickRate: issue.clickRate ?? 0, unsubscribes: issue.unsubscribes ?? 0,
     openCount: issue.openCount, clickCount: issue.clickCount,
     measurementVersion: issue.measurementVersion, measurement: issue.measurement, observedAt: issue.fetchedAt,
@@ -165,7 +169,6 @@ function emptyMailing(issue) {
   };
 }
 
-function normalize(value) { return String(value || "").trim().normalize("NFKC").toLocaleLowerCase("da-DK"); }
 function formatDate(value) { if (!value) return "Dato mangler"; return new Intl.DateTimeFormat("da-DK", { day: "numeric", month: "short", year: "numeric", timeZone: "Europe/Copenhagen" }).format(new Date(value)); }
 function isOlderThan(value, cutoff) { return Boolean(value) && new Date(value) < cutoff; }
 async function loadHistoryCache(url) {

@@ -23,3 +23,7 @@ En usikker artikelrubrik kan bruge en entydig overskrift for samme URL fra en an
 ## Kontrol
 
 Automatiske tests dækker delingslinkenes validering og gendannelse, måltypernes adskillelse, P's emner og rettelsen uden ændring af målinger. Interaktionstest dækker Åbn fra forsiden, målgruppe/udsendelse/periode, genindlæsning, delingsfelt og ukendte udsendelses-id'er.
+
+## Medlemskommunikation
+
+`page=member-communication` viser sendte udsendelser med det faktiske Ungapped-tag **Medlemskommunikation**. Siden har periodevalg, udsendelsesvalg, delingslink, åbninger, klik og alle udsendelser i perioden. Det er medlemsinformation og invitationer, ikke et nyhedsbrev. Forskellige formål og modtagere skal tages i betragtning ved sammenligning. Visningen indgår ikke i forsidens nyhedsbrevsbenchmark. Et tag på en udsendelse med et eksisterende nyhedsbrevstag bevares også i denne visning.

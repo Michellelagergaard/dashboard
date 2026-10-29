@@ -19,6 +19,7 @@ export type LiveMailing = {
   title: string;
   subject: string;
   type: string;
+  dashboardTags?: string[];
   date: string;
   sentAt: string | null;
   delivered: number;
