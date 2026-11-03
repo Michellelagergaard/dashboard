@@ -16,7 +16,7 @@ Formålet er at finde en konkret ændring i indholdets relative klikplacering, s
 
 Boksen viser emnet, forskellens retning og alle aktuelle sammenlignelige historier om emnet. Tidligere sammenligningshistorier kan foldes ud. Hver historie har titel, dato, klikplacering, feltets størrelse, kontaktantal og adgang til artiklen og udsendelsen. Klikplacering er ikke placering i mailens layout.
 
-Redaktionsspørgsmålet er at undersøge forskellene mellem de konkrete historier, før indhold prioriteres eller ændres. Der gives ikke længere faste råd knyttet til en kategori eller en generisk afprøvning efter to udsendelser. Forsiden bruger samme indholdslogik; det eksisterende signal om fald i nyhedsbrevets samlede klikrate sammenlignes fortsat med egen historisk median.
+Redaktionsspørgsmålet er at undersøge forskellene mellem de konkrete historier, før indhold prioriteres eller ændres. Der gives ikke længere faste råd knyttet til en kategori eller en generisk afprøvning efter to udsendelser. Beslutningsstøtten vises kun på nyhedsbrevenes egne sider.
 
 Manglende linkdata, unge udsendelser, få sammenlignelige historier, utilstrækkelig historik og tilstrækkelige data uden en tydelig afvigelse har særskilte forklaringer. Metode, dækningsgrad og alle beregnelige emners aktuelle og historiske værdier ligger under “Se grundlag og begrænsninger”.
 

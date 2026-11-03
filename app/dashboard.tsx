@@ -11,10 +11,10 @@ import { editorialCategory, summarizeEditorialTopics } from "../config/editorial
 import { clickMeasurementLabel, isComparableLink, partitionLinkMeasurements, summarizeSegmentRates, summarizeCoverage } from "../config/measurement-methods.mjs";
 import { magazineReviewTopic, magazineTopicNames, summarizeMagazineTopics } from "../config/magazine-topics.mjs";
 import { dashboardRouteUrl, normalizeDashboardRoute, parseDashboardRoute, viewForNewsletter } from "../config/dashboard-navigation.mjs";
-import { editorialDecisionEvidence, topPeriodNews } from "../config/editorial-decisions.mjs";
+import { topPeriodNews } from "../config/editorial-decisions.mjs";
 import { normalLevel, comparisonStatus, checkpointStatus } from "../config/decision-methods.mjs";
 
-import { EditorialDecisionSupport, EditorialSignalCard } from "./editorial-decision-support";
+import { EditorialDecisionSupport } from "./editorial-decision-support";
 
 import { isMemberCommunication } from "../config/dashboard-tags.mjs";
 
@@ -186,8 +186,6 @@ function HomeOverview({ rows, historyRows, period, onPeriodChange, asOf, onNavig
 
     <BenchmarkOverview grouped={grouped} />
 
-    <HomeRecommendations grouped={grouped} asOf={asOf} onNavigate={onNavigate} onOpen={onOpen} />
-
     <section className="panel table-panel home-recent" aria-labelledby="home-recent-title">
       <div className="overview-section-header"><div><h2 id="home-recent-title">Seneste udsendelser på tværs</h2><p>De fem seneste udsendelser i den valgte periode.</p></div></div>
       {recent.length ? <div className="table-scroll"><table><thead><tr><th>Dato og nyhedsbrev</th><th>Emnefelt</th><th>Åbnet</th><th>Klikket</th><th></th></tr></thead><tbody>{recent.map((row) => {
@@ -247,15 +245,6 @@ function BenchmarkOverview({ grouped }: { grouped: Array<(typeof newsletterViews
     })}</tbody></table></div>
     <div className="benchmark-source"><p><strong>Kilde:</strong> Higher Logic, <em>Association Email Benchmark Report 2025–2026</em>. Ca. 1.500 foreninger og nonprofits og mere end 2 mia. mails sendt i 2025.</p><p>DP-tallene er almindelige gennemsnit af {num(allIssues.length)} udsendelser i den valgte periode. Hver udsendelse tæller lige meget, uanset antal leverede. Referencen er ikke dokumenteret beregnet med samme vægtning eller klikdefinition. Forskellen i procentpoint er derfor ikke en kvalitetsvurdering.</p><a href="https://www.higherlogic.com/news/higher-logic-releases-2025-2026-association-email-benchmark-report/" target="_blank" rel="noreferrer">Se benchmarkrapporten</a></div></details>
   </section>;
-}
-
-function HomeRecommendations({ grouped, asOf, onNavigate, onOpen }: { grouped: Array<(typeof newsletterViews)[number] & { issues: Mailing[]; latest?: Mailing; clickLevel: ReturnType<typeof normalLevel> | null }>; asOf: string; onNavigate: (view: View) => void; onOpen: (id: string)=>void }) {
-  const available = grouped.filter(group=>group.latest);
-  if (!available.length) return null;
-  const target = available.filter(group=>group.clickLevel?.delta != null && group.clickLevel.delta<=-1).sort((a,b)=>(a.clickLevel?.delta || 0)-(b.clickLevel?.delta || 0))[0];
-  const candidates = available.map(group=>({group,evidence:editorialDecisionEvidence(group.issues,{selected:group.latest,asOf})}));
-  const signal = [...candidates].filter(row=>row.evidence.signal).sort((a,b)=>Math.abs(b.evidence.signal!.delta)-Math.abs(a.evidence.signal!.delta))[0] || candidates[0];
-  return <section className="panel recommendation-panel recommendation-compact" aria-labelledby="recommendation-title"><div className="overview-section-header"><div><p className="eyebrow">Beslutningsstøtte</p><h2 id="recommendation-title">Hvad kræver opmærksomhed?</h2><p>Se afvigelser fra nyhedsbrevenes egen historik og undersøg de konkrete udsendelser.</p></div></div><div className="decision-cards"><article className="decision-card attention"><span className="decision-kicker">Undersøg</span><h3>{target ? `Fald i ${target.name}` : "Ingen større fald i de sammenlignelige udsendelser"}</h3><p className="decision-evidence">{target ? `${formatPoint(Math.abs(target.clickLevel!.delta!))} procentpoint under medianen for ${target.clickLevel!.count} egne tidligere udsendelser. Seneste udsendelse: ${target.latest!.date}.` : "Ingen af de seneste sammenlignelige udsendelser ligger mindst ét procentpoint under eget niveau."}</p><p className="decision-action"><strong>Næste skridt</strong>{target ? "Sammenlign udsendelsens top tre historier med den foregående: skiftede emner, målgruppe eller tilbud? Vælg én forskel at undersøge." : "Der er ingen særskilt undersøgelsesopgave på dette grundlag."}</p><button className="decision-link" onClick={()=>target ? onOpen(target.latest!.id) : onNavigate("overview")}>{target ? `Åbn udsendelsen · ${target.latest!.date}` : "Se Psykologernes Nyhedsbrev"} <ArrowRight /></button></article><EditorialSignalCard evidence={signal.evidence} scope={signal.group.name} onOpen={onOpen} /></div><p className="method-note">Indholdsafvigelser sammenligner emnets relative placering med mindst tre tidligere udsendelser af samme nyhedsbrev. Se metode og fuldt grundlag i nyhedsbrevets redaktionelle beslutningsstøtte.</p></section>;
 }
 
 type NewsletterSelectionProps = { rows: Mailing[]; asOf: string; selectedId?: string; onSelect?: (id: string) => void; magazineState?: MagazineTopicControls };
