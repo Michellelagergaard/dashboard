@@ -1,10 +1,25 @@
 # Redaktionel beslutningsstøtte
 
-Forslag beregnes deterministisk af dokumenterede kontaktklik, ikke af en sprogmodel under brug. De er redaktionelle hypoteser og dokumenterer hverken årsag, læsning eller kvalitet.
+Formålet er at finde en konkret ændring i indholdets relative klikplacering, som redaktionen kan undersøge. En topscorer eller et hyppigt kerneemne giver ikke længere automatisk et råd. Systemet analyserer ikke historiens tekst og kan ikke slutte, at en rubrik, vinkel eller serviceform skabte klikkene.
 
-- Gentagne emnesignaler kræver mindst tre forskellige destinationsadresser i mindst tre udsendelser med mindst syv dages alder. Emnet skal være blandt top tre brugbare historier i hver udgave. Dublerede udgaver tælles én gang; samme destination bruger højeste dokumenterede kontaktantal.
-- Ukendte historiske klikmål, klikhændelser, servicelinks, uklare titler og ukendte emner bidrager ikke. P bruger sine artikelkategorier. Top tre gælder kun gemte og kategoriserede historier. Eksponering og emnemængde er ikke kontrolleret.
-- Historik afgrænses af valgt periode, nyhedsbrevstype og målgruppe. Ved en tidligere udsendelse udelades senere udgaver. Unge udgaver kan vises som foreløbige observationer, men etablerer ikke gentagne signaler.
-- Eksempler viser titel, dato, placering og kontaktantal. Maksimum over flere placeringer mærkes som minimum. Samme person kan tælles i flere historier og udgaver. Knapper åbner den konkrete udsendelse.
-- Forsidens undersøgelsesopgave kræver et fald på mindst ét procentpoint mod egen historiske median. Laveste klikrate på tværs af nyhedsbreve eller målgrupper udløser ikke alene en forbedringsopgave. Forsiden fremhæver ét gentaget signal med flest udgaver, uden kvalitetsrangering.
-- Afprøvninger ændrer ét greb og følger linkkontaktklik samt nyhedsbrevets klikrate ved samme alder. Manglende faste målepunkter betyder uafklaret resultat. To udsendelser dokumenterer ikke effekt.
+## Sammenligning
+
+- Valgt udsendelse sammenlignes kun med tidligere udsendelser af samme nyhedsbrev, inden for valgt periode og målgruppe. Senere udsendelser udelades. Ved valg af en målgruppe bruges kun dens egne linkdata; der er ingen tilbagefald til hele nyhedsbrevet.
+- Udsendelsen skal være mindst syv dage gammel og have mindst fire historier med præcise kontaktmål fordelt på mindst to emner. Historiske sammenligningsudsendelser skal opfylde samme krav og have samme `linkMeasurementVersion` (inklusive bevaret, uversioneret historik med samme eksplicitte kontaktmål).
+- Kun dokumenterede `unique-contacts` med `single-link`-aggregering bruges. Nul klik indgår. Ukendte målinger, minimumstal fra gentagne placeringer, servicelinks, uklare titler og ukendte emner udelades. P bruger sine egne artikelkategorier.
+- Trackingparametre, fragmenter, www og afsluttende skråstreg normaliseres ved kontrol af destinationer. Flere placeringer af samme destination udelukkes fra præcise rangeringer. Der summeres aldrig kontaktantal.
+- Historiernes klikplacering inden for en udsendelse omregnes til 0–100: bund = 0, top = 100. Delte placeringer får deres gennemsnitlige placering. Medianen for emnets historier beregnes pr. udsendelse. Historisk niveau er medianen af disse udgaveværdier; alle udgaver vægter lige meget. Metoden belønner ikke automatisk antallet af historier i en kategori og sammenligner ikke rå klikantal på tværs af udsendelser.
+- Et emne kræver mindst tre tidligere udsendelser og tre forskellige tidligere historier. Højst de fem nyeste kvalificerede udsendelser bruges. Den aktuelle udsendelse indgår ikke i historikken.
+- En forskel fremhæves ved mindst 25 point på placeringsskalaen og en værdi uden for alle de historiske udgaveværdier. Mindst én historie i den aktuelle udsendelses sammenligningsfelt skal have 25 kontaktklik. Disse grænser er eksplicitte redaktionelle screeningsregler, ikke statistisk signifikans. Ved flere afvigelser vises den største absolutte forskel; den er ikke en rangering af medlemsværdi.
+
+## Visning og næste skridt
+
+Boksen viser emnet, forskellens retning og alle aktuelle sammenlignelige historier om emnet. Tidligere sammenligningshistorier kan foldes ud. Hver historie har titel, dato, klikplacering, feltets størrelse, kontaktantal og adgang til artiklen og udsendelsen. Klikplacering er ikke placering i mailens layout.
+
+Redaktionsspørgsmålet er at undersøge forskellene mellem de konkrete historier, før indhold prioriteres eller ændres. Der gives ikke længere faste råd knyttet til en kategori eller en generisk afprøvning efter to udsendelser. Forsiden bruger samme indholdslogik; det eksisterende signal om fald i nyhedsbrevets samlede klikrate sammenlignes fortsat med egen historisk median.
+
+Manglende linkdata, unge udsendelser, få sammenlignelige historier, utilstrækkelig historik og tilstrækkelige data uden en tydelig afvigelse har særskilte forklaringer. Metode, dækningsgrad og alle beregnelige emners aktuelle og historiske værdier ligger under “Se grundlag og begrænsninger”.
+
+## Begrænsninger
+
+Klikplacering er relativ: Et emne kan rykke ned, fordi en anden historie rykker op. Eksponering, mailplacering, emnemiks, forskellig målealder og automatiserede klik er ikke kontrolleret. Syv dages minimumsalder er ikke et fast linkmålepunkt. Gentagelser og relative ændringer dokumenterer hverken årsag, menneskelige klik, læsning, kvalitet eller medlemsværdi. Data og historiske målinger ændres ikke af analysen.
