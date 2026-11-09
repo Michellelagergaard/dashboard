@@ -457,7 +457,6 @@ function AudienceView({ rows, comparisonRows, singleIssue, onOpen, asOf, audienc
   const audience = controlledAudience ?? localAudience;
   const setAudience = onAudienceChange || setLocalAudience;
   const [historyExpanded, setHistoryExpanded] = useState(false);
-  const [linksExpanded, setLinksExpanded] = useState(false);
   const availableSegments = segments.filter((name) => comparisonRows.some((mailing) => segmentRows(mailing).some((item) => item.name === name)));
   const selectedAudience = audience;
   const series = rows.map((mailing) => ({ mailing, data: segmentRows(mailing).find((item) => item.name === selectedAudience) })).filter((item): item is { mailing: Mailing; data: NonNullable<LiveMailing["segmentPerformance"]>[number] } => Boolean(item.data));
@@ -465,18 +464,15 @@ function AudienceView({ rows, comparisonRows, singleIssue, onOpen, asOf, audienc
   const averageOpenRate = rateSummary.open ?? 0;
   const averageClickRate = rateSummary.click ?? 0;
   const allLinks = rows.flatMap((mailing) => segmentLinkRows(mailing).filter((item) => item.audience === selectedAudience).map((item) => ({ ...item, mailing })));
-  const links = partitionLinkMeasurements(allLinks).contacts;
-  const linkCoverage = new Set(links.map((item) => item.mailing.id)).size;
+  const linkCoverage = new Set(partitionLinkMeasurements(allLinks).contacts.map((item) => item.mailing.id)).size;
   const latest = series[0];
   const level = latest ? normalLevel(comparisonRows, latest.mailing, { audience: selectedAudience, metric: "clickRate", asOf }) : null;
   const verdict = !level || level.delta === null ? "Resultatet kan endnu ikke sammenlignes" : level.delta >= 1 ? "Målgruppen reagerede over sit normale niveau" : level.delta <= -1 ? "Målgruppen reagerede under sit normale niveau" : "Målgruppen reagerede på sit normale niveau";
   const verdictNote = !level || level.delta === null ? comparisonStatus(level).message : `Klikraten var ${formatPoint(Math.abs(level.delta))} procentpoint ${level.delta >= 1 ? "over" : level.delta <= -1 ? "under" : "fra"} medianen for ${level.count} tidligere udsendelser.`;
   const visibleHistory = historyExpanded ? series : series.slice(0, 6);
-  const visibleLinks = linksExpanded ? links : links.slice(0, 8);
   function selectAudience(name: string) {
     setAudience(name);
     setHistoryExpanded(false);
-    setLinksExpanded(false);
   }
   return <div className="stack newsletter-workspace">
     <section className="newsletter-intro"><div><p className="eyebrow">Psykologernes Nyhedsbrev</p><h2>Følg én målgruppe ad gangen</h2><p>{singleIssue ? `Se resultaterne for udsendelsen ${rows[0]?.date || ""}.` : "Se udviklingen, de stærkeste historier og de vigtigste redaktionelle signaler."}</p></div><div className="segment-coverage"><strong>{series.length} udgaver</strong><span>har brugbare data for den valgte målgruppe</span></div></section>
@@ -488,11 +484,29 @@ function AudienceView({ rows, comparisonRows, singleIssue, onOpen, asOf, audienc
     <p className="analysis-coverage-note">Målgrupperater: {series.length} af {rows.length} udsendelser. Kontaktrangering: {linkCoverage} af {rows.length}. Manglende linkresultater er ikke nul klik. Medlemsstatus ved afsendelse er ikke dokumenteret.</p>
     <section className="kpi-grid audience-kpis"><Kpi icon={<Mail />} label="Udgaver med data" value={num(series.length)} note={singleIssue ? "Den valgte udsendelse" : `${num(rows.length)} udgaver i perioden`} /><Kpi icon={<Users />} label={singleIssue ? "Modtagerantal" : "Seneste modtagerantal"} value={latest ? latest.data.recipientsLabel : "—"} note={latest?.data.delivered != null ? `${num(latest.data.delivered)} leverede · raternes grundlag` : "Historisk leveringstal ikke gemt"} /><Kpi icon={<Activity />} label="Åbningsrate" value={latest ? pct(latest.data.openRate) : "—"} count={countLabel(latest?.data.openCount, "åbninger")} note={singleIssue ? "Den valgte udsendelse" : "Seneste udsendelse"} /><Kpi icon={<MousePointerClick />} label="Klikrate" value={latest ? pct(latest.data.clickRate) : "—"} count={countLabel(latest?.data.clickCount, "klik")} note={levelText(level?.delta ?? null)} /></section>
     {!singleIssue && latest ? <AudienceTrend series={series} baseline={level?.delta == null ? null : level.baseline} audience={selectedAudience} /> : null}
-    <section className="panel table-panel audience-links"><PanelHeader eyebrow={selectedAudience} title="Hvad interesserede målgruppen?" meta={`${linkCoverage} af ${rows.length} udgaver har dokumenterede målgruppekontaktklik`} /><p className="content-scope-note">{singleIssue ? "Historier rangeret efter dokumenterede unikke kontakter i den valgte udsendelse." : "Historier rangeret efter dokumenterede unikke kontakter i den valgte periode."} Visningen dokumenterer ikke, at indholdet kun blev sendt til denne målgruppe.</p><div className="table-scroll"><table><thead><tr><th>Historie eller link</th><th>Emne</th><th>Udsendelse</th><th>Registrerede linkklik</th><th>Klik pr. 100 modtagere</th></tr></thead><tbody>{links.length ? visibleLinks.map((item) => <tr key={`${item.mailing.id}-${item.destination}`}><td><ContentCell item={item} /></td><td><TopicBadge item={item} /></td><td>{item.mailing.date}</td><td><LinkClicks item={item} /></td><td><LinkRate item={item} /></td></tr>) : <EmptyRow columns={5} text={singleIssue ? "Ingen dokumenterede linkresultater for denne målgruppe i den valgte udsendelse." : "Ingen dokumenterede linkresultater for denne målgruppe i den valgte periode."} />}</tbody></table></div>{links.length > 8 ? <ExpandButton expanded={linksExpanded} total={links.length} onClick={() => setLinksExpanded((value) => !value)} /> : null}</section>
+    <AudienceInterestLinks key={`issue-${selectedAudience}-${rows[0]?.id || "none"}`} rows={rows.slice(0, 1)} audience={selectedAudience} scope={singleIssue ? "selected" : "latest"} />
+    {!singleIssue ? <AudienceInterestLinks key={`period-${selectedAudience}-${rows.map(row => row.id).join(",")}`} rows={rows} audience={selectedAudience} scope="period" /> : null}
     <OtherLinkMeasurements items={allLinks} />
     {latest ? <EditorialDecisionSupport rows={comparisonRows} selected={latest.mailing} audience={selectedAudience} asOf={asOf} onOpen={onOpen} /> : null}
     <details className="panel overview-method"><summary>{singleIssue ? "Se resultater og datagrundlag for den valgte udsendelse" : "Se de enkelte udsendelser og datagrundlaget"}</summary><div className="table-scroll"><table><thead><tr><th>Udsendelse</th><th>Dato</th><th>Modtagere</th><th>Åbnet</th><th>Klikket</th><th>CTOR</th><th></th></tr></thead><tbody>{series.length ? visibleHistory.map(({ mailing, data }) => <tr key={mailing.id}><td><strong>{mailing.title}</strong></td><td>{mailing.date}</td><td>{data.recipientsLabel}</td><td>{pct(data.openRate)}</td><td><b>{pct(data.clickRate)}</b></td><td>{pct(data.ctor)}</td><td><button className="row-link" onClick={() => onOpen(mailing.id)}>Åbn</button></td></tr>) : <EmptyRow columns={7} text={`Der er endnu ingen offentliggørelsesklare resultater for ${selectedAudience}.`} />}</tbody></table></div>{series.length > 6 ? <ExpandButton expanded={historyExpanded} total={series.length} onClick={() => setHistoryExpanded((value) => !value)} /> : null}<MeasurementGuideContent /></details>
   </div>;
+}
+
+function AudienceInterestLinks({ rows, audience, scope }: { rows: Mailing[]; audience: string; scope: "latest" | "selected" | "period" }) {
+  const [expanded, setExpanded] = useState(false);
+  const allLinks = rows.flatMap(mailing => segmentLinkRows(mailing).filter(item => item.audience === audience).map(item => ({ ...item, mailing })));
+  const links = partitionLinkMeasurements(allLinks).contacts;
+  const coverage = new Set(links.map(item => item.mailing.id)).size;
+  const visibleLinks = expanded ? links : links.slice(0, 8);
+  const period = scope === "period";
+  const label = period ? "Valgte periode" : scope === "selected" ? "Valgte udgave" : "Seneste udgave i perioden";
+  const dates = rows.length ? period ? `${rows[rows.length - 1].date} – ${rows[0].date}` : rows[0].date : "Ingen udsendelser i perioden";
+  return <section className="panel table-panel audience-links">
+    <PanelHeader eyebrow={`${audience} · ${label}`} title={period ? "Hvad interesserede målgruppen i perioden?" : "Hvad interesserede målgruppen i udgaven?"} meta={dates} />
+    <p className="content-scope-note">{period ? `Historier fra hele den valgte periode, rangeret efter dokumenterede unikke kontakter pr. link og udsendelse. ${coverage} af ${rows.length} udgaver har dokumenterede målgruppekontaktklik.` : `Klikoversigt for ${scope === "selected" ? "den valgte udgave" : "den seneste udgave i den valgte periode"}${rows[0] ? `: ${rows[0].title}` : ""}. Historier rangeret efter dokumenterede unikke kontakter.`} Visningen dokumenterer ikke, at indholdet kun blev sendt til denne målgruppe.</p>
+    <div className="table-scroll"><table><thead><tr><th>Historie eller link</th><th>Emne</th><th>Udsendelse</th><th>Registrerede linkklik</th><th>Klik pr. 100 modtagere</th></tr></thead><tbody>{links.length ? visibleLinks.map(item => <tr key={`${item.mailing.id}-${item.destination}`}><td><ContentCell item={item} /></td><td><TopicBadge item={item} /></td><td>{item.mailing.date}</td><td><LinkClicks item={item} /></td><td><LinkRate item={item} /></td></tr>) : <EmptyRow columns={5} text={!rows.length ? "Ingen udsendelser i den valgte periode." : period ? "Ingen dokumenterede linkresultater for denne målgruppe i den valgte periode." : "Ingen dokumenterede linkresultater for denne målgruppe i denne udgave. Ældre udgavers klik vises ikke her."} />}</tbody></table></div>
+    {links.length > 8 ? <ExpandButton expanded={expanded} total={links.length} onClick={() => setExpanded(value => !value)} /> : null}
+  </section>;
 }
 
 function AudienceTrend({ series, baseline, audience }: { series: Array<{ mailing: Mailing; data: NonNullable<LiveMailing["segmentPerformance"]>[number] }>; baseline: number | null; audience: string }) {
