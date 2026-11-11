@@ -284,7 +284,7 @@ function UnsegmentedNewsletterOverview({ rows, asOf, name, selectedId, onSelect,
       <Kpi icon={<TrendingUp />} label="CTOR" value={latest.openRate > 0 ? pct(latest.clickRate / latest.openRate * 100) : "—"} note="Klik blandt registrerede åbninger" />
       <Kpi icon={<Users />} label="Afmeldinger" value={num(latest.unsubscribes || 0)} note="Registreret efter udsendelsen" />
     </section>
-    {name !== "Medlemskommunikation" ? <EditorialDecisionSupport rows={rows} selected={latest} asOf={asOf} onOpen={onSelect} /> : null}
+    <EditorialDecisionSupport rows={rows} selected={latest} asOf={asOf} onOpen={onSelect} />
     {name === "Magasinet P" ? <MagazineTopics rows={selectedId ? [latest] : rows} {...magazineState} /> : null}
     <section className="overview-section"><div className="overview-section-header"><div><h2>Mest klikkede links</h2><p>De fem gemte destinationslinks med flest dokumenterede kontaktklik.</p></div></div><div className="overview-stories">{topLinks.length ? topLinks.map((item, index) => <article key={`${item.destination}-${index}`}><span className="overview-rank">{index + 1}</span><div><strong>{displayTitle(item)}</strong><span>{contentTopic(item)}</span></div><div><strong>{item.clickMeasurement?.aggregation === "max-per-destination" ? "≥ " : ""}{num(item.clicks)} kontakter</strong><span>{formatPoint(item.rate)} pr. 100 leverede</span></div></article>) : <DataGap title="Ingen dokumenterede linkresultater" text="Ungapped leverede ikke brugbare unikke klik pr. link for denne udsendelse." />}</div></section>
     {name === "Kompetencenyt" || name === "Magasinet P" ? <UnsegmentedAudienceClicks rows={selectedId ? [latest] : rows} name={name} singleIssue={Boolean(selectedId)} /> : null}
@@ -698,4 +698,5 @@ function signed(value: number) { return `${value >= 0 ? "+" : ""}${num(value)}`;
 function formatPoint(value: number) { return value.toLocaleString("da-DK", { maximumFractionDigits: 1 }); }
 function levelText(delta: number | null) { return delta === null ? "Kan endnu ikke sammenlignes" : delta >= 1 ? `${formatPoint(delta)} procentpoint over normalt` : delta <= -1 ? `${formatPoint(Math.abs(delta))} procentpoint under normalt` : "På normalt niveau"; }
 function shortLink(destination: string) { try { const url = new URL(destination); return `${url.hostname.replace(/^www\./, "")}${url.pathname === "/" ? "" : url.pathname}`; } catch { return destination; } }
+
 

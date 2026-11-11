@@ -4,21 +4,42 @@ import {fileURLToPath} from 'node:url';
 import React from 'react';
 import {renderToStaticMarkup} from 'react-dom/server';
 import {createServer} from 'vite';
+import {editorialTakeaway} from '../config/editorial-takeaway.mjs';
 const vite=await createServer({root:fileURLToPath(new URL('..',import.meta.url)),configFile:false,server:{middlewareMode:true},appType:'custom'});
 after(()=>vite.close());
 const {EditorialDecisionSupport}=await vite.ssrLoadModule('/app/editorial-decision-support.tsx');
-const headline='Regionernes udbud efterlader huller i tilbuddet til unge';
-const row={id:'pn-example',type:'Psykologernes Nyhedsbrev',date:'22. okt. 2026',sentAt:'2026-10-22T12:00:00Z',subject:'En anden fælles overskrift',delivered:100,openRate:50,clickRate:10,segmentSubjects:[{audience:'Selvstændige',subject:headline}],segmentPerformance:[{name:'Selvstændige',recipients:100,openRate:50,clickRate:10}],content:[{title:headline,destination:'https://www.dp.dk/nyheder/udbud',clicks:25,editorial:{title:headline},clickMeasurement:{metric:'unique-contacts',aggregation:'single-link'}},{title:'Forskertalk om psykoterapi',destination:'https://www.dp.dk/forskertalk',clicks:999}],segmentLinkPerformance:[]};
-const render=(audience='')=>renderToStaticMarkup(React.createElement(EditorialDecisionSupport,{rows:[row],selected:row,asOf:'2026-11-03T12:00:00Z',audience,onOpen:()=>{}}));
-
-test('PN requires an audience before exposing subject variants or a draft',()=>{
- const html=render();assert.match(html,/Hvilken målgruppe skriver du til/);assert.doesNotMatch(html,/En anden fælles overskrift|Regionernes udbud|Hovedhistorie til næste udsendelse/);
+const item=(title,clicks)=>({title,destination:'https://www.dp.dk/'+title,clicks,clickMeasurement:{metric:'unique-contacts',aggregation:'single-link'}});
+const row={id:'test',type:'Kompetencenyt',date:'22. okt. 2026',sentAt:'2026-10-22T12:00:00Z',delivered:100,openRate:50,clickRate:10,content:[item('ICD-11',25),item('Supervision',10)],segmentPerformance:[{name:'Ledere',recipients:100,openRate:40,clickRate:5}],segmentLinkPerformance:[]};
+const asOf='2026-11-03T12:00:00Z';
+const analyze=(selected=row,rows=[selected],audience='')=>editorialTakeaway(rows,{selected,asOf,audience});
+test('replaces drafting with an evidenced takeaway for every newsletter',()=>{
+ for(const type of ['Kompetencenyt','Psykologernes Nyhedsbrev','Magasinet P','TR/AMR Nyt','Netværksnyt','Medlemskommunikation']) {
+  const selected={...row,type};
+  const html=renderToStaticMarkup(React.createElement(EditorialDecisionSupport,{rows:[selected],selected,asOf}));
+  assert.match(html,/Redaktionelt takeaway/);assert.match(html,/ICD-11/);assert.match(html,/Redaktionel handling/);
+  assert.doesNotMatch(html,/<input|<textarea|Gem kladde|Find en relevant tidligere/);
+ }
 });
-test('shows the actual audience subject and its named story, never an unrelated click winner',()=>{
- const html=render('Selvstændige');assert.match(html,new RegExp(headline));assert.match(html,/Faktisk udsendt emnefelt/);assert.match(html,/https:\/\/www.dp.dk\/nyheder\/udbud/);
- assert.doesNotMatch(html,/Forskertalk|En anden fælles overskrift|Faglighed og praksis ligger/);
- assert.match(html,/Præcist kontaktmål mangler/);assert.match(html,/Se udsendelsen/);
+test('audiences never inherit whole-mailing link winners',()=>{
+ const result=analyze(row,[row],'Ledere');assert.equal(result.links.length,0);assert.doesNotMatch(result.headline,/ICD/);
+ const scoped={...row,segmentLinkPerformance:[{...item('Ledelse',8),audience:'Ledere'},{...item('Anden-gruppe',80),audience:'Studerende'}]};
+ assert.match(analyze(scoped,[scoped],'Ledere').headline,/Ledelse/);
 });
-test('a missing variant remains missing while next-issue drafting is still available',()=>{
- const html=render('Ledere');assert.match(html,/ingen dokumenterede emnefelter/);assert.doesNotMatch(html,new RegExp(headline));assert.match(html,/Hovedhistorie til næste udsendelse/);assert.match(html,/Udkast til emnefelt/);assert.match(html,/Gem kladde i denne browser/);
+test('immature mailings get provisional actions and no performance verdict',()=>{
+ const result=editorialTakeaway([row],{selected:row,asOf:'2026-10-23T12:00:00Z'});
+ assert.equal(result.status.status,'preliminary');assert.match(result.action,/vent med/);assert.doesNotMatch(result.performance,/lavere|højere/);
+});
+test('comparison excludes other newsletters and future issues',()=>{
+ const earlier=[1,2,3].map(i=>({...row,id:String(i),sentAt:`2026-09-0${i}T12:00:00Z`,clickRate:5}));
+ const result=analyze(row,[row,...earlier,{...row,type:'Other',clickRate:99,sentAt:'2026-10-01T12:00:00Z'},{...row,sentAt:'2026-11-01T12:00:00Z'}]);
+ assert.equal(result.comparisonCount,3);assert.equal(result.historyCount,4);assert.match(result.performance,/5 procentpoint over/);
+});
+test('unknown measurements, zero clicks and unsafe links do not become insights',()=>{
+ const selected={...row,content:[{...item('Unknown',999),clickMeasurement:undefined},item('Zero',0),{...item('Unsafe',500),destination:'javascript:alert(1)'}]};
+ assert.equal(analyze(selected).links.length,0);
+});
+test('ties and lower-bound measurements remain explicit',()=>{
+ const selected={...row,content:[item('First',25),{...item('Second',25),clickMeasurement:{metric:'unique-contacts',aggregation:'max-per-destination'}}]};
+ assert.match(analyze(selected).headline,/deler/);
+ const html=renderToStaticMarkup(React.createElement(EditorialDecisionSupport,{rows:[selected],selected,asOf}));assert.match(html,/Mindst 25/);
 });
