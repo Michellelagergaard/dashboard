@@ -148,6 +148,9 @@ console.log(`Indholdsmetadata: ${enriched} udgaver beriget; ${mailings.filter(m 
 const data = { mailings, updatedAt: new Date().toISOString(), status: "live" };
 for (const mailing of mailings) mailing.checkpoints = checkpoints.records.filter(row => row.mailingId === mailing.id);
 await writeFile(new URL("../app/generated-dashboard-data.ts", import.meta.url), `import type { LiveDashboardData } from "./live-data";\n\nexport const generatedDashboardData = ${JSON.stringify(data)} as const satisfies LiveDashboardData;\n`, "utf8");
+// Publish exactly the same anonymised snapshot for already-open browser tabs.
+await mkdir(new URL("../public/", import.meta.url), { recursive: true });
+await writeFile(new URL("../public/dashboard-data.json", import.meta.url), JSON.stringify({ schemaVersion: 1, ...data }) + "\n", "utf8");
 await mkdir(new URL("../.cache/", import.meta.url), { recursive: true });
 await writeFile(checkpointUrl, JSON.stringify(checkpoints)+"\n", "utf8");
 await writeFile(historyCacheUrl, `${JSON.stringify({ version: 2, updatedAt: data.updatedAt, mailings })}\n`, "utf8");
